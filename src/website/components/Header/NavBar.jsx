@@ -4,8 +4,14 @@ import Search from '../../../assets/Search.svg'
 import Cart from '../../../assets/Cart.svg'
 import User from '../../../assets/User.svg'
 import Menu from '../../../assets/Menu.svg'
+import { MenuBar } from './MenuBar';
+import { useDrawerStore } from '../../../store'
+
+
 
 export const NavBar = () => {
+
+    const openMenu = useDrawerStore((state) => state.openMenu)
 
     const navLinks = [
         { name: 'Home', path: '/' },
@@ -20,13 +26,14 @@ export const NavBar = () => {
             <div className="links items-center gap-8 text-sm text-text font-medium hidden lg:flex">
                 {
                     navLinks.map( (link,idx) => (
-                        <NavLink to={link.path} key={idx}>
+                        <NavLink to={link.path} key={idx} className={({ isActive }) => isActive ? "text-primary" : ""}>
                             {link.name}
                         </NavLink>
                     ))
                 }
             </div>  
-            <div className='lg:hidden block cursor-pointer'>
+            <MenuBar />
+            <div className='lg:hidden block cursor-pointer' onClick={openMenu}>
                 <img src={Menu} alt="" />
             </div>
             <div className='hidden lg:flex'>
