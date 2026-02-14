@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { NotificationBar } from '../components/Header/NotificationBar'
 import { NavBar } from '../components/Header/NavBar'
-// import { PageHeader } from '../components/Header/PageHeader'
+import { PageHeader } from '../components/Header/PageHeader'
 import { Footer } from '../components/Footer'
 
 export const ShopLayout = () => {
@@ -10,7 +10,7 @@ export const ShopLayout = () => {
         <div className='min-h-screen flex flex-col'>
             <NotificationBar />
             <NavBar />
-            {/* <PageHeader /> */}
+            <PageHeader />
             <main className='grow'>
                 <Outlet />
             </main>
