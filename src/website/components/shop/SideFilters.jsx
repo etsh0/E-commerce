@@ -6,7 +6,7 @@ export const SideFilters = () => {
     const sizes = ["s","m","l","xl","xxl"]
   return (
     <>
-        <div className='w-62 px-4 py-6 border border-border rounded shadow flex flex-col gap-10'>
+        <div className='flex flex-col gap-10'>
             <div className="categories">
                 <h4 className='text-xl font-medium'>Categories</h4>
                 <div className='filters flex flex-col gap-4 mt-8'>
@@ -14,7 +14,7 @@ export const SideFilters = () => {
                         categories.map((cat,idx) => (
                             <label className="filter-option flex items-center gap-3 cursor-pointer py-2 pl-2 rounded-lg hover:bg-[#f8fafc] transition-all duration-300 ease-in-out">
                                 <input className="hidden" type="checkbox" />
-                                <span class="checkmark w-4.5 h-4.5 border border-border rounded transition-all duration-300 ease-in-out relative"></span>
+                                <span className="checkmark w-4.5 h-4.5 border border-border rounded transition-all duration-300 ease-in-out relative"></span>
                                 <span className="text-[#474B57] " key={idx}>{cat}</span>
                             </label>
                         ))
