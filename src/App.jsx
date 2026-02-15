@@ -3,6 +3,9 @@ import { AdminLayout } from './admin/layouts/AdminLayout'
 import { ShopLayout } from './website/layouts/ShopLayout'
 import { Home } from './website/pages/Home'
 import { Shop } from './website/pages/Shop'
+import { ProductDetails } from './website/pages/ProductDetails'
+import { Details } from './components/Details'
+import { Reviews } from './components/Reviews'
 
 export const App = () => {
   return (
@@ -13,7 +16,13 @@ export const App = () => {
 					// website layouts
 					<Route path='/' element={<ShopLayout />}> 
 						<Route index element={<Home />} />
-						<Route path='shop' element={<Shop />} />
+						<Route path='shop'>
+							<Route index element={<Shop />}/>
+							<Route path=':slug' element={<ProductDetails />}>
+								<Route index element={<Details />}/>
+								<Route path='reviews' element={<Reviews />}/>
+							</Route>
+						</Route>
 						<Route path='about' element={<h1>About page</h1>} />
 						<Route path='contact' element={<h1>Contact page</h1>} />
 						<Route path='cart' element={<h1>Cart page</h1>} />

@@ -1,10 +1,15 @@
+import { Link, useNavigate } from "react-router-dom";
 import Tshirt from "../assets/T-Shirt.svg";
 import { Badge } from "./Badge";
 
 export const ProductCard = () => {
+    const navigate = useNavigate()
+    const handleCardClick = () => {
+        navigate('/shop/Basic-Tees')
+    }
   return (
     <>
-        <div className="productCard py-4 px-2">
+        <div className="productCard py-4 px-2 cursor-pointer" onClick={handleCardClick}>
             <div className="image bg-secondary flex items-center justify-center pb-10 rounded">
                 <img src={Tshirt} alt="" />
             </div>
