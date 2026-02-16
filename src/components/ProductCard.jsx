@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
-import Tshirt from "../assets/T-Shirt.svg";
+import { useNavigate } from "react-router-dom";
+import Tshirt from "../assets/تصميم بدون عنوان.svg";
 import { Badge } from "./Badge";
 
 export const ProductCard = () => {

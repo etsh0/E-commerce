@@ -4,10 +4,10 @@ import FillStar from "../../assets/FillStar.svg"
 
 export const ReviewCard = () => {
   return (
-    <div className='card-review flex items-center gap-6 pr-50'>
+    <div className='card-review flex items-center gap-6 '>
         <img src={Avatar} alt="" />
         <div className="content grow">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row gap-2 justify-between">
                 <h4 className="text-sm font-medium">Ahmed Hesham</h4>
                 <div className="stars flex items-center gap-1">
                     <img src={FillStar} alt="" />
