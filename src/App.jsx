@@ -6,6 +6,8 @@ import { Shop } from './website/pages/Shop'
 import { ProductDetails } from './website/pages/ProductDetails'
 import { Details } from './components/Details'
 import { Reviews } from './components/Reviews'
+import { CartPage } from './website/pages/CartPage'
+import { CheckoutPage } from './website/pages/CheckoutPage'
 
 export const App = () => {
   return (
@@ -25,8 +27,8 @@ export const App = () => {
 						</Route>
 						<Route path='about' element={<h1>About page</h1>} />
 						<Route path='contact' element={<h1>Contact page</h1>} />
-						<Route path='cart' element={<h1>Cart page</h1>} />
-						<Route path='checkout' element={<h1>Checkout page</h1>} />
+						<Route path='cart' element={<CartPage />} />
+						<Route path='checkout' element={<CheckoutPage />} />
 						<Route path='account' element={<h1>My Account page</h1>} />
 
 						// login and register page

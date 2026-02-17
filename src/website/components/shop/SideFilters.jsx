@@ -1,10 +1,25 @@
 
+import { useEffect } from 'react';
+import { useDrawerStore } from '../../../store';
 import { Colors } from '../Colors';
 import { Sizes } from '../Sizes';
 import RangeSlider from './RangeSlider';
 export const SideFilters = () => {
 
     const categories = ["Perfume", "Trousers", "Shoes", "Handbag", "Hat","Thermos"]
+    const {isSideFiltersOpen} = useDrawerStore()
+
+      useEffect(() => {
+        if(isSideFiltersOpen) {
+          document.body.style.overflow = 'hidden';
+        }
+        else {
+          document.body.style.overflow = 'auto';
+        }
+        return () => {
+          document.body.style.overflow = 'auto';
+        }
+      },[isSideFiltersOpen])
   return (
     <>
         <div className='flex flex-col gap-10'>

@@ -3,6 +3,7 @@ import { create } from 'zustand'
 export const useDrawerStore = create((set) => ({
     isMenuOpen: false, // menuBar
     isSideFiltersOpen: false, // sideFilters
+    isSideCartOpen:false, // sideCart
 
 
     // menuBar functions
@@ -12,4 +13,8 @@ export const useDrawerStore = create((set) => ({
     // sideFilters functions
     openSideFilters: () => set({isSideFiltersOpen:true}),
     closeSideFilters: () => set({isSideFiltersOpen:false}),
+
+    // sideCart
+    openSideCart: () => set({isSideCartOpen:true}),
+    CloseSideCart: () => set({isSideCartOpen:false})
 }))

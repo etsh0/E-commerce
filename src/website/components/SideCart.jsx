@@ -1,0 +1,48 @@
+import { MdClose } from "react-icons/md"
+import { useDrawerStore } from "../../store"
+import { Link } from "react-router-dom"
+import { useEffect } from "react"
+import { SideCartItem } from "./SideCartItem"
+
+
+export const SideCart = () => {
+    const {isSideCartOpen,CloseSideCart} = useDrawerStore()
+    useEffect( () => {
+        if(isSideCartOpen) {
+            document.body.style.overflow = 'hidden';
+        }else {
+            document.body.style.overflow = 'auto'
+        }
+
+        return () => {
+          document.body.style.overflow = 'auto';
+        }
+    } ,[isSideCartOpen])
+  return (
+    <>
+        <div className={`overlay fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${isSideCartOpen ? "opacity-100 visible backdrop-blur-xs" : "opacity-0 invisible"}`} onClick={CloseSideCart}></div>
+        <div className={`sidecrat flex flex-col w-80 sm:w-100 h-screen bg-white shadow-lg fixed top-0 right-0 z-100 transform transition-transform duration-300 ease-in-out ${isSideCartOpen ? "translate-x-0" : "translate-x-300"}`}>
+            <div className="bg-secondary p-8 w-full flex items-center justify-between">
+                <h3 className="font-semibold">Shopping Cart</h3>
+                <MdClose onClick={CloseSideCart} size={"24px"} className="cursor-pointer" />
+            </div>
+            <div className="cart-container grow flex flex-col gap-6 overflow-auto px-4 md:px-8 pt-6">
+                <SideCartItem />
+                <SideCartItem />
+            </div>
+            <div className="px-8 pt-4 pb-6 border-t-2 border-border">
+                <div className="flex items-center justify-between font-medium text-xl mb-6">
+                    <span>Total</span>
+                    <span>$97.00</span>
+                </div>
+                <Link to={"/cart"}>
+                    <button className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap" onClick={CloseSideCart}>View Cart</button>
+                </Link>
+                <Link to={"/checkout"} className="flex justify-center">
+                    <button className="text-text text-sm underline mt-8 cursor-pointer" onClick={CloseSideCart}>Checkout</button>
+                </Link>
+            </div>
+        </div>
+    </>
+  )
+}

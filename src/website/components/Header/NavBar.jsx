@@ -13,6 +13,8 @@ export const NavBar = () => {
 
     const openMenu = useDrawerStore((state) => state.openMenu)
 
+    const {openSideCart} = useDrawerStore()
+
     const navLinks = [
         { name: 'Home', path: '/' },
         { name: 'Shop', path: '/shop' },
@@ -42,7 +44,9 @@ export const NavBar = () => {
                     <img src={Search} alt="" className='absolute top-[50%] translate-y-[-50%] left-4' />
                 </div>
                 <div className="icons flex items-center gap-8 ml-8 cursor-pointer">
-                    <Link to={"cart"}><img src={Cart} alt="" /></Link>
+                    <button onClick={openSideCart}>
+                        <Link ><img src={Cart} alt="" /></Link>
+                    </button>
                     <Link to={"account"}><img src={User} alt="" /></Link>
                 </div>
             </div>

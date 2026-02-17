@@ -11,8 +11,11 @@ import { NavLink, Outlet } from "react-router-dom"
 import { ProductCard } from "../../components/ProductCard"
 import { NewsLetter } from "../../components/NewsLetter"
 import { ImgSwiper } from "../../components/ImgSwiper"
+import { useDrawerStore } from "../../store"
 
 export const ProductDetails = () => {
+
+    const {openSideCart} = useDrawerStore()
   return (
     <>
         <div className="container mt-6">
@@ -32,7 +35,7 @@ export const ProductDetails = () => {
                         </div>
                         <Badge title={"In Stock"} />
                     </div>
-                    <div className="price font-semibold text-primary mt-6 text-h4">$75.00</div>
+                    <div className="price font-semibold text-primary mt-6 text-xl">$75.00</div>
                     <div className="colors mt-8">
                         <h4 className="text-[12px] text-text uppercase font-medium">Available Colors</h4>
                         <Colors />      
@@ -42,11 +45,11 @@ export const ProductDetails = () => {
                         <Sizes />
                     </div>
                     <div className="qty mt-6">
-                        <h4 className="text-[12px] text-text uppercase font-medium">Quantity</h4>
+                        <h4 className="text-[12px] text-text uppercase font-medium mb-4">Quantity</h4>
                         <Quantity />
                     </div>
                     <div className="add-to-cart mt-8 flex items-center gap-4">
-                        <button className="bg-primary flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap">Add to cart</button>
+                        <button className="bg-primary flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap" onClick={openSideCart}>Add to cart</button>
                         <div className="wishlist border-2 border-border px-2 py-2 rounded cursor-pointer">
                             <IoMdHeartEmpty size={"22px"} />
                         </div>
