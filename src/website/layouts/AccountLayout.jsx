@@ -13,7 +13,7 @@ export const AccountLayout = () => {
     { name: 'Wishlist', path: '/account/wishlist', icon: WishlistIcon },
     { name: 'Address', path: '/account/address', icon: AddressIcon },
     { name: 'Password', path: '/account/password', icon: LockIcon },
-    { name: 'Account Details', path: '/account/account-details', icon: UserIcon },
+    { name: 'Account Details', path: '/account/account-details', icon: UserIcon }, 
   ];
 
   return (
