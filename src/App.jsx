@@ -8,6 +8,15 @@ import { Details } from './components/Details'
 import { Reviews } from './components/Reviews'
 import { CartPage } from './website/pages/CartPage'
 import { CheckoutPage } from './website/pages/CheckoutPage'
+import { AccountLayout } from './website/layouts/AccountLayout'
+import { AccountOrders } from './website/pages/AccountOrders'
+import { AccountWishlist } from './website/pages/AccountWishlist'
+import { AccountAddress } from './website/pages/AccountAddress'
+import { AccountPassword } from './website/pages/AccountPassword'
+import { AccountDetails } from './website/pages/AccountDetails'
+import { Login } from './website/pages/AuthPages/Login'
+import { Register } from './website/pages/AuthPages/Register'
+
 
 export const App = () => {
   return (
@@ -29,11 +38,17 @@ export const App = () => {
 						<Route path='contact' element={<h1>Contact page</h1>} />
 						<Route path='cart' element={<CartPage />} />
 						<Route path='checkout' element={<CheckoutPage />} />
-						<Route path='account' element={<h1>My Account page</h1>} />
+						<Route path='account' element={<AccountLayout />}>
+							<Route index element={<AccountOrders />} />
+							<Route path='wishlist' element={<AccountWishlist />} />
+							<Route path='address' element={<AccountAddress />} />
+							<Route path='password' element={<AccountPassword />} />
+							<Route path='account-details' element={<AccountDetails />} />
+						</Route>
 
 						// login and register page
-						<Route path='login' element={<h1>Login page</h1>} />
-						<Route path='register' element={<h1>Register page</h1>} />
+						<Route path='login' element={<Login />} />
+						<Route path='register' element={<Register />} />
 					</Route>
 
 					// admin login page
