@@ -10,7 +10,7 @@ export const MenuBar = () => {
 
     const navLinks = [
       { name: 'Home', path: '/' },
-      { name: 'profile', path: '/profile' },
+      { name: 'profile', path: '/account' },
         { name: 'Shop', path: '/shop' },
         { name: 'cart', path: '/cart' },
         { name: 'About', path: '/about' },

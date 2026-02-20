@@ -1,10 +1,11 @@
+import { AccountHeader } from "../components/AccountHeader"
 
 export const AccountPassword = () => {
   return (
     <>
         <div>
-            <h4 className="text-xl font-medium text-primary mb-8">Change Password</h4>
-            <form className='flex flex-col gap-6 w-100 mb-10'>
+            <AccountHeader title={"Change Password"} />
+            <form className='flex flex-col gap-6 max-w-100 mb-10'>
                 <label className="flex flex-col gap-2 text-sm text-[#474B57]" htmlFor="">
                     New Password
                     <input className="input" type="password" />
