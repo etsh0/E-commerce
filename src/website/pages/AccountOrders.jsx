@@ -21,7 +21,7 @@ export const AccountOrders = () => {
                     <div className="flex items-center gap-6">
                         <span className="text-xs font-medium underline">Processing</span>
                         <NavLink >
-                            <button className="text-primary text-sm border border-primary py-2 px-4 rounded font-semibold hover:bg-primary hover:text-white transition-colors duration-300 cursor-pointer">View Item</button>
+                            <button className="text-primary text-sm border border-primary py-2 px-4 rounded font-semibold hover:bg-primary hover:text-white transition-colors duration-300 cursor-pointer whitespace-nowrap">View Item</button>
                         </NavLink>
                     </div>
                 </div>

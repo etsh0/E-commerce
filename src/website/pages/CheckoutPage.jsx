@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export const CheckoutPage = () => {
   return (
     <>
-        <div className="container flex items-start gap-40 py-20 bg-secondary">
+        <div className="container flex flex-col xl:flex-row gap-40 py-20">
 
             <div className="flex-1">
                 <h3 className="text-xl font-medium mb-10">Shippind Address</h3>
@@ -12,7 +12,7 @@ export const CheckoutPage = () => {
                         <label htmlFor="">Street Address</label>
                         <input className="input" type="text" />
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex flex-col md:flex-row gap-4">
                         <div className="flex w-full flex-col gap-4">
                             <label htmlFor="">City</label>
                             <input className="input" type="text" />
@@ -22,7 +22,7 @@ export const CheckoutPage = () => {
                             <input className="input" type="text" />
                         </div>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex flex-col md:flex-row gap-4">
                         <div className="flex w-full flex-col gap-4">
                             <label htmlFor="">Zip Code</label>
                             <input className="input" type="text" />
@@ -32,7 +32,7 @@ export const CheckoutPage = () => {
                             <input className="input" type="text" />
                         </div>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex flex-col md:flex-row gap-4">
                         <div className="flex w-full flex-col gap-4">
                             <label htmlFor="">Email</label>
                             <input className="input" type="text" />
@@ -45,7 +45,7 @@ export const CheckoutPage = () => {
                 </form>
             </div>
 
-            <div className="w-120">
+            <div className="w-full xl:w-120 shadow p-8 h-fit border border-border">
                 <h3 className="font-semibold mb-6">Your Order</h3>
                 <div className="flex flex-col gap-4 mb-4">
                     <div className="flex items-center justify-between">

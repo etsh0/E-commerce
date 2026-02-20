@@ -5,15 +5,15 @@ import { OrderItem } from "../components/OrderItem"
 export const CartPage = () => {
   return (
     <>
-        <div className='container flex items-start gap-40 py-10 bg-secondary'>
+        <div className='container flex flex-col xl:flex-row gap-20 py-10 '>
             <div className='flex-1'>
                 <h3 className='mb-4 text-xl font-semibold'>Your Cart</h3>
-                <div className='flex flex-col gap-6 pt-12 border-t-2 border-border'>
+                <div className='flex flex-col gap-6 py-12 border-y-2 border-border w-full'>
                     <OrderItem />
                     <OrderItem />
                 </div>
             </div>
-            <div className='border-2 w-120 border-border p-8'>
+            <div className='border-2 w-full xl:w-120 border-border p-6 md:p-8'>
                 <h3 className="font-semibold mb-6">Order Summary</h3>
                 <div className="flex flex-col gap-4 mb-4">
                     <div className="flex items-center justify-between">

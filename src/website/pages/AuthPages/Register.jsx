@@ -4,7 +4,7 @@ export const Register = () => {
   return (
     <>
         <div className='flex items-center justify-center w-full h-full py-10'>
-            <div className='w-120 flex flex-col gap-6'>
+            <div className='w-70 sm:w-100 md:w-120 flex flex-col gap-6'>
                 <div className='border-2 border-border w-full flex items-center justify-center gap-4 py-2 rounded cursor-pointer'>
                     <img src={Google} alt="" />
                     <p className="text-sm text-text">Continue with Google</p>

@@ -19,7 +19,7 @@ export const AccountLayout = () => {
   return (
     <>
         <div className='flex items-start gap-10 container mt-10'>
-            <div className='aside w-55 flex flex-col gap-4 border-r-2 border-border pr-10'>
+            <div className='aside w-55 flex flex-col gap-4 md:border-r-2 md:pr-10 border-border'>
               {
                 navLinks.map( (link,idx) => (
                   <NavLink key={idx} end to={link.path} className={({isActive}) => `flex items-center gap-4  py-2 pl-6 rounded-lg hover:bg-secondary transition-colors duration-300 ${isActive && "bg-secondary"}`}>
@@ -33,7 +33,7 @@ export const AccountLayout = () => {
                 <span className='text-sm font-medium text-primary'>Logout</span>
               </Link>
             </div>
-            <div className='grow overflow-auto pr-20'>
+            <div className='grow overflow-auto lg:pr-20'>
               <Outlet />
             </div>
         </div>
