@@ -16,6 +16,12 @@ import { AccountPassword } from './website/pages/AccountPassword'
 import { AccountDetails } from './website/pages/AccountDetails'
 import { Login } from './website/pages/AuthPages/Login'
 import { Register } from './website/pages/AuthPages/Register'
+import { Dashboard } from './admin/pages/Dashboard';
+import { Products } from './admin/pages/Products';
+import { Orders } from './admin/pages/Orders';
+import { Customers } from './admin/pages/Customers';
+import { AdminReviews } from './admin/pages/AdminReviews'
+import { LoginPage } from './admin/pages/LoginPage'
 
 
 export const App = () => {
@@ -52,16 +58,15 @@ export const App = () => {
 					</Route>
 
 					// admin login page
-					<Route path='/admin/login' element={<h1>Admin Login page</h1>} />
+					<Route path='/admin/login' element={<LoginPage />} />
 					
 					// dashboard layouts 
 					<Route path='/admin' element={<AdminLayout />}>
-						<Route index element={<h1>Dashboard</h1>} />
-						<Route path='products' element={<h1>Products page</h1>} />
-						<Route path='orders' element={<h1>Orders page</h1>} />
-						<Route path='customers' element={<h1>Customers page</h1>} />
-						<Route path='reviews' element={<h1>Reviews page</h1>} />
-						<Route path='settings' element={<h1>Settings page</h1>} />
+						<Route index element={<Dashboard />} />
+						<Route path='products' element={<Products />} />
+						<Route path='orders' element={<Orders />} />
+						<Route path='customers' element={<Customers />} />
+						<Route path='reviews' element={<AdminReviews />} />
 					</Route>
 
 					// error page
