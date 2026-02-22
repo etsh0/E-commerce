@@ -22,6 +22,7 @@ import { Orders } from './admin/pages/Orders';
 import { Customers } from './admin/pages/Customers';
 import { AdminReviews } from './admin/pages/AdminReviews'
 import { LoginPage } from './admin/pages/LoginPage'
+import { Categories } from './admin/pages/Categories'
 
 
 export const App = () => {
@@ -63,6 +64,7 @@ export const App = () => {
 					// dashboard layouts 
 					<Route path='/admin' element={<AdminLayout />}>
 						<Route index element={<Dashboard />} />
+						<Route path='categories' element={<Categories />} />
 						<Route path='products' element={<Products />} />
 						<Route path='orders' element={<Orders />} />
 						<Route path='customers' element={<Customers />} />

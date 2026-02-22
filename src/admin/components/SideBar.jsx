@@ -1,5 +1,6 @@
 import Logo from "../../assets/Admin_logo.svg"
-import DashboardIcon from "../../assets/Dashboard.svg"
+import CategoriesIcon from "../../assets/Dashboard.svg"
+import DashboardIcon from "../../assets/Home.svg"
 import ProductsIcon from "../../assets/Product.svg"
 import OrdersIcon from "../../assets/Cart.svg"
 import CustomersIcon from "../../assets/Users.svg"
@@ -11,6 +12,7 @@ export const SideBar = () => {
 
     const navLinks = [
     { name: 'Dashboard', icon: DashboardIcon, path:"" },
+    { name: 'Categories', icon: CategoriesIcon, path:"categories" },
     { name: 'Products', icon: ProductsIcon, path:"products" },
     { name: 'Orders', icon: OrdersIcon, path:"orders" },
     { name: 'Customers', icon: CustomersIcon, path:"customers" },
