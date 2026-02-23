@@ -49,55 +49,55 @@ export const Dashboard = () => {
                   </div>
               </div>
               <div className="grow flex flex-col shadow border border-border rounded-lg bg-white p-6 h-130">
-                  <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-lg font-bold text-primary">Recent Orders</h4>
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-lg font-bold text-primary">Recent Orders</h4>
                   </div>
-                  <div class="overflow-y-auto grow">
-                    <table class="w-full text-left">
+                  <div className="overflow-y-auto grow">
+                    <table className="w-full text-left">
                       <thead className="sticky top-0 bg-white z-10">
-                        <tr class="text-text text-sm border-b border-border">
-                          <th class="px-6 py-4 font-medium">Item</th>
-                          <th class="px-6 py-4 font-medium">Date</th>
-                          <th class="px-6 py-4 font-medium">Total</th>
-                          <th class="px-6 py-4 font-medium">Status</th>
+                        <tr className="text-text text-sm border-b border-border">
+                          <th className="px-6 py-4 font-medium">Item</th>
+                          <th className="px-6 py-4 font-medium">Date</th>
+                          <th className="px-6 py-4 font-medium">Total</th>
+                          <th className="px-6 py-4 font-medium">Status</th>
                         </tr>
                       </thead>
-                      <tbody class="divide-y divide-border overflow-auto">
-                        <tr class="text-gray-600 hover:bg-gray-50 transition">
-                          <td class="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td class="px-6 py-4">20 Mar, 2023</td>
-                          <td class="px-6 py-4">$75.00</td>
-                          <td class="px-6 py-4">Processing</td>
+                      <tbody className="divide-y divide-border overflow-auto">
+                        <tr className="text-gray-600 hover:bg-gray-50 transition">
+                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
+                          <td className="px-6 py-4">20 Mar, 2023</td>
+                          <td className="px-6 py-4">$75.00</td>
+                          <td className="px-6 py-4">Processing</td>
                         </tr>
-                        <tr class="text-gray-600 hover:bg-gray-50 transition">
-                          <td class="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td class="px-6 py-4">20 Mar, 2023</td>
-                          <td class="px-6 py-4">$75.00</td>
-                          <td class="px-6 py-4">Processing</td>
+                        <tr className="text-gray-600 hover:bg-gray-50 transition">
+                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
+                          <td className="px-6 py-4">20 Mar, 2023</td>
+                          <td className="px-6 py-4">$75.00</td>
+                          <td className="px-6 py-4">Processing</td>
                         </tr>
-                        <tr class="text-gray-600 hover:bg-gray-50 transition">
-                          <td class="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td class="px-6 py-4">20 Mar, 2023</td>
-                          <td class="px-6 py-4">$75.00</td>
-                          <td class="px-6 py-4">Processing</td>
+                        <tr className="text-gray-600 hover:bg-gray-50 transition">
+                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
+                          <td className="px-6 py-4">20 Mar, 2023</td>
+                          <td className="px-6 py-4">$75.00</td>
+                          <td className="px-6 py-4">Processing</td>
                         </tr>
-                        <tr class="text-gray-600 hover:bg-gray-50 transition">
-                          <td class="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td class="px-6 py-4">20 Mar, 2023</td>
-                          <td class="px-6 py-4">$75.00</td>
-                          <td class="px-6 py-4">Processing</td>
+                        <tr className="text-gray-600 hover:bg-gray-50 transition">
+                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
+                          <td className="px-6 py-4">20 Mar, 2023</td>
+                          <td className="px-6 py-4">$75.00</td>
+                          <td className="px-6 py-4">Processing</td>
                         </tr>
-                        <tr class="text-gray-600 hover:bg-gray-50 transition">
-                          <td class="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td class="px-6 py-4">20 Mar, 2023</td>
-                          <td class="px-6 py-4">$75.00</td>
-                          <td class="px-6 py-4">Processing</td>
+                        <tr className="text-gray-600 hover:bg-gray-50 transition">
+                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
+                          <td className="px-6 py-4">20 Mar, 2023</td>
+                          <td className="px-6 py-4">$75.00</td>
+                          <td className="px-6 py-4">Processing</td>
                         </tr>
-                        <tr class="text-gray-600 hover:bg-gray-50 transition">
-                          <td class="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td class="px-6 py-4">20 Mar, 2023</td>
-                          <td class="px-6 py-4">$75.00</td>
-                          <td class="px-6 py-4">Processing</td>
+                        <tr className="text-gray-600 hover:bg-gray-50 transition">
+                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
+                          <td className="px-6 py-4">20 Mar, 2023</td>
+                          <td className="px-6 py-4">$75.00</td>
+                          <td className="px-6 py-4">Processing</td>
                         </tr>
                         </tbody>
                     </table>

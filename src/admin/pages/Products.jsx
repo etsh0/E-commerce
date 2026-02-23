@@ -1,6 +1,4 @@
-import Search from "../../assets/Search.svg"
-
-
+import { SearchBar } from "../../components/SearchBar"
 import { ProductRow } from "../components/ProductRow"
 export const Products = () => {
 
@@ -11,26 +9,35 @@ export const Products = () => {
           <div className="header flex items-center justify-between">
             <h4 className="text-lg text-primary font-semibold">Products</h4>
             <div className="flex gap-4">
-                <div className="search-bar relative ">
-                    <input type='text' placeholder='Search Products' className=' w-66 pl-11.75 input' />
-                    <img src={Search} alt="" className='absolute top-[50%] translate-y-[-50%] left-4' />
-                </div>
+                <SearchBar />
                 <button className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer">Add Product</button>
             </div>
           </div>
           <div className="overflow-y-auto grow mt-8">
-              <table class="w-full text-left">
+              <table className="w-full text-left">
                 <thead className="sticky top-0 bg-white z-10">
-                  <tr class="text-text border-b border-border">
-                    <th class="px-6 py-4 font-medium">Name</th>
-                    <th class="px-6 py-4 font-medium">price</th>
-                    <th class="px-6 py-4 font-medium">Stock</th>
-                    <th class="px-6 py-4 font-medium">Categories</th>
-                    <th class="px-6 py-4 font-medium">Is Featured</th>
-                    <th class="px-6 py-4 font-medium">Action</th>
+                  <tr className="text-text border-y border-border">
+                    <th className="px-6 py-4 font-medium">Name</th>
+                    <th className="px-6 py-4 font-medium">price</th>
+                    <th className="px-6 py-4 font-medium">Stock</th>
+                    <th className="px-6 py-4 font-medium">Categories</th>
+                    <th className="px-6 py-4 font-medium">Is Featured</th>
+                    <th className="px-6 py-4 font-medium">Action</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-border overflow-auto">
+                <tbody className="divide-y divide-border overflow-auto">
+                  <ProductRow />
+                  <ProductRow />
+                  <ProductRow />
+                  <ProductRow />
+                  <ProductRow />
+                  <ProductRow />
+                  <ProductRow />
+                  <ProductRow />
+                  <ProductRow />
+                  <ProductRow />
+                  <ProductRow />
+                  <ProductRow />
                   <ProductRow />
                   <ProductRow />
                   <ProductRow />

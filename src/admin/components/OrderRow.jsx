@@ -1,9 +1,8 @@
 import { useState } from "react"
-import Check from "../../assets/Check.svg"
 import More from "../../assets/More.svg"
 import img from "../../assets/T-Shirt.svg"
 
-export const ProductRow = () => {
+export const OrderRow = () => {
     const [isDropdownOpen,setIsdropdowngopen] = useState(false)
     return (
         <>
@@ -12,15 +11,13 @@ export const ProductRow = () => {
                 <img className="w-10" src={img} alt="" />
                 <span>Mens Black T-Shirts</span>
             </td>
+            <td className="px-6 py-4">20 Mar, 2023</td>
             <td className="px-6 py-4">$75.00</td>
-            <td className="px-6 py-4">In Stock</td>
-            <td className="px-6 py-4">Basic Tees</td>
-            <td className="px-6 py-4"><img src={Check} alt="" /></td>
+            <td className="px-6 py-4">Processing</td>
+            <td className="px-6 py-4 underline cursor-pointer">View details</td>
             <td className="px-6 py-4 cursor-pointer relative" onClick={ () => setIsdropdowngopen(!isDropdownOpen)}><img src={More} alt="" />
                 <div className={`absolute right-0 z-50 w-30 bg-white shadow border border-border py-3  flex-col gap-1 ${isDropdownOpen ? "flex" : "hidden"}`}>
-                <button className="px-4 py-1 w-full text-left font-medium text-sm hover:bg-secondary transition-colors duration-300 cursor-pointer">Edit</button>
-                <button className="px-4 py-1 w-full text-left font-medium text-sm hover:bg-secondary transition-colors duration-300 cursor-pointer">Delete</button>
-                <button className="px-4 py-1 w-full text-left font-medium text-sm hover:bg-secondary transition-colors duration-300 cursor-pointer">View</button>
+                    <button className="px-2 py-1 w-full text-left font-medium text-sm hover:bg-secondary transition-colors duration-300 cursor-pointer whitespace-nowrap">Change Status</button>
                 </div>
             </td>
         </tr>
