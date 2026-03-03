@@ -6,7 +6,8 @@ import OrdersIcon from "../../assets/Cart.svg"
 import CustomersIcon from "../../assets/Users.svg"
 import ReviewsIcon from "../../assets/Empty Star.svg"
 import Logout from "../../assets/Logout.svg"
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useAuthAdmin } from "../../store"
 
 export const SideBar = () => {
 
@@ -18,6 +19,14 @@ export const SideBar = () => {
     { name: 'Customers', icon: CustomersIcon, path:"customers" },
     { name: 'Reviews', icon: ReviewsIcon, path:"reviews" }, 
     ];
+
+    const {adminLogout} = useAuthAdmin()
+    const navigate = useNavigate()
+
+    const handleLogOut = () => {
+        adminLogout()
+        navigate("/admin/login")
+    }
   return (
     <>
         <div className="flex flex-col py-8 h-full">
@@ -34,7 +43,7 @@ export const SideBar = () => {
                     ))
                 }
             </div>
-            <Link className='logout flex items-center gap-4 py-2 pl-6 mt-8'>
+            <Link onClick={handleLogOut} className='logout flex items-center gap-4 py-2 pl-6 mt-8'>
                 <img src={Logout} alt="" />
                 <span className='text-sm font-medium text-primary'>Logout</span>
             </Link>

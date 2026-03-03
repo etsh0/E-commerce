@@ -1,11 +1,23 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 import { SideBar } from "../components/SideBar"
+import { useEffect } from "react"
+import { useAuthAdmin } from "../../store"
 
 export const AdminLayout = () => {
+
+  const {adminToken} = useAuthAdmin()
+  const navigate = useNavigate()
+
+  useEffect( () => {
+    if(!adminToken) {
+      navigate("/admin/login")
+    }
+  } ,[adminToken])
+  
   return (
     <>
-      <div className="flex h-dvh">
-        <div className="w-65 h-full bg-white shadow-2xl">
+      <div className="flex min-h-screen">
+        <div className="w-65 self-stretch h-auto bg-white shadow-2xl">
             <SideBar />
         </div>
         <div className="grow h-full bg-secondary">

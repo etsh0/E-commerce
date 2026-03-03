@@ -21,8 +21,8 @@ export const ProductCard = () => {
         <div className="productCard py-4 px-2 cursor-pointer group" onClick={handleCardClick}>
             <div className="image relative bg-secondary flex items-center justify-center rounded overflow-hidden aspect-4/5">
                 <img src={Tshirt} alt="product" className="w-full h-full object-contain" />
-                <div className="add-to-cart absolute bg-primary w-full h-12 -bottom-15 group-hover:bottom-0 transition-all duration-300 text-white flex items-center justify-center font-medium">
-                    <button className="cursor-pointer" onClick={handleAddtoCart}>Add to Cart</button>
+                <div className="add-to-cart absolute bg-primary w-full h-12 -bottom-15 group-hover:bottom-0 transition-all duration-300 text-white flex items-center justify-center font-medium"  onClick={handleAddtoCart}>
+                    <button className="cursor-pointer">Add to Cart</button>
                 </div>
                 <div className="wishlist absolute w-12 h-12 top-0 right-0 flex items-center justify-center font-medium">
                     <img src={Heart} alt="" />

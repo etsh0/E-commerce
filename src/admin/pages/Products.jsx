@@ -1,3 +1,4 @@
+import { NavLink, Outlet } from "react-router-dom"
 import { SearchBar } from "../../components/SearchBar"
 import { ProductRow } from "../components/ProductRow"
 export const Products = () => {
@@ -10,7 +11,7 @@ export const Products = () => {
             <h4 className="text-lg text-primary font-semibold">Products</h4>
             <div className="flex gap-4">
                 <SearchBar />
-                <button className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer">Add Product</button>
+                <NavLink to={"add-product"} className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer">Add Product</NavLink>
             </div>
           </div>
           <div className="overflow-y-auto grow mt-8">

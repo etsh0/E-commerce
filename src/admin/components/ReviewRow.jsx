@@ -20,7 +20,7 @@ export const ReviewRow = () => {
                 <img src={star} alt="" />
                 <img src={star} alt="" />
                 <img src={star} alt="" />
-                <img src={star} alt="" />
+                <img src={star} alt="" /> 
             </td>
             <td className="px-6 py-4 cursor-pointer relative" onClick={ () => setIsdropdowngopen(!isDropdownOpen)}><img src={More} alt="" />
                 <div className={`absolute left-7 z-50 w-30 bg-white shadow border border-border py-3  flex-col gap-1 ${isDropdownOpen ? "flex" : "hidden"}`}>

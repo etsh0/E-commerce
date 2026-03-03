@@ -23,12 +23,15 @@ import { Customers } from './admin/pages/Customers';
 import { AdminReviews } from './admin/pages/AdminReviews'
 import { LoginPage } from './admin/pages/LoginPage'
 import { Categories } from './admin/pages/Categories'
+import { AddProduct } from './admin/pages/AddProduct'
+import { Toaster } from 'react-hot-toast'
 
 
 export const App = () => {
   return (
 	<>
 		<div className='w-full h-dvh'>
+			<Toaster position="top-center" />
 			<BrowserRouter>
 				<Routes>
 					// website layouts
@@ -66,6 +69,7 @@ export const App = () => {
 						<Route index element={<Dashboard />} />
 						<Route path='categories' element={<Categories />} />
 						<Route path='products' element={<Products />} />
+						<Route path='products/add-product' element={<AddProduct />} />
 						<Route path='orders' element={<Orders />} />
 						<Route path='customers' element={<Customers />} />
 						<Route path='reviews' element={<AdminReviews />} />

@@ -1,0 +1,7 @@
+strapi account << email : ahmedhesham@gmail.com 
+pw : Admin123@
+
+--------------------------------
+
+dashboard << email : admin@gmail.com
+pw : 123456

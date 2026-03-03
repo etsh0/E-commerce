@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { NavLink } from 'react-router-dom';
 import CartIcon from "../../assets/Cart.svg"
 import UserIcon from "../../assets/User.svg"
@@ -6,7 +6,7 @@ import AddressIcon from "../../assets/Delivery.svg"
 import WishlistIcon from "../../assets/Heart.svg"
 import LockIcon from "../../assets/Key.svg"
 import Logout from "../../assets/Logout.svg"
-import { useDrawerStore } from '../../store';
+import { useAuthStore, useDrawerStore } from '../../store';
 
 
 export const SideAccount = () => {
@@ -19,6 +19,14 @@ export const SideAccount = () => {
     ];
 
     const {closeSideAccount} = useDrawerStore()
+    const {logout} = useAuthStore()
+    const navigate = useNavigate()
+
+    const handleLogOut = () => {
+        logout()
+        navigate("/login")
+    }
+
 
   return (
     <>
@@ -31,9 +39,9 @@ export const SideAccount = () => {
                 </NavLink>
             ))
             }
-            <Link className='logout flex items-center gap-4 py-2 pl-6'>
-            <img src={Logout} alt="" />
-            <span className='text-sm font-medium text-primary'>Logout</span>
+            <Link onClick={handleLogOut} className='logout flex items-center gap-4 py-2 pl-6'>
+                <img src={Logout} alt="" />
+                <span className='text-sm font-medium text-primary'>Logout</span>
             </Link>
         </div>    
     </>

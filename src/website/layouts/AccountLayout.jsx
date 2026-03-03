@@ -1,8 +1,20 @@
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { SideAccount } from '../components/SideAccount'
+import { useEffect } from 'react'
+import { useAuthStore } from '../../store'
 
 
 export const AccountLayout = () => {
+
+  const navigate = useNavigate()
+
+  const {token} = useAuthStore()
+
+  useEffect( () => {
+    if(!token) {
+      navigate("/login")
+    }
+  } ,[token])
 
   return (
     <>

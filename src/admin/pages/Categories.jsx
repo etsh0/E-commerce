@@ -1,7 +1,10 @@
+import { useState } from "react"
 import { SearchBar } from "../../components/SearchBar"
 import { CategoryRow } from "../components/CategoryRow"
+import { MdClose } from "react-icons/md"
 
 export const Categories = () => {
+  const [modalIsOpen,setModalIsOpen] = useState(false)
   return (
     <>
       <div className="bg-secondary px-10">
@@ -10,7 +13,7 @@ export const Categories = () => {
             <h4 className="text-lg text-primary font-semibold">Categories</h4>
             <div className="flex gap-4">
                 <SearchBar />
-                <button className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer">Add Category</button>
+                <button className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer" onClick={ () => setModalIsOpen(true) }>Add Category</button>
             </div>
           </div>
           <div className="overflow-y-auto grow mt-8">
@@ -42,6 +45,29 @@ export const Categories = () => {
               </table>
           </div>
         </div>
+        {
+          modalIsOpen && (
+            <div className="modal fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+              <div className="bg-white shadow border border-border w-full max-w-lg relative rounded-lg p-8">
+                  <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-semibold">Add Category</h3>
+                  <MdClose size={"20px"} className="cursor-pointer" onClick={() => setModalIsOpen(false)} />
+                  </div>
+                  <form action="" className="flex flex-col gap-4 py-6">
+                  <label className="flex flex-col gap-2 text-sm font-medium text-primary" htmlFor="">
+                      Name
+                      <input className="input" type="text" />
+                  </label>
+                  <label className="flex flex-col gap-2 text-sm font-medium text-primary" htmlFor="">
+                      Description
+                      <textarea className="resize-none w-full input h-35"></textarea>
+                  </label> 
+                  </form>
+                  <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">Add Category</button>
+              </div>
+          </div>
+          )
+        }
       </div>    
     </>
   )
