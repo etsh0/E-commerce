@@ -1,27 +1,29 @@
-import { useNavigate } from "react-router-dom";
-import Tshirt from "../assets/تصميم بدون عنوان.svg";
 import Heart from "../assets/Heart.svg"
 import { Badge } from "./Badge";
-import { useDrawerStore } from "../store";
+import { domain, useDrawerStore } from "../store";
+import { useNavigate } from "react-router-dom";
 
-export const ProductCard = () => {
-    const navigate = useNavigate()
-    const handleCardClick = () => {
-        navigate('/shop/Basic-Tees')
-    }
+export const ProductCard = ({product}) => {
+
 
     const {openSideCart} = useDrawerStore()
+    const navigate = useNavigate()
+
+    const handleCardClick = () => {
+        navigate(`/shop/product-details/${product.documentId}`);
+    }
 
     const handleAddtoCart = (e) => {
         e.stopPropagation()
         openSideCart()
     }
+
   return (
     <>
-        <div className="productCard py-4 px-2 cursor-pointer group" onClick={handleCardClick}>
+        <div onClick={handleCardClick} className="productCard py-4 px-2 cursor-pointer group">
             <div className="image relative bg-secondary flex items-center justify-center rounded overflow-hidden aspect-4/5">
-                <img src={Tshirt} alt="product" className="w-full h-full object-contain" />
-                <div className="add-to-cart absolute bg-primary w-full h-12 -bottom-15 group-hover:bottom-0 transition-all duration-300 text-white flex items-center justify-center font-medium"  onClick={handleAddtoCart}>
+                <img src={ domain + product.images[0].url} alt="product" className="w-full h-full object-contain" />
+                <div onClick={handleAddtoCart} className="add-to-cart absolute bg-primary w-full h-12 -bottom-15 group-hover:bottom-0 transition-all duration-300 text-white flex items-center justify-center font-medium">
                     <button className="cursor-pointer">Add to Cart</button>
                 </div>
                 <div className="wishlist absolute w-12 h-12 top-0 right-0 flex items-center justify-center font-medium">
@@ -29,10 +31,10 @@ export const ProductCard = () => {
                 </div>
             </div>
             <div className="product-deatils mt-6">
-                <p className="text-p text-primary font-medium line-clamp-1">Classic Monochrome Tees</p>
+                <p className="text-p text-primary font-medium line-clamp-1">{product.title}</p>
                 <div className="info flex items-center gap-2 mt-2">
-                    <Badge title={"In Stock"} />
-                    <span className="price text-[#474B57] text-h5">$29.99</span>
+                    <Badge title={`${product.stock_status}`} />
+                    <span className="price text-[#474B57] text-h5">${product.price}</span>
                 </div>
             </div>
         </div>

@@ -1,4 +1,3 @@
-import Share from "../../assets/Share.svg"
 import More from "../../assets/More.svg"
 import EmptyStar from "../../assets/Empty Star.svg"
 import { FaStar } from "react-icons/fa"
@@ -7,42 +6,69 @@ import { Colors } from "../components/Colors"
 import { Sizes } from "../components/Sizes"
 import { Quantity } from "../components/Quantity"
 import { IoMdHeartEmpty } from "react-icons/io"
-import { NavLink, Outlet } from "react-router-dom"
-import { ProductCard } from "../../components/ProductCard"
+import { NavLink, Outlet, useParams } from "react-router-dom"
 import { NewsLetter } from "../../components/NewsLetter"
 import { ImgSwiper } from "../../components/ImgSwiper"
-import { useDrawerStore } from "../../store"
+import { domain, useDrawerStore } from "../../store"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { ProductCard } from "../../components/ProductCard"
 
 export const ProductDetails = () => {
+    const params = useParams()
+    const [product ,setProduct] = useState([])
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        let productId = params.productId
+        let endPoint = '/api/products/' + productId
+        let url = domain + endPoint
+
+        const fetchProducts = async () => {
+            try {
+                const res = await axios.get(url,{
+                    params:{
+                        populate:'*'
+                    }
+                })
+                console.log(res.data.data);
+                
+                setProduct(res.data.data)
+            }
+            catch(error) {
+                console.log(error);
+            }
+        }
+        fetchProducts()
+    } ,[params.productId])
 
     const {openSideCart} = useDrawerStore()
   return (
     <>
         <div className="container mt-6">
             <div className="flex flex-col lg:flex-row gap-15">
-                <div className="product-images bg-secondary w-full lg:w-150 flex items-center justify-center">
-                    <ImgSwiper />
+                <div className="product-images bg-secondary w-full lg:w-130 flex items-center justify-center">
+                    <ImgSwiper product_images={product.images} />
                 </div>
                 <div className="product-info grow">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-h4 sm:text-h3 font-semibold">Raw Black T-Shirt Lineup</h3>
-                        <img className="w-5 sm:w-7.5 cursor-pointer" src={Share} alt="" />
+                        <h3 className="text-h4 sm:text-h3 font-semibold">{product.title}</h3>
                     </div>
                     <div className="badges mt-3.5 flex items-center gap-4">
                         <div className="bg-secondary px-4 py-1 rounded-2xl text-[12px] font-medium w-fit text-text flex items-center gap-2">
                            <FaStar />
-                            4.2 — 54 Reviews 
+                            {product.rate} — {product.reviews_count} Reviews 
                         </div>
                         <Badge title={"In Stock"} />
                     </div>
-                    <div className="price font-semibold text-primary mt-6 text-xl">$75.00</div>
-                    <div className="colors mt-8">
+                    <div className="price font-semibold text-primary mt-6 text-xl">${product.price}</div>
+                    <div className={`colors mt-8 ${product?.colors?.length === 0 && "hidden"}`}>
                         <h4 className="text-[12px] text-text uppercase font-medium">Available Colors</h4>
-                        <Colors />      
+                        <Colors product_colors={product.colors} />      
                     </div>
-                    <div className="sizes mt-6">
+                    <div className={`sizes mt-6 ${product?.sizes?.length === 0 && "hidden"}`}>
                         <h4 className="text-[12px] text-text uppercase font-medium">Selected Size</h4>
-                        <Sizes />
+                        <Sizes product_sizes={product.sizes} />
                     </div>
                     <div className="qty mt-6">
                         <h4 className="text-[12px] text-text uppercase font-medium mb-4">Quantity</h4>
@@ -69,19 +95,20 @@ export const ProductDetails = () => {
                     </NavLink>
                 </div>
                 <div className="grow">
-                    <Outlet />
+                    <Outlet context={{
+                        details: product?.details,
+                        reviews: product?.reviews,
+                        rate: product.rate
+                    }} />
                 </div>
             </div>
-            <div className="pb-30">
+            {/* <div className="pb-30">
                 <h4 className="text-2xl font-semibold mb-2">You might also like</h4>
                 <p className="text-xs text-text">SIMILAR PRODUCTS</p>
                 <div className="products grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-10">
                     <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
-                    <ProductCard />
                 </div>
-            </div>
+            </div> */}
         </div>
         <NewsLetter />
     </>

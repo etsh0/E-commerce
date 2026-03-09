@@ -1,23 +1,35 @@
 import { useState } from "react"
 import { ReviewCard } from "../website/components/ReviewCard"
 import { MdClose } from "react-icons/md"
-import EmptyStar2 from "../assets/Empty Star2.svg"
-import FillStar from "../assets/FillStar.svg"
+import emptystate from "../assets/Empty State.svg"
+import { useOutletContext } from "react-router-dom"
+import { BsStar, BsStarFill } from "react-icons/bs"
 
 export const Reviews = () => {
+  const {reviews,rate} = useOutletContext()
 
   const [modalIsOpen,setModalIsOpen] = useState(false)
   return (
     <>
         <div className=''>
             <h4 className='text-xl font-semibold'>Reviews</h4>
-            <div className='mt-4'>
-               <div className='text-text text-sm'><span className='text-2xl font-bold text-primary'>4.2</span> — 54 Reviews</div> 
+            <div className={`mt-4 ${reviews?.length === 0 && "hidden"}`}>
+               <div className='text-text text-sm'><span className='text-2xl font-bold text-primary'>{rate}</span> — {reviews?.length} Reviews</div> 
                <button className='border border-primary text-sm font-medium px-6 py-2 mt-6 rounded cursor-pointer transition-colors duration-300 hover:bg-primary hover:text-white' onClick={() => setModalIsOpen(true)}>Write a review</button>
             </div>
             <div className="reviews-container flex flex-col gap-15 mt-4 pt-10 border-t-2 2xl:pr-50 border-border">
-                <ReviewCard />
-                <ReviewCard />
+              {
+                reviews?.length === 0 ? 
+              (               
+                <div className="empty-state text-center">
+                  <div className="w-full flex items-center justify-center">
+                    <img className="" src={emptystate} alt="" />
+                  </div>
+                  <p className="text-text mt-6">No Reviews Yet! Be the first to share your thoughts about this product</p>
+                  <button className='border border-primary text-sm font-medium px-6 py-2 mt-6 rounded cursor-pointer transition-colors duration-300 hover:bg-primary hover:text-white' onClick={() => setModalIsOpen(true)}>Write a review</button>
+                </div>   
+              ) : <ReviewCard />
+              }            
             </div>
         </div>
         {
@@ -43,11 +55,11 @@ export const Reviews = () => {
                     </label> 
                   </form>
                   <div className="stars flex items-center gap-1">
-                      <img src={FillStar} alt="" />
-                      <img src={FillStar} alt="" />
-                      <img src={FillStar} alt="" />
-                      <img src={FillStar} alt="" />
-                      <img src={EmptyStar2} alt="" />
+                      <BsStarFill className="text-text" />
+                      <BsStarFill className="text-text" />
+                      <BsStarFill className="text-text" />
+                      <BsStarFill className="text-text" />
+                      <BsStar className="text-text" />
                   </div>
                   <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">Submit Your Review</button>
               </div>

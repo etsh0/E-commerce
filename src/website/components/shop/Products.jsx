@@ -4,12 +4,44 @@ import { ProductCard } from './../../../components/ProductCard';
 import PaginationRounded from "./PaginationRounded";
 import { IoFilter } from "react-icons/io5";
 import { SideFilters } from "./SideFilters";
-import { useDrawerStore } from "../../../store";
+import { domain, useDrawerStore, useFilterStore } from "../../../store";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 export const Products = () => {
 
   const {isSideFiltersOpen, closeSideFilters, openSideFilters} = useDrawerStore()
+  const [products, setProducts] = useState([])
+  // const [page, setPage] = useState(1)
+  const {page} = useFilterStore()
+  const [pageCount, setPageCount] = useState(1)
+
+
+  useEffect( () => {
+    let url = domain + '/api/products'
+    const fetchProducts = async () => {
+        try {
+            const res = await axios.get(url , {
+                params: {
+                    populate : '*',
+                    pagination : {
+                    page : `${page}` ,
+                    pageSize : 6
+                }
+                }
+            })                    
+            setProducts(res.data.data)    
+            setPageCount(res.data.meta.pagination.pageCount)
+            
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+    fetchProducts()
+  } ,[page])
+
   return (
     <>
         <div className='grow px-4 py-6 border border-border rounded shadow mb-32'>
@@ -28,7 +60,7 @@ export const Products = () => {
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between">
                 <div className="products-number text-text text-xs sm:text-sm mb-4 sm:mb-0">
-                  <span className="results-count">36</span> Products found. 
+                  <span className="results-count">{products?.length}</span> Products found. 
                 </div>
                 <div className="sorting flex  items-center gap-4">
                   <Sorting />
@@ -38,15 +70,14 @@ export const Products = () => {
                 </div>
             </div>
             <div className="products-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4">
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
+              {
+                products.map( (product) => (
+                  <ProductCard key={product.documentId} product={product}/>
+                ))
+              }
             </div>
             <div className="pagination w-full flex items-center justify-center mt-16">
-                <PaginationRounded />
+                <PaginationRounded pageCount={pageCount} page={page} />
             </div>
         </div>
         <div className={`overlay fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${isSideFiltersOpen ? "opacity-100 visible backdrop-blur-xs" : "opacity-0 invisible"}`} onClick={closeSideFilters}></div>

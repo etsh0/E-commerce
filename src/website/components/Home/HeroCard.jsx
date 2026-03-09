@@ -1,5 +1,3 @@
-
-
 export const HeroCard = ({icon,title,p}) => {
   return (
     <>

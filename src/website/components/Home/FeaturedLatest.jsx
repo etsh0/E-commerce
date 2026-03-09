@@ -1,4 +1,4 @@
-import { ProductCard } from '../../../components/ProductCard'
+// import { ProductCard } from '../../../components/ProductCard'
 
 export const FeaturedLatest = () => {
   return (
@@ -10,12 +10,12 @@ export const FeaturedLatest = () => {
                 <button className='cursor-pointer'>Latest</button>
                 <button className='cursor-pointer'>Special</button>
             </div>
-            <div className="products grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-10">
+            {/* <div className="products grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-10">
                 <ProductCard />
                 <ProductCard />
                 <ProductCard />
                 <ProductCard />
-            </div>
+            </div> */}
         </div>
     </>
   )

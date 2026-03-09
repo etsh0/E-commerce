@@ -74,3 +74,9 @@ export const useAuthAdmin = create(persist(
         name: "admin-storage"
     }
 ))
+
+// filtering store 
+export const useFilterStore = create((set) => ({
+    page: 1 ,
+    setPage : (newValue) => set({page: newValue})
+}))
