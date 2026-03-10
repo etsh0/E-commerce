@@ -13,7 +13,7 @@ export const Products = () => {
 
   const {isSideFiltersOpen, closeSideFilters, openSideFilters} = useDrawerStore()
   const [products, setProducts] = useState([])
-  const {page , selectedCategories, setSelectedCategories} = useFilterStore()
+  const {page , selectedCategories, setSelectedCategories, selectedColors} = useFilterStore()
   const [pageCount, setPageCount] = useState(1)
 
 
@@ -35,11 +35,18 @@ export const Products = () => {
                       slug : {
                         $in : selectedCategories.length > 0 ? selectedCategories : undefined // selected categories
                       }
-                    }
+                    },
+                    colors : {
+                      slug : {
+                        $in : selectedColors.length > 0 ? selectedColors : undefined // selected colors
+                      }
+                    },
                   }
                 }
             })                    
             setProducts(res.data.data)    
+            console.log(res.data.data);
+            
             setPageCount(res.data.meta.pagination.pageCount)
             
         }
@@ -48,7 +55,7 @@ export const Products = () => {
         }
     }
     fetchProducts()
-  } ,[page, selectedCategories])
+  } ,[page, selectedCategories, selectedColors])
 
   
   return (

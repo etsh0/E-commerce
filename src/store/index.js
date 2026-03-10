@@ -80,9 +80,17 @@ export const useFilterStore = create((set) => ({
     page: 1 ,
     setPage : (newValue) => set({page: newValue}),
 
+    // filter by category
     selectedCategories : [], 
     setSelectedCategories : (slug) => set((state) => ({
         selectedCategories : state.selectedCategories.includes(slug) ? state.selectedCategories.filter( s => s !== slug ) : [...state.selectedCategories, slug],
         page : 1
+    })),
+
+    // filter by colors 
+    selectedColors:[] ,
+    setSelectedColors: (slug) => set((state) => ({
+        selectedColors: state.selectedColors.includes(slug) ? state.selectedColors.filter(c => c !== slug) : [...state.selectedColors, slug],
+        page: 1
     }))
 }))
