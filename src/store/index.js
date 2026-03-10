@@ -78,5 +78,11 @@ export const useAuthAdmin = create(persist(
 // filtering store 
 export const useFilterStore = create((set) => ({
     page: 1 ,
-    setPage : (newValue) => set({page: newValue})
+    setPage : (newValue) => set({page: newValue}),
+
+    selectedCategories : [], 
+    setSelectedCategories : (slug) => set((state) => ({
+        selectedCategories : state.selectedCategories.includes(slug) ? state.selectedCategories.filter( s => s !== slug ) : [...state.selectedCategories, slug],
+        page : 1
+    }))
 }))

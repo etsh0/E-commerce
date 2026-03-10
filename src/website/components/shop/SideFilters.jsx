@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { domain, useDrawerStore } from '../../../store';
+import { domain, useDrawerStore, useFilterStore } from '../../../store';
 import { Colors } from '../Colors';
 import { Sizes } from '../Sizes';
 import RangeSlider from './RangeSlider';
@@ -9,6 +9,9 @@ import toast from 'react-hot-toast';
 
 export const SideFilters = () => {
     const [categories , setCategories] = useState([])
+
+    const {selectedCategories,setSelectedCategories} = useFilterStore()
+    
 
     useEffect(() => {
         let url = domain + "/api/categories"
@@ -44,13 +47,18 @@ export const SideFilters = () => {
                 <h4 className='text-xl font-medium'>Categories</h4>
                 <div className='filters flex flex-col gap-4 mt-8'>
                     {
-                        categories.map((cat) => (
+                        categories.map((cat) => {
+                            
+                            const isChecked = selectedCategories.includes(cat.slug); // true or false
+
+                            return (
                             <label key={cat.documentId} className="filter-option flex items-center gap-3 cursor-pointer py-2 pl-2 rounded-lg hover:bg-[#f8fafc] transition-all duration-300 ease-in-out">
-                                <input className="hidden" type="checkbox" />
+                                <input checked={isChecked} onChange={() => setSelectedCategories(cat.slug)} className="hidden" type="checkbox" />
                                 <span className="checkmark w-4.5 h-4.5 border border-border rounded transition-all duration-300 ease-in-out relative"></span>
                                 <span className="text-[#474B57] ">{cat.name}</span>
                             </label>
-                        ))
+                        )
+                        })
                     }
                 </div>
             </div>

@@ -5,3 +5,21 @@ pw : Admin123@
 
 dashboard << email : admin@gmail.com
 pw : 123456
+
+----------------------------------------
+
+
+Pagination : in axios url << params : Pagination = {page , pageSize, pageCount} بيحتاج رقم الصفحه و عدد المنتجات الي ف الصفحه الواحده
+
+pageCount = res.data.meta.pagination.pageCount << عدد الصفحات(زراير ال pagination)
+
+syntax : 
+
+params: {
+    pagination : {
+    page : 1 ,
+    pageSize : 6,
+},
+}
+
+------------------------------------------

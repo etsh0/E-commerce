@@ -1,4 +1,3 @@
-import close from "../../../assets/close.svg"
 import { Sorting } from "./Sorting"
 import { ProductCard } from './../../../components/ProductCard';
 import PaginationRounded from "./PaginationRounded";
@@ -7,14 +6,14 @@ import { SideFilters } from "./SideFilters";
 import { domain, useDrawerStore, useFilterStore } from "../../../store";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { IoMdClose } from "react-icons/io";
 
 
 export const Products = () => {
 
   const {isSideFiltersOpen, closeSideFilters, openSideFilters} = useDrawerStore()
   const [products, setProducts] = useState([])
-  // const [page, setPage] = useState(1)
-  const {page} = useFilterStore()
+  const {page , selectedCategories, setSelectedCategories} = useFilterStore()
   const [pageCount, setPageCount] = useState(1)
 
 
@@ -24,11 +23,20 @@ export const Products = () => {
         try {
             const res = await axios.get(url , {
                 params: {
+
                     populate : '*',
+
                     pagination : {
                     page : `${page}` ,
-                    pageSize : 6
-                }
+                    pageSize : 6,
+                  },
+                  filters : {
+                    category : {
+                      slug : {
+                        $in : selectedCategories.length > 0 ? selectedCategories : undefined // selected categories
+                      }
+                    }
+                  }
                 }
             })                    
             setProducts(res.data.data)    
@@ -40,24 +48,34 @@ export const Products = () => {
         }
     }
     fetchProducts()
-  } ,[page])
+  } ,[page, selectedCategories])
 
+  
   return (
     <>
         <div className='grow px-4 py-6 border border-border rounded shadow mb-32'>
-            <div className="apply-filter mb-6">
-              <h4 className="text-sm font-medium">Applied filters:</h4>
-              <div className='flex items-center gap-3 mt-4 '>
-                  <div className='py-1.5 px-4 border border-border rounded-2xl text-xs font-medium flex items-center gap-2 cursor-pointer'>
-                    Perfume
-                    <img src={close} alt="" />
-                  </div>
-                  <div className='py-1.5 px-4 border border-border rounded-2xl text-xs font-medium flex items-center gap-2 cursor-pointer'>
-                    Size: M
-                    <img src={close} alt="" />
-                  </div>
+          {
+            selectedCategories.length > 0 && (
+              <div className="apply-filter mb-6">
+                <h4 className="text-sm font-medium">Applied filters:</h4>
+                <div className='flex items-center gap-3 mt-4 '>
+                  {
+                    selectedCategories.map( (slug) => (
+                    <div key={slug} className='py-1.5 px-4 border border-border rounded-2xl text-xs font-medium flex items-center gap-2 cursor-pointer'>
+                      <div onClick={(e) => {
+                        e.preventDefault()
+                        setSelectedCategories(slug)
+                      }}>
+                          <IoMdClose size={"17px"} />
+                      </div>
+                      {slug.toUpperCase()}
+                    </div>
+                    ))
+                  }
+                </div>
               </div>
-            </div>
+            )
+          }
             <div className="flex flex-col sm:flex-row sm:items-center justify-between">
                 <div className="products-number text-text text-xs sm:text-sm mb-4 sm:mb-0">
                   <span className="results-count">{products?.length}</span> Products found. 
