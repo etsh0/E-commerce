@@ -13,7 +13,7 @@ export const Products = () => {
 
   const {isSideFiltersOpen, closeSideFilters, openSideFilters} = useDrawerStore()
   const [products, setProducts] = useState([])
-  const {page , selectedCategories, setSelectedCategories, selectedColors} = useFilterStore()
+  const {page , selectedCategories, setSelectedCategories, selectedColors, setSelectedColors, selectedSizes, setSelectedSizes, priceRange} = useFilterStore()
   const [pageCount, setPageCount] = useState(1)
 
 
@@ -41,6 +41,15 @@ export const Products = () => {
                         $in : selectedColors.length > 0 ? selectedColors : undefined // selected colors
                       }
                     },
+                    sizes : {
+                      slug : {
+                        $in : selectedSizes.length > 0 ? selectedSizes : undefined // selected sizes
+                      }
+                    },
+                    price : {
+                      $gte : priceRange[0], // الحد الادني
+                      $lte : priceRange[1], // الحد الاقصي
+                    }
                   }
                 }
             })                    
@@ -55,17 +64,18 @@ export const Products = () => {
         }
     }
     fetchProducts()
-  } ,[page, selectedCategories, selectedColors])
+  } ,[page, selectedCategories, selectedColors, selectedSizes, priceRange])
 
   
   return (
     <>
         <div className='grow px-4 py-6 border border-border rounded shadow mb-32'>
           {
-            selectedCategories.length > 0 && (
+            (selectedCategories.length > 0 || selectedColors.length > 0 || selectedSizes.length > 0)  && (
               <div className="apply-filter mb-6">
                 <h4 className="text-sm font-medium">Applied filters:</h4>
-                <div className='flex items-center gap-3 mt-4 '>
+                <div className='flex items-center gap-3 mt-4 flex-wrap'>
+                  
                   {
                     selectedCategories.map( (slug) => (
                     <div key={slug} className='py-1.5 px-4 border border-border rounded-2xl text-xs font-medium flex items-center gap-2 cursor-pointer'>
@@ -77,6 +87,33 @@ export const Products = () => {
                       </div>
                       {slug.toUpperCase()}
                     </div>
+                    ))
+                    
+                  }
+                  {
+                    selectedColors.map( (slug) => (
+                      <div key={slug} className='py-1.5 px-4 border border-border capitalize rounded-2xl text-xs font-medium flex items-center gap-2 cursor-pointer'>
+                        <div onClick={(e) => {
+                          e.preventDefault()
+                          setSelectedColors(slug)
+                        }}>
+                            <IoMdClose size={"17px"} />
+                        </div>
+                        Color: {slug}
+                      </div>
+                    ))
+                  }
+                  {
+                    selectedSizes.map( (slug) => (
+                      <div key={slug} className='py-1.5 px-4 border border-border rounded-2xl text-xs font-medium flex items-center gap-2 cursor-pointer'>
+                        <div onClick={(e) => {
+                          e.preventDefault()
+                          setSelectedSizes(slug)
+                        }}>
+                            <IoMdClose size={"17px"} />
+                        </div>
+                        Size: {slug.toUpperCase()}
+                      </div>
                     ))
                   }
                 </div>

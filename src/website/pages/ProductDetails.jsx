@@ -9,7 +9,7 @@ import { IoMdHeartEmpty } from "react-icons/io"
 import { NavLink, Outlet, useParams } from "react-router-dom"
 import { NewsLetter } from "../../components/NewsLetter"
 import { ImgSwiper } from "../../components/ImgSwiper"
-import { domain, useDrawerStore } from "../../store"
+import { domain, useDrawerStore, useFilterStore } from "../../store"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { ProductCard } from "../../components/ProductCard"
@@ -17,6 +17,7 @@ import { ProductCard } from "../../components/ProductCard"
 export const ProductDetails = () => {
     const params = useParams()
     const [product ,setProduct] = useState([])
+    const {resetProductSelection} = useFilterStore()
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -39,6 +40,7 @@ export const ProductDetails = () => {
                 console.log(error);
             }
         }
+        resetProductSelection()
         fetchProducts()
     } ,[params.productId])
 

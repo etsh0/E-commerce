@@ -1,26 +1,27 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import { useFilterStore } from '../../../store';
 
 function valuetext(value) {
   return `$${value}`;
 }
 
 export default function RangeSlider() {
-  const [value, setValue] = React.useState([100, 300]);
+
+  const { priceRange, setPriceRange } = useFilterStore();
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setPriceRange(newValue)
   };
 
   return (
     <Box sx={{ width: 200 }}>
       <Slider
         getAriaLabel={() => 'Temperature range'}
-        value={value}
+        value={priceRange}
         onChange={handleChange}
-        min={0}
-        max={500}
+        min={600}
+        max={3000}
         valueLabelDisplay="auto"
         getAriaValueText={valuetext}
         valueLabelFormat={valuetext}
@@ -45,6 +46,9 @@ export default function RangeSlider() {
           }
         }}
       />
+      <div className="flex justify-between mt-2 text-sm text-gray-500 font-medium">
+        <span>Price: ${priceRange[0]} — ${priceRange[1]}</span>
+      </div>
     </Box>
   );
 }
