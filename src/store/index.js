@@ -114,5 +114,20 @@ export const useFilterStore = create((set) => ({
 
     // filter by priceRange 
     priceRange:[600,3000],
-    setPriceRange: (newValue) => set({priceRange: newValue})
+    setPriceRange: (newValue) => set({priceRange: newValue}),
+
+    // sorting 
+    sortBy : 'createdAt:desc', // من الاحدث ل الاقدم
+    setSortBy : (newValue) => set({sortBy : newValue , page : 1}), 
+
+
+    // resetAllFilter, sorting , pagination
+    resetFilters : () => set({
+        page: 1,
+        selectedCategories : [],
+        selectedColors : [],
+        selectedSizes : [],
+        priceRange:[600,3000],
+        sortBy : 'createdAt:desc',
+    })
 }))

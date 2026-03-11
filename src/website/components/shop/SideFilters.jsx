@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 export const SideFilters = () => {
     const [categories , setCategories] = useState([])
 
-    const {selectedCategories,setSelectedCategories} = useFilterStore()
+    const {selectedCategories,setSelectedCategories, resetFilters} = useFilterStore()
     
 
     useEffect(() => {
@@ -44,7 +44,10 @@ export const SideFilters = () => {
     <>
         <div className='flex flex-col gap-10'>
             <div className="categories">
-                <h4 className='text-xl font-medium'>Categories</h4>
+                <div className='flex items-center justify-between'>
+                    <h4 className='text-xl font-medium'>Categories</h4>
+                    <button onClick={() => resetFilters()} className="text-xs text-red-500 font-medium cursor-pointer underline">Clear All</button>
+                </div>
                 <div className='filters flex flex-col gap-4 mt-8'>
                     {
                         categories.map((cat) => {

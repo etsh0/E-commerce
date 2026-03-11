@@ -13,7 +13,7 @@ export const Products = () => {
 
   const {isSideFiltersOpen, closeSideFilters, openSideFilters} = useDrawerStore()
   const [products, setProducts] = useState([])
-  const {page , selectedCategories, setSelectedCategories, selectedColors, setSelectedColors, selectedSizes, setSelectedSizes, priceRange} = useFilterStore()
+  const {page , selectedCategories, setSelectedCategories, selectedColors, setSelectedColors, selectedSizes, setSelectedSizes, priceRange, sortBy} = useFilterStore()
   const [pageCount, setPageCount] = useState(1)
 
 
@@ -30,27 +30,28 @@ export const Products = () => {
                     page : `${page}` ,
                     pageSize : 6,
                   },
-                  filters : {
-                    category : {
-                      slug : {
-                        $in : selectedCategories.length > 0 ? selectedCategories : undefined // selected categories
+                    filters : {
+                      category : {
+                        slug : {
+                          $in : selectedCategories.length > 0 ? selectedCategories : undefined // selected categories
+                        }
+                      },
+                      colors : {
+                        slug : {
+                          $in : selectedColors.length > 0 ? selectedColors : undefined // selected colors
+                        }
+                      },
+                      sizes : {
+                        slug : {
+                          $in : selectedSizes.length > 0 ? selectedSizes : undefined // selected sizes
+                        }
+                      },
+                      price : {
+                        $gte : priceRange[0], // الحد الادني
+                        $lte : priceRange[1], // الحد الاقصي
                       }
-                    },
-                    colors : {
-                      slug : {
-                        $in : selectedColors.length > 0 ? selectedColors : undefined // selected colors
-                      }
-                    },
-                    sizes : {
-                      slug : {
-                        $in : selectedSizes.length > 0 ? selectedSizes : undefined // selected sizes
-                      }
-                    },
-                    price : {
-                      $gte : priceRange[0], // الحد الادني
-                      $lte : priceRange[1], // الحد الاقصي
-                    }
-                  }
+                  },
+                    sort : sortBy
                 }
             })                    
             setProducts(res.data.data)    
@@ -64,7 +65,7 @@ export const Products = () => {
         }
     }
     fetchProducts()
-  } ,[page, selectedCategories, selectedColors, selectedSizes, priceRange])
+  } ,[page, selectedCategories, selectedColors, selectedSizes, priceRange, sortBy])
 
   
   return (

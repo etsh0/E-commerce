@@ -23,3 +23,8 @@ params: {
 }
 
 ------------------------------------------
+
+sorting : 
+
+asc << Low to High
+desc << High to Low
