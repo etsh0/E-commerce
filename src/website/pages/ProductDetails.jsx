@@ -32,7 +32,6 @@ export const ProductDetails = () => {
                         populate:'*'
                     }
                 })
-                console.log(res.data.data);
                 
                 setProduct(res.data.data)
             }

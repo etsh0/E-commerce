@@ -13,7 +13,7 @@ export const SideCartItem = () => {
             </div>
             <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-2">
-                    <h4 className="text-xs md:text-sm whitespace-nowrap">Raw Black T-Shirt Lineup</h4>
+                    <h4 className="text-xs md:text-sm line-clamp-1">Raw Black T-Shirt Lineup</h4>
                     <div className="text-xs text-text font-medium flex items-center gap-2"><div className="w-3 h-3 bg-[#98BE9E] rounded-full"></div>—<span>M</span></div>
                 </div>
                 <div className="flex items-center gap-4">

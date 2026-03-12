@@ -29,8 +29,8 @@ export const MenuBar = () => {
               <div className="links flex flex-col gap-8">
                 {
                   navLinks.map((link,idx) => (
-                    <div className="text-primary uppercase">
-                      <NavLink key={idx} to={link.path} onClick={closeMenu}>
+                    <div key={idx} className="text-primary uppercase">
+                      <NavLink to={link.path} onClick={closeMenu}>
                         {link.name}
                       </NavLink>
                     </div>

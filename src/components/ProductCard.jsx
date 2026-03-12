@@ -2,32 +2,31 @@ import Heart from "../assets/Heart.svg"
 import { Badge } from "./Badge";
 import { domain, useDrawerStore } from "../store";
 import { useNavigate } from "react-router-dom";
+import { FiPlus } from "react-icons/fi";
+
 
 export const ProductCard = ({product}) => {
 
 
-    const {openSideCart} = useDrawerStore()
     const navigate = useNavigate()
+    const {openProductModal} = useDrawerStore()
 
     const handleCardClick = () => {
         navigate(`/shop/product-details/${product.documentId}`);
     }
 
-    const handleAddtoCart = (e) => {
+    const handleAddtoCart = (e,product) => {
         e.stopPropagation()
-        openSideCart()
+        openProductModal(product)
     }
 
   return (
     <>
-        <div onClick={handleCardClick} className="productCard py-4 px-2 cursor-pointer group">
+        <div onClick={handleCardClick} className="productCard py-4 px-2 cursor-pointer group/card">
             <div className="image relative bg-secondary flex items-center justify-center rounded overflow-hidden aspect-4/5">
                 <img src={ domain + product.images[0].url} alt="product" className="w-full h-full object-contain" />
-                <div onClick={handleAddtoCart} className="add-to-cart absolute bg-primary w-full h-12 -bottom-15 group-hover:bottom-0 transition-all duration-300 text-white flex items-center justify-center font-medium">
-                    <button className="cursor-pointer">Add to Cart</button>
-                </div>
-                <div className="wishlist absolute w-12 h-12 top-0 right-0 flex items-center justify-center font-medium">
-                    <img src={Heart} alt="" />
+                <div onClick={(e) => handleAddtoCart(e,product)} className="add-to-cart group absolute bg-white w-10 h-10 -bottom-15 right-2 group-hover/card:bottom-2 transition-all duration-300 text-black flex items-center justify-center font-medium">
+                    <button className="cursor-pointer transition-transform duration-300 group-hover:rotate-90"><FiPlus size={"18"} /></button>
                 </div>
             </div>
             <div className="product-deatils mt-6">

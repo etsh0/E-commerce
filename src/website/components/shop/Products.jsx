@@ -7,11 +7,12 @@ import { domain, useDrawerStore, useFilterStore } from "../../../store";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
+import { ProductModal } from "./ProductModal";
 
 
 export const Products = () => {
 
-  const {isSideFiltersOpen, closeSideFilters, openSideFilters} = useDrawerStore()
+  const {isSideFiltersOpen, closeSideFilters, openSideFilters, isProductModalOpen, closeProductModal} = useDrawerStore()
   const [products, setProducts] = useState([])
   const {page , selectedCategories, setSelectedCategories, selectedColors, setSelectedColors, selectedSizes, setSelectedSizes, priceRange, sortBy} = useFilterStore()
   const [pageCount, setPageCount] = useState(1)
@@ -55,7 +56,6 @@ export const Products = () => {
                 }
             })                    
             setProducts(res.data.data)    
-            console.log(res.data.data);
             
             setPageCount(res.data.meta.pagination.pageCount)
             
@@ -147,6 +147,10 @@ export const Products = () => {
         <div className={`sideFilters w-68 h-screen py-8 px-6 overflow-auto bg-white shadow-lg fixed top-0 left-0 z-100 transform transition-transform duration-300 ease-in-out ${isSideFiltersOpen ? "translate-x-0" : "-translate-x-300"}`}>
               <h2 className="text-2xl font-bold mb-6">Filter By</h2>
               <SideFilters />
+        </div>
+        <div className={`overlay fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${isProductModalOpen ? "opacity-100 visible backdrop-blur-xs" : "opacity-0 invisible"}`} onClick={closeProductModal}></div>
+        <div className={`product-modal px-10 pt-10 py-6 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white z-999 shadow-2xl h-fit max-h-137.5 overflow-y-auto transition-all duration-500 ease-in-out ${isProductModalOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}>
+          <ProductModal />
         </div>
     </>
   )

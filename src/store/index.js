@@ -8,6 +8,8 @@ export const useDrawerStore = create((set) => ({
     isSideFiltersOpen: false, // sideFilters
     isSideCartOpen:false, // sideCart
     isSideAccountOpen:false, // sideAccount
+    isProductModalOpen:false,
+    selectedProduct: null,
 
 
     // menuBar functions
@@ -25,6 +27,10 @@ export const useDrawerStore = create((set) => ({
     //sideAccount
     openSideAccount: () => set({isSideAccountOpen:true}),
     closeSideAccount: () => set({isSideAccountOpen:false}),
+
+    //ProductModal
+    openProductModal: (product) => set({isProductModalOpen:true, selectedProduct: product}),
+    closeProductModal: () => set({isProductModalOpen:false})
 }))
 
 
@@ -130,4 +136,10 @@ export const useFilterStore = create((set) => ({
         priceRange:[600,3000],
         sortBy : 'createdAt:desc',
     })
+}))
+
+// add to cart store 
+export const useCartStore = create((set) => ({
+    cart: [],
+    setCart: (product) => set( () => ({cart: product})) 
 }))
