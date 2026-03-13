@@ -9,15 +9,19 @@ import { IoMdHeartEmpty } from "react-icons/io"
 import { NavLink, Outlet, useParams } from "react-router-dom"
 import { NewsLetter } from "../../components/NewsLetter"
 import { ImgSwiper } from "../../components/ImgSwiper"
-import { domain, useDrawerStore, useFilterStore } from "../../store"
+import { domain, useCartStore, useDrawerStore, useFilterStore } from "../../store"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { ProductCard } from "../../components/ProductCard"
+import toast from "react-hot-toast"
 
 export const ProductDetails = () => {
     const params = useParams()
     const [product ,setProduct] = useState([])
-    const {resetProductSelection} = useFilterStore()
+    const {resetProductSelection, productSize, color_hex_code} = useFilterStore()
+    const {openSideCart} = useDrawerStore()
+    const {setAddToCart} = useCartStore()
+    const [qty , setQty] = useState(1)
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -43,7 +47,19 @@ export const ProductDetails = () => {
         fetchProducts()
     } ,[params.productId])
 
-    const {openSideCart} = useDrawerStore()
+    const handleAddToCart = () => {
+        const hasSizes = product.sizes && product.sizes.length > 0;
+        const hasColors = product.colors && product.colors.length > 0;
+        if( (!productSize && hasSizes) || (!color_hex_code && hasColors)) {
+            toast.error("Please select size and color first!");
+            return;
+        }
+        setAddToCart( product , productSize, color_hex_code, qty)
+        setQty(1)
+        resetProductSelection()
+        openSideCart()
+    }
+
   return (
     <>
         <div className="container mt-6">
@@ -73,10 +89,10 @@ export const ProductDetails = () => {
                     </div>
                     <div className="qty mt-6">
                         <h4 className="text-[12px] text-text uppercase font-medium mb-4">Quantity</h4>
-                        <Quantity />
+                        <Quantity qty={qty} Increment={() => setQty( q => q + 1)} Decrement={() => setQty(Math.max(1, qty - 1))}/>   
                     </div>
                     <div className="add-to-cart mt-8 flex items-center gap-4">
-                        <button className="bg-primary flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap" onClick={openSideCart}>Add to cart</button>
+                        <button onClick={() => {handleAddToCart()}} className="bg-primary flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap">Add to cart</button>
                         <div className="wishlist border-2 border-border px-2 py-2 rounded cursor-pointer">
                             <IoMdHeartEmpty size={"22px"} />
                         </div>

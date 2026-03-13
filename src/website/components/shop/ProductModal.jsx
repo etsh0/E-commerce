@@ -4,20 +4,38 @@ import { ImgSwiper } from "../../../components/ImgSwiper"
 import Badge from "@mui/material/Badge"
 import { IoMdHeartEmpty } from "react-icons/io"
 import { Quantity } from "../Quantity"
-import { useDrawerStore, useFilterStore } from "../../../store"
+import { useCartStore, useDrawerStore, useFilterStore } from "../../../store"
 import { Link, useNavigate } from "react-router-dom";
 import { Colors } from "../Colors";
 import { Sizes } from "../Sizes";
+import { useState } from "react";
+import toast from "react-hot-toast";
 export const ProductModal = () => {
     const {openSideCart, closeProductModal, selectedProduct} = useDrawerStore()
-    const {resetProductSelection} = useFilterStore()
+    const {resetProductSelection, productSize, color_hex_code} = useFilterStore()
     const navigate = useNavigate()
+    const {setAddToCart} = useCartStore()
+    const [qty , setQty] = useState(1)
 
     if (!selectedProduct) return null;
 
     const handleCardClick = () => {
         navigate(`/shop/product-details/${selectedProduct.documentId}`);
         closeProductModal()
+    }
+
+    const handleAddToCart = () => {
+        const hasSizes = selectedProduct.sizes && selectedProduct.sizes.length > 0;
+        const hasColors = selectedProduct.colors && selectedProduct.colors.length > 0;
+        if( (!productSize && hasSizes) || (!color_hex_code && hasColors)) {
+            toast.error("Please select size and color first!");
+            return;
+        }
+        setAddToCart( selectedProduct , productSize, color_hex_code, qty)        
+        setQty(1)
+        resetProductSelection()
+        closeProductModal()
+        openSideCart()
     }
 
   return (
@@ -52,15 +70,10 @@ export const ProductModal = () => {
                 </div>
                 <div className="qty mt-6">
                     <h4 className="text-[12px] text-text uppercase font-medium mb-4">Quantity</h4>
-                    <Quantity />
+                    <Quantity qty={qty} Increment={() => setQty( q => q + 1)} Decrement={() => setQty(Math.max(1, qty - 1))}/> 
                 </div>
                 <div className="add-to-cart mt-8 flex items-center gap-4">
-                    <button className="bg-primary flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap"
-                     onClick={() => {
-                        resetProductSelection()
-                        closeProductModal()
-                        openSideCart()
-                    }}>Add to cart</button>
+                    <button onClick={handleAddToCart} className="bg-primary flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap">Add to cart</button>
                     <div className="wishlist border-2 border-border px-2 py-2 rounded cursor-pointer">
                         <IoMdHeartEmpty size={"22px"} />
                     </div>

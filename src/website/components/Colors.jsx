@@ -35,7 +35,7 @@ export const Colors = ({product_colors}) => {
                     const isSelected = isProductPage ? productColor === color.slug : selectedColors.includes(color.slug)
 
                     return (
-                    <div onClick={() => isProductPage ? setProductColor(color.slug) : setSelectedColors(color.slug)} key={color.documentId} className={`p-1 rounded-full cursor-pointer ${isSelected && "border"}`}>
+                    <div onClick={() => isProductPage ? setProductColor(color.slug , color.hex_code) : setSelectedColors(color.slug)} key={color.documentId} className={`p-1 rounded-full cursor-pointer ${isSelected && "border"}`}>
                         <div style={{ backgroundColor: color.hex_code }} className={`circle w-6 h-6 rounded-full`}></div>
                     </div>
                 )

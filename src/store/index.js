@@ -109,14 +109,15 @@ export const useFilterStore = create((set) => ({
     
     // selected color in product page 
     productColor : null,
-    setProductColor : (slug) => set({productColor :(slug)}),
+    color_hex_code:null,
+    setProductColor : (slug, hex_code) => set({productColor :(slug), color_hex_code:(hex_code)}),
 
     // selected size in product page
     productSize : null,
     setProductSize : (slug) => set({productSize :(slug)}),
 
     // reset product selection
-    resetProductSelection: () => set({ productColor: null, productSize: null }),
+    resetProductSelection: () => set({ productColor: null, productSize: null, color_hex_code: null }),
 
     // filter by priceRange 
     priceRange:[600,3000],
@@ -139,7 +140,38 @@ export const useFilterStore = create((set) => ({
 }))
 
 // add to cart store 
-export const useCartStore = create((set) => ({
+export const useCartStore = create(persist((set) => ({
     cart: [],
-    setCart: (product) => set( () => ({cart: product})) 
-}))
+
+    setAddToCart: (product, selectedSize, selectedColor, qty) => set((state) => {
+        const isExistingItem = state.cart.findIndex( item => 
+            item.id === product.id && 
+            item.selectedColor === selectedColor &&
+            item.selectedSize === selectedSize )
+
+        if(isExistingItem !== -1) {
+            const updateCart = [...state.cart]
+            updateCart[isExistingItem].qty += qty
+            return {cart : updateCart}
+        }else {
+            return {cart: [...state.cart, {...product, selectedSize, selectedColor,qty }]}
+        }
+    }), 
+
+    setUpdateCart: (id , size , color, newQty) => set( (state) => ({
+        cart: state.cart.map( 
+            (item) => (item.id === id && item.selectedSize === size && item.selectedColor === color) ? 
+            {...item, qty: Math.max(1,newQty)} : item)
+    })),
+
+    removeCartItem: (id,size,color) => set((state) => ({
+        cart: state.cart.filter( (item) => !(item.id === id && item.selectedSize === size && item.selectedColor === color))
+    })),
+
+    clearCart: () => set({cart:[]})
+}),
+    {
+        name: "Cart"
+    }
+))
+
