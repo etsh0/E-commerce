@@ -2,9 +2,9 @@ import { FaStar } from "react-icons/fa"
 import { AiOutlineClose } from "react-icons/ai";
 import { ImgSwiper } from "../../../components/ImgSwiper"
 import Badge from "@mui/material/Badge"
-import { IoMdHeartEmpty } from "react-icons/io"
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io"
 import { Quantity } from "../Quantity"
-import { useCartStore, useDrawerStore, useFilterStore } from "../../../store"
+import { useCartStore, useDrawerStore, useFilterStore, useWishlistStore } from "../../../store"
 import { Link, useNavigate } from "react-router-dom";
 import { Colors } from "../Colors";
 import { Sizes } from "../Sizes";
@@ -16,8 +16,12 @@ export const ProductModal = () => {
     const navigate = useNavigate()
     const {setAddToCart} = useCartStore()
     const [qty , setQty] = useState(1)
+    const {wishList, setAddToWishList} = useWishlistStore()
+    
 
     if (!selectedProduct) return null;
+
+    const isInwishList = wishList.some( (item) => item.id === selectedProduct.id) // return true or false
 
     const handleCardClick = () => {
         navigate(`/shop/product-details/${selectedProduct.documentId}`);
@@ -25,12 +29,15 @@ export const ProductModal = () => {
     }
 
     const handleAddToCart = () => {
+
         const hasSizes = selectedProduct.sizes && selectedProduct.sizes.length > 0;
         const hasColors = selectedProduct.colors && selectedProduct.colors.length > 0;
+
         if( (!productSize && hasSizes) || (!color_hex_code && hasColors)) {
             toast.error("Please select size and color first!");
             return;
         }
+        
         setAddToCart( selectedProduct , productSize, color_hex_code, qty)        
         setQty(1)
         resetProductSelection()
@@ -74,8 +81,11 @@ export const ProductModal = () => {
                 </div>
                 <div className="add-to-cart mt-8 flex items-center gap-4">
                     <button onClick={handleAddToCart} className="bg-primary flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap">Add to cart</button>
-                    <div className="wishlist border-2 border-border px-2 py-2 rounded cursor-pointer">
-                        <IoMdHeartEmpty size={"22px"} />
+                    <div onClick={() => setAddToWishList(selectedProduct)} className="wishlist border-2 border-border px-2 py-2 rounded cursor-pointer">
+                        {
+                            isInwishList ?  <IoMdHeart className="text-primary" size={"22px"} /> : <IoMdHeartEmpty size={"22px"} />
+                        }
+                        
                     </div>
                 </div>
                 <p className="text-text text-sm mt-4">— Free shipping on orders $100+</p>

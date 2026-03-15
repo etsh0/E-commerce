@@ -1,6 +1,10 @@
 
 import { Link } from 'react-router-dom';
+import { useCartStore } from '../../store';
 export const CheckoutPage = () => {
+
+        const {cart, getSubTotal, shippingPrice} = useCartStore()
+        const subTotal = getSubTotal()
   return (
     <>
         <div className="container flex flex-col xl:flex-row gap-40 py-20">
@@ -50,21 +54,17 @@ export const CheckoutPage = () => {
                 <div className="flex flex-col gap-4 mb-4">
                     <div className="flex items-center justify-between">
                         <span className="text-text font-medium">Subtotal</span>
-                        <span>$90.00</span>
+                        <span>${subTotal}</span>
                     </div>
                     <div className="flex items-center justify-between">
                         <span className="text-text font-medium">Shipping</span>
-                        <span>Free</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <span className="text-text font-medium">Tax</span>
-                        <span>$3.00</span>
+                        <span>${cart.length > 0 ? shippingPrice : 0}</span>
                     </div>
                 </div>
                 <div className="pt-6 border-t-2 border-border">
                     <div className="flex items-center justify-between">
                         <span>Total</span>
-                        <span>$100.00</span>
+                        <span>${cart.length > 0 ? shippingPrice + subTotal : 0}</span>
                     </div>
                     <button className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap my-6">
                         <Link>

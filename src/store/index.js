@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -140,7 +141,7 @@ export const useFilterStore = create((set) => ({
 }))
 
 // add to cart store 
-export const useCartStore = create(persist((set) => ({
+export const useCartStore = create(persist((set, get) => ({
     cart: [],
 
     setAddToCart: (product, selectedSize, selectedColor, qty) => set((state) => {
@@ -168,10 +169,41 @@ export const useCartStore = create(persist((set) => ({
         cart: state.cart.filter( (item) => !(item.id === id && item.selectedSize === size && item.selectedColor === color))
     })),
 
-    clearCart: () => set({cart:[]})
+    clearCart: () => set({cart:[]}),
+
+    // total orders 
+    getSubTotal: () => {
+        const cart = get().cart;
+        return cart.reduce((acc, el) => acc + (el.qty * el.price), 0);
+    },
+
+    shippingPrice: 90,
 }),
     {
         name: "Cart"
     }
 ))
 
+// add to wishlist 
+export const useWishlistStore = create(
+  persist(
+    (set) => ({
+      wishList: [], 
+      setAddToWishList: (product) => set((state) => {
+        const isExisting = state.wishList?.some((item) => item.id === product.id);
+
+        if (!isExisting) {
+          toast.success("Adding to wishlist...")
+          return { wishList: [...state.wishList, product] };
+        } else {
+            toast.error("Removed from wishlist") 
+          return {wishList: state.wishList.filter( (item) => item.id !== product.id )}
+        }
+      }),
+      removeWishListItem: (product) => set((state) => ({
+        wishList: state.wishList.filter( (item) => item.id !== product.id)
+      }))
+    }), 
+    { name: "WishList" } 
+  ) 
+); 

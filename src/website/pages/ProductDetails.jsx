@@ -5,11 +5,11 @@ import { Badge } from "../../components/Badge"
 import { Colors } from "../components/Colors"
 import { Sizes } from "../components/Sizes"
 import { Quantity } from "../components/Quantity"
-import { IoMdHeartEmpty } from "react-icons/io"
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io"
 import { NavLink, Outlet, useParams } from "react-router-dom"
 import { NewsLetter } from "../../components/NewsLetter"
 import { ImgSwiper } from "../../components/ImgSwiper"
-import { domain, useCartStore, useDrawerStore, useFilterStore } from "../../store"
+import { domain, useCartStore, useDrawerStore, useFilterStore, useWishlistStore } from "../../store"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { ProductCard } from "../../components/ProductCard"
@@ -22,6 +22,9 @@ export const ProductDetails = () => {
     const {openSideCart} = useDrawerStore()
     const {setAddToCart} = useCartStore()
     const [qty , setQty] = useState(1)
+    const {wishList, setAddToWishList} = useWishlistStore()
+
+    const isInwishList = wishList.some( (item) => item.id === product.id)
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -48,8 +51,10 @@ export const ProductDetails = () => {
     } ,[params.productId])
 
     const handleAddToCart = () => {
+        
         const hasSizes = product.sizes && product.sizes.length > 0;
         const hasColors = product.colors && product.colors.length > 0;
+
         if( (!productSize && hasSizes) || (!color_hex_code && hasColors)) {
             toast.error("Please select size and color first!");
             return;
@@ -93,8 +98,10 @@ export const ProductDetails = () => {
                     </div>
                     <div className="add-to-cart mt-8 flex items-center gap-4">
                         <button onClick={() => {handleAddToCart()}} className="bg-primary flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap">Add to cart</button>
-                        <div className="wishlist border-2 border-border px-2 py-2 rounded cursor-pointer">
-                            <IoMdHeartEmpty size={"22px"} />
+                        <div onClick={() => setAddToWishList(product)} className="wishlist border-2 border-border px-2 py-2 rounded cursor-pointer">
+                            {
+                                isInwishList ?  <IoMdHeart className="text-primary" size={"22px"} /> : <IoMdHeartEmpty size={"22px"} />
+                            }
                         </div>
                     </div>
                     <p className="text-text text-sm mt-4">— Free shipping on orders $100+</p>

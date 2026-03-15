@@ -7,8 +7,10 @@ import { SideCartItem } from "./SideCartItem"
 
 export const SideCart = () => {
     const {isSideCartOpen,CloseSideCart} = useDrawerStore()
-    const {cart} = useCartStore()
+    const {cart, getSubTotal} = useCartStore()
 
+    const subTotal = getSubTotal()
+    
     useEffect( () => {
         if(isSideCartOpen) {
             document.body.style.overflow = 'hidden';
@@ -40,14 +42,12 @@ export const SideCart = () => {
             <div className="px-8 pt-4 pb-6 border-t-2 border-border">
                 <div className="flex items-center justify-between font-medium text-xl mb-6">
                     <span>Total</span>
-                    <span>$97.00</span>
+                    <span>${subTotal}</span>
                 </div>
                 <Link to={"/cart"}>
-                    <button className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap" onClick={CloseSideCart}>View Cart</button>
+                    <button className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mb-8" onClick={CloseSideCart}>View Cart</button>
                 </Link>
-                <Link to={"/checkout"} className="flex justify-center">
-                    <button className="text-text text-sm underline mt-8 cursor-pointer" onClick={CloseSideCart}>Checkout</button>
-                </Link>
+                <Link to={"/checkout"} className="text-text flex m-auto w-fit text-sm underline cursor-pointer " onClick={CloseSideCart}>Checkout</Link>
             </div>
         </div>
     </>
