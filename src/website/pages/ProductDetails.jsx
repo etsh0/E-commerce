@@ -9,7 +9,7 @@ import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io"
 import { NavLink, Outlet, useParams } from "react-router-dom"
 import { NewsLetter } from "../../components/NewsLetter"
 import { ImgSwiper } from "../../components/ImgSwiper"
-import { domain, useCartStore, useDrawerStore, useFilterStore, useWishlistStore } from "../../store"
+import { domain, useCartStore, useDrawerStore, useFilterStore, useReviewsCounter, useWishlistStore } from "../../store"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { ProductCard } from "../../components/ProductCard"
@@ -23,6 +23,7 @@ export const ProductDetails = () => {
     const {setAddToCart} = useCartStore()
     const [qty , setQty] = useState(1)
     const {wishList, setAddToWishList} = useWishlistStore()
+    const {reviewsCount, setReviewsCount} = useReviewsCounter()
 
     const isInwishList = wishList.some( (item) => item.id === product.id)
 
@@ -39,8 +40,8 @@ export const ProductDetails = () => {
                         populate:'*'
                     }
                 })
-                
                 setProduct(res.data.data)
+                setReviewsCount(res.data.data.reviews?.length)
             }
             catch(error) {
                 console.log(error);
@@ -79,7 +80,7 @@ export const ProductDetails = () => {
                     <div className="badges mt-3.5 flex items-center gap-4">
                         <div className="bg-secondary px-4 py-1 rounded-2xl text-[12px] font-medium w-fit text-text flex items-center gap-2">
                            <FaStar />
-                            {product.rate} — {product.reviews_count} Reviews 
+                            {product.rate} — {reviewsCount} Reviews 
                         </div>
                         <Badge title={"In Stock"} />
                     </div>
@@ -121,8 +122,8 @@ export const ProductDetails = () => {
                 <div className="grow">
                     <Outlet context={{
                         details: product?.details,
-                        reviews: product?.reviews,
-                        rate: product.rate
+                        rate: product.rate,
+                        productId: product?.documentId
                     }} />
                 </div>
             </div>

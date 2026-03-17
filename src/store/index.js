@@ -207,3 +207,14 @@ export const useWishlistStore = create(
     { name: "WishList" } 
   ) 
 ); 
+
+// counter reviews
+
+export const useReviewsCounter = create( persist( (set) => ({
+    reviewsCount: 0,
+    setReviewsCount: (count) => set({reviewsCount: count})
+}),
+    {
+        name: 'Reviews-Conuter'
+    }
+))

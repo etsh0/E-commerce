@@ -1,4 +1,3 @@
-import Heart from "../assets/Heart.svg"
 import { Badge } from "./Badge";
 import { domain, useDrawerStore } from "../store";
 import { useNavigate } from "react-router-dom";

@@ -1,23 +1,28 @@
-import Avatar from "../../assets/Avatar_reviews.svg"
-import EmptyStar2 from "../../assets/Empty Star2.svg"
-import FillStar from "../../assets/FillStar.svg"
+import { BsStar, BsStarFill } from "react-icons/bs"
 
-export const ReviewCard = () => {
+export const ReviewCard = ({review}) => {
+
   return (
     <div className='card-review flex items-center gap-6 '>
-        <img src={Avatar} alt="" />
+        <div className="w-12 h-12 rounded-full bg-secondary text-[#4078FF] flex justify-center items-center">
+            <span>{review.reviewer_name.slice(0,2).toUpperCase()}</span>
+        </div>
         <div className="content grow">
             <div className="flex flex-col sm:flex-row gap-2 justify-between">
-                <h4 className="text-sm font-medium">Ahmed Hesham</h4>
+                <h4 className="text-sm font-medium">{review.reviewer_name}</h4>
                 <div className="stars flex items-center gap-1">
-                    <img src={FillStar} alt="" />
-                    <img src={FillStar} alt="" />
-                    <img src={FillStar} alt="" />
-                    <img src={FillStar} alt="" />
-                    <img src={EmptyStar2} alt="" />
+                    {
+                        [1,2,3,4,5].map( (num) => (
+                            <span key={num}>
+                                {
+                                    num <= review.rating ? (<BsStarFill className="text-text" />) : (<BsStar className="text-text" />) 
+                                }
+                            </span>
+                        ))
+                    }
                 </div>
             </div>
-            <p className="text-text text-sm mt-6">This company always goes above and beyond to satisfy their customers.</p>
+            <p className="text-text text-sm mt-6">{review.comment}</p>
         </div>
     </div>
   )
