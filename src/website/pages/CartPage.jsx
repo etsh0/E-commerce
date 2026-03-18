@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { OrderItem } from "../components/OrderItem"
 import { useCartStore } from "../../store"
 
@@ -8,6 +8,7 @@ export const CartPage = () => {
 
     const {cart, getSubTotal, shippingPrice} = useCartStore()
     const subTotal = getSubTotal()
+    const navigate = useNavigate()
 
   return (
     <>
@@ -41,10 +42,8 @@ export const CartPage = () => {
                         <span>Total</span>
                         <span>${cart.length > 0 ? shippingPrice + subTotal : 0}</span>
                     </div>
-                    <button className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap my-6">
-                        <Link to={"/checkout"}>
-                            Checkout
-                        </Link>
+                    <button onClick={() => navigate("/checkout")} disabled={cart.length === 0} className="disabled:cursor-not-allowed bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap my-6">
+                        Checkout
                     </button>
                     <button className="flex justify-center text-primary self-center font-medium underline w-full">
                         <Link to={"/shop"}>

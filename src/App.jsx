@@ -25,6 +25,8 @@ import { LoginPage } from './admin/pages/LoginPage'
 import { Categories } from './admin/pages/Categories'
 import { AddProduct } from './admin/pages/AddProduct'
 import { Toaster } from 'react-hot-toast'
+import { OrderSuccess } from './website/pages/OrderSuccess'
+import { OrderFailed } from './website/pages/OrderFailed'
 
 
 export const App = () => {
@@ -47,7 +49,6 @@ export const App = () => {
 						<Route path='about' element={<h1>About page</h1>} /> 
 						<Route path='contact' element={<h1>Contact page</h1>} />
 						<Route path='cart' element={<CartPage />} />
-						<Route path='checkout' element={<CheckoutPage />} />
 						<Route path='account' element={<AccountLayout />}>
 							<Route index element={<AccountOrders />} />
 							<Route path='wishlist' element={<AccountWishlist />} />
@@ -60,6 +61,11 @@ export const App = () => {
 						<Route path='login' element={<Login />} />
 						<Route path='register' element={<Register />} />
 					</Route>
+
+					// checkout Page
+					<Route path='checkout' element={<CheckoutPage />} />
+					<Route path='order-success' element={<OrderSuccess />} />
+					<Route path='order-faild' element={<OrderFailed />} />
 
 					// admin login page
 					<Route path='/admin/login' element={<LoginPage />} />

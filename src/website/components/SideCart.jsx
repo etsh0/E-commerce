@@ -1,6 +1,6 @@
 import { MdClose } from "react-icons/md"
 import { useCartStore, useDrawerStore } from "../../store"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { SideCartItem } from "./SideCartItem"
 
@@ -8,6 +8,7 @@ import { SideCartItem } from "./SideCartItem"
 export const SideCart = () => {
     const {isSideCartOpen,CloseSideCart} = useDrawerStore()
     const {cart, getSubTotal} = useCartStore()
+    const navigate = useNavigate()
 
     const subTotal = getSubTotal()
     
@@ -47,7 +48,19 @@ export const SideCart = () => {
                 <Link to={"/cart"}>
                     <button className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mb-8" onClick={CloseSideCart}>View Cart</button>
                 </Link>
-                <Link to={"/checkout"} className="text-text flex m-auto w-fit text-sm underline cursor-pointer " onClick={CloseSideCart}>Checkout</Link>
+                <button 
+                    disabled={cart.length === 0} 
+                    onClick={() => {
+                        if (cart.length > 0) {
+                        CloseSideCart();
+                        navigate("/checkout");
+                        }
+                    }}
+                    className={`text-text flex m-auto w-fit text-sm underline cursor-pointer 
+                        ${cart.length === 0 ? "opacity-50 cursor-not-allowed no-underline" : ""}`}
+                    >
+                    Checkout
+                </button>
             </div>
         </div>
     </>
