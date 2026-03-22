@@ -1,3 +1,4 @@
+import axios from 'axios';
 import toast from 'react-hot-toast';
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
@@ -46,6 +47,10 @@ export const useAuthStore = create(persist(
         user: userData,
         token: jwt,
         isAuthenticated : true
+    }),
+
+    setUpdateUser: (newData) => set({
+        user: newData
     }),
 
     logout:  () => {
@@ -202,14 +207,15 @@ export const useWishlistStore = create(
       }),
       removeWishListItem: (product) => set((state) => ({
         wishList: state.wishList.filter( (item) => item.id !== product.id)
-      }))
+      })),
+
+      clearWishList: () => set({wishList:[]}),
     }), 
     { name: "WishList" } 
   ) 
 ); 
 
 // counter reviews
-
 export const useReviewsCounter = create( persist( (set) => ({
     reviewsCount: 0,
     setReviewsCount: (count) => set({reviewsCount: count})
@@ -218,3 +224,28 @@ export const useReviewsCounter = create( persist( (set) => ({
         name: 'Reviews-Conuter'
     }
 ))
+
+// orders store 
+export const useOrderStore = create( (set) => ({
+    orders:[],
+    fetchUserOrders: async (userId, token) => {
+        try {
+            let url = domain + '/api/orders'
+            const res = await axios.get(url, {
+                params: {
+                    filters : {
+                        user_id : {
+                            $eq : userId
+                        }
+                    }
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            set({orders: res.data.data})
+        } catch (error) {
+            console.log(error); 
+        }
+    }
+}))

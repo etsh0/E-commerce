@@ -7,7 +7,7 @@ export const OrderItem = ({order}) => {
     const removeCartItem = useCartStore(state => state.removeCartItem);
   return (
     <>
-        <div className="cart-item flex flex-col sm:flex-row gap-4 justify-between w-full">
+        <div className="cart-item flex flex-col gap-4 justify-between w-full">
             <div className="flex items-center gap-8 md:gap-8">
                 <div className="image bg-secondary">
                     <img className="w-15 md:w-18 aspect-square object-contain" src={domain + order.images[0].url} alt="" />
@@ -18,7 +18,7 @@ export const OrderItem = ({order}) => {
                 </div>
             </div>
             <div className="flex items-center gap-8">
-                <span className="text-sm md:text-base font-medium">{order?.price}</span>
+                <span className="text-sm md:text-base font-medium">{order?.price} EGP</span>
                 <Quantity qty={order?.qty} 
                 Increment={() => setUpdateCart(order.id , order.selectedSize, order.selectedColor, order.qty + 1)} 
                 Decrement={() => setUpdateCart(order.id , order.selectedSize, order.selectedColor, order.qty - 1)}/>

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import Google from "../../../assets/Google.svg"
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { domain, useAuthStore } from './../../../store/index';
+import { domain, useAuthStore, useCartStore, useWishlistStore } from './../../../store/index';
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
@@ -10,6 +10,8 @@ import { useEffect } from "react";
 export const Register = () => {
 
     const {login , token} = useAuthStore()
+    const {clearWishList} = useWishlistStore()
+    const {clearCart} = useCartStore()
     const navigate = useNavigate()
     const initialValues = {
         username : "",
@@ -24,12 +26,20 @@ export const Register = () => {
     });
 
     const handleRegister = async (values) => {
+        
+        if (values.password.length < 8) {
+            toast.error("Password must be at least 8 characters.");
+            return;
+        }
+
         let url = domain + "/api/auth/local/register";
 
         try {
             const res = await axios.post(url , values)
             login(res.data.user, res.data.jwt)
             toast.success("Welcome to our Fashion Store!")
+            clearCart()
+            clearWishList()
             navigate("/")
         }
         catch(error) {

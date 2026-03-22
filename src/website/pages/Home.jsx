@@ -3,14 +3,45 @@ import { HeroCard } from '../components/Home/HeroCard'
 import Delivery from '../../assets/Delivery.svg'
 import ShieldCheck from '../../assets/Shield Check.svg'
 import StarPage from '../../assets/Star Badge.svg'
-// import { ProductCard } from '../../components/ProductCard'
 import  Person  from '../../assets/person2.svg'
 import { Link } from 'react-router-dom'
 import { NewsLetter } from '../../components/NewsLetter'
 import { FeaturedLatest } from '../components/Home/FeaturedLatest'
+import { useEffect, useState } from 'react'
+import { domain } from '../../store'
+import axios from 'axios'
+import { ProductCard } from '../../components/ProductCard'
 
 
 export const Home = () => {
+    const [bestSellingProducts , setBestSellingProducts] = useState([])
+
+    useEffect( () => {
+        const fetchBestSellingProducts = async () => {
+            let url = domain + '/api/products'
+            try {
+                const res = await axios.get(url , {
+                    params: {
+                        populate: '*',
+                        filters: {
+                            isBestSelling: {
+                                $eq : true
+                            }
+                        },
+                        pagination : {
+                            limit: 4
+                        }
+                    }
+                })
+                setBestSellingProducts(res.data.data)
+                
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchBestSellingProducts()
+    } ,[])
+
   return (
     <>
         <div className="home h-full bg-secondary overflow-hidden relative py-15 md:py-0">
@@ -26,12 +57,13 @@ export const Home = () => {
                 <p className='text-text text-p uppercase'>Shop Now</p>
                 <h3 className='text-h3 text-primary font-bold'>Best Selling Products</h3>
             </div>
-            {/* <div className="bestSelling container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-20">
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-            </div> */}
+            <div className="bestSelling container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-20">
+                {
+                    bestSellingProducts?.map( (product) => (
+                        <ProductCard key={product.documentId} product={product}/>
+                    ))
+                }
+            </div>
         </div>
         <div className="newSession bg-secondary">
             <div className="container flex items-center justify-between">

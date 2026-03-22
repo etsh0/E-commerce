@@ -3,7 +3,7 @@ import Slider from '@mui/material/Slider';
 import { useFilterStore } from '../../../store';
 
 function valuetext(value) {
-  return `$${value}`;
+  return `${value} EGP`;
 }
 
 export default function RangeSlider() {
@@ -47,7 +47,7 @@ export default function RangeSlider() {
         }}
       />
       <div className="flex justify-between mt-2 text-sm text-gray-500 font-medium">
-        <span>Price: ${priceRange[0]} — ${priceRange[1]}</span>
+        <span>Price: {priceRange[0]} EGP — {priceRange[1]} EGP</span>
       </div>
     </Box>
   );

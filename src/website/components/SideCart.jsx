@@ -43,7 +43,7 @@ export const SideCart = () => {
             <div className="px-8 pt-4 pb-6 border-t-2 border-border">
                 <div className="flex items-center justify-between font-medium text-xl mb-6">
                     <span>Total</span>
-                    <span>${subTotal}</span>
+                    <span>{subTotal} EGP</span>
                 </div>
                 <Link to={"/cart"}>
                     <button className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mb-8" onClick={CloseSideCart}>View Cart</button>

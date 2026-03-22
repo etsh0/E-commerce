@@ -24,6 +24,7 @@ export const ProductDetails = () => {
     const [qty , setQty] = useState(1)
     const {wishList, setAddToWishList} = useWishlistStore()
     const {reviewsCount, setReviewsCount} = useReviewsCounter()
+    const [similarProducts, setSimilarProducts] = useState()
 
     const isInwishList = wishList.some( (item) => item.id === product.id)
 
@@ -40,13 +41,46 @@ export const ProductDetails = () => {
                         populate:'*'
                     }
                 })
-                setProduct(res.data.data)
+                const currentProduct = res.data.data                
+                setProduct(currentProduct)
                 setReviewsCount(res.data.data.reviews?.length)
+
+                if(currentProduct.category.slug) {
+                    fetchSimilarProducts(currentProduct.category.slug , currentProduct.id)
+                }
             }
             catch(error) {
                 console.log(error);
             }
         }
+
+        const fetchSimilarProducts = async (categorySlug , currentProductId) => {
+            try {
+                const res = await axios.get(`${domain}/api/products`, {
+                    params: {
+                        populate: '*',
+                        filters: {
+                            category: {
+                                slug: {
+                                    $eq: categorySlug
+                                }
+                            },
+                            id : {
+                                $ne: currentProductId
+                            }
+                        },
+                        pagination: {
+                            limit: 4
+                        }
+                    }
+                })
+                setSimilarProducts(res.data.data) 
+            } 
+            catch (error) {
+                console.log(error);
+            }
+        }
+
         resetProductSelection()
         fetchProducts()
     } ,[params.productId])
@@ -66,6 +100,8 @@ export const ProductDetails = () => {
         openSideCart()
     }
 
+
+
   return (
     <>
         <div className="container mt-6">
@@ -84,7 +120,7 @@ export const ProductDetails = () => {
                         </div>
                         <Badge title={"In Stock"} />
                     </div>
-                    <div className="price font-semibold text-primary mt-6 text-xl">${product.price}</div>
+                    <div className="price font-semibold text-primary mt-6 text-xl">{product.price} EGP</div>
                     <div className={`colors mt-8 ${product?.colors?.length === 0 && "hidden"}`}>
                         <h4 className="text-[12px] text-text uppercase font-medium">Available Colors</h4>
                         <Colors product_colors={product.colors} />      
@@ -105,7 +141,7 @@ export const ProductDetails = () => {
                             }
                         </div>
                     </div>
-                    <p className="text-text text-sm mt-4">— Free shipping on orders $100+</p>
+                    <p className="text-text text-sm mt-4">— Free shipping on orders 100+</p>
                 </div>
             </div>
             <div className="py-30 flex flex-col md:flex-row gap-10">
@@ -127,13 +163,17 @@ export const ProductDetails = () => {
                     }} />
                 </div>
             </div>
-            {/* <div className="pb-30">
+            <div className="pb-30">
                 <h4 className="text-2xl font-semibold mb-2">You might also like</h4>
                 <p className="text-xs text-text">SIMILAR PRODUCTS</p>
                 <div className="products grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-10">
-                    <ProductCard />
+                    {
+                        similarProducts?.map( (product) => (
+                            <ProductCard key={product.documentId} product={product}/>
+                        ))
+                    }
                 </div>
-            </div> */}
+            </div>
         </div>
         <NewsLetter />
     </>

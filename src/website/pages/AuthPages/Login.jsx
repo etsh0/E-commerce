@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import Google from "../../../assets/Google.svg"
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { domain, useAuthStore } from "../../../store";
+import { domain, useAuthStore, useCartStore, useWishlistStore } from "../../../store";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
@@ -10,6 +10,8 @@ import { useEffect } from "react";
 export const Login = () => {
 
     const {login , token} = useAuthStore()
+    const {clearWishList} = useWishlistStore()
+    const {clearCart} = useCartStore()
     const navigate = useNavigate()
 
     const initialValues = {
@@ -34,6 +36,8 @@ export const Login = () => {
             }
             toast.success("Welcome to our Fashion Store!");
             login(res.data.user , res.data.jwt)
+            clearCart()
+            clearWishList()
             navigate("/")
         }
         catch(error) {

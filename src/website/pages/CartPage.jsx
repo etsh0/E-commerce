@@ -12,7 +12,7 @@ export const CartPage = () => {
 
   return (
     <>
-        <div className='container flex flex-col xl:flex-row gap-20 py-10 items-start'>
+        <div className='container flex flex-col xl:flex-row gap-20 py-10'>
             <div className='flex-1'>
                 <h3 className='mb-4 text-xl font-semibold'>Your Cart</h3>
                 <div className='flex flex-col gap-6 py-12 border-y-2 border-border w-full overflow-y-auto'>
@@ -30,17 +30,17 @@ export const CartPage = () => {
                 <div className="flex flex-col gap-4 mb-4">
                     <div className="flex items-center justify-between">
                         <span className="text-text font-medium">Subtotal</span>
-                        <span>${subTotal}</span>
+                        <span>{subTotal} EGP</span>
                     </div>
                     <div className="flex items-center justify-between">
                         <span className="text-text font-medium">Shipping</span>
-                        <span>${cart.length > 0 ? shippingPrice : 0}</span>
+                        <span>{cart.length > 0 ? shippingPrice : 0} EGP</span>
                     </div>
                 </div>
                 <div className="pt-6 border-t-2 border-border">
                     <div className="flex items-center justify-between">
                         <span>Total</span>
-                        <span>${cart.length > 0 ? shippingPrice + subTotal : 0}</span>
+                        <span>{cart.length > 0 ? shippingPrice + subTotal : 0} EGP</span>
                     </div>
                     <button onClick={() => navigate("/checkout")} disabled={cart.length === 0} className="disabled:cursor-not-allowed bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap my-6">
                         Checkout

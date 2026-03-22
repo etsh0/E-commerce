@@ -47,7 +47,12 @@ export const ProductModal = () => {
 
   return (
     <>
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-6 ">
+            <button onClick={() => {
+                closeProductModal()
+                resetProductSelection()
+                }}  className="cursor-pointer flex self-end lg:hidden"><AiOutlineClose size={"18"} />
+            </button>
             <div className="product-images bg-secondary w-full lg:w-80 flex items-center justify-center aspect-square">
                 <ImgSwiper product_images={selectedProduct.images} />
             </div>
@@ -57,7 +62,8 @@ export const ProductModal = () => {
                     <button onClick={() => {
                         closeProductModal()
                         resetProductSelection()
-                    }}  className="cursor-pointer"><AiOutlineClose size={"18"} /></button>
+                        }}  className="cursor-pointer hidden lg:block"><AiOutlineClose size={"18"} />
+                    </button>
                 </div>
                 <div className="badges mt-3.5 flex items-center gap-4">
                     <div className="bg-secondary px-4 py-1 rounded-2xl text-[12px] font-medium w-fit text-text flex items-center gap-2">

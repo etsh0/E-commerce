@@ -34,7 +34,6 @@ export const CheckoutPage = () => {
             city : '',
             postalCode : '',
             phone : '',
-            saveInfo : false
         } 
 
         const validationSchema = Yup.object().shape({
@@ -46,7 +45,6 @@ export const CheckoutPage = () => {
             governorate: Yup.string().required("Required"),
             phone: Yup.string().required("Phone is required"),
             postalCode: Yup.string(),
-            saveInfo: Yup.boolean(),
         });
 
          const handlePlaceOrder = async (values) => {
@@ -155,11 +153,6 @@ export const CheckoutPage = () => {
                                 </div>
                                 <ErrorMessage name="phone" component="span" className="text-red-500 text-xs px-1" />
                             </div>
-
-                            <label className="flex items-center gap-2 text-sm cursor-pointer mt-2">
-                                <Field type="checkbox" name="saveInfo" className="w-4 h-4 accent-black" />
-                                <span>Save this information for next time</span>
-                            </label>
                     </section>
                     <button type="submit" disabled={cart.length === 0} className="disabled:bg-gray-600 disabled:cursor-not-allowed w-full bg-primary text-white p-4 rounded-md font-bold hover:bg-gray-800 transition-colors mt-4 cursor-pointer">
                         Place Order
@@ -187,7 +180,7 @@ export const CheckoutPage = () => {
                                         <div className="text-xs text-text font-medium flex items-center gap-2"><div style={{ backgroundColor: order?.selectedColor }} className="select-color w-3 h-3 rounded-full"></div>{order?.selectedSize && "—"}<span className="select-size uppercase">{order?.selectedSize}</span></div>
                                     </div>
                                 </div>
-                                <span>{order.qty * order.price}</span>
+                                <span>{order.qty * order.price} EGP</span>
                             </div>
                         ))
                     }
@@ -195,17 +188,17 @@ export const CheckoutPage = () => {
                 <div className="flex flex-col gap-4 mb-4">
                     <div className="flex items-center justify-between">
                         <span className="text-text font-medium">Subtotal</span>
-                        <span>${subTotal}</span>
+                        <span>{subTotal} EGP</span>
                     </div>
                     <div className="flex items-center justify-between">
                         <span className="text-text font-medium">Shipping</span>
-                        <span>${cart.length > 0 ? shippingPrice : 0}</span>
+                        <span>{cart.length > 0 ? shippingPrice : 0} EGP</span>
                     </div>
                 </div>
                 <div className="pt-6 border-t-2 border-border">
                     <div className="flex items-center justify-between">
                         <span>Total</span>
-                        <span>${cart.length > 0 ? shippingPrice + subTotal : 0}</span>
+                        <span>{cart.length > 0 ? shippingPrice + subTotal : 0} EGP</span>
                     </div>
                 </div>
             </div>

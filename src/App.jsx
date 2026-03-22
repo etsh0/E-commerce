@@ -11,7 +11,6 @@ import { CheckoutPage } from './website/pages/CheckoutPage'
 import { AccountLayout } from './website/layouts/AccountLayout'
 import { AccountOrders } from './website/pages/AccountOrders'
 import { AccountWishlist } from './website/pages/AccountWishlist'
-import { AccountAddress } from './website/pages/AccountAddress'
 import { AccountPassword } from './website/pages/AccountPassword'
 import { AccountDetails } from './website/pages/AccountDetails'
 import { Login } from './website/pages/AuthPages/Login'
@@ -27,9 +26,41 @@ import { AddProduct } from './admin/pages/AddProduct'
 import { Toaster } from 'react-hot-toast'
 import { OrderSuccess } from './website/pages/OrderSuccess'
 import { OrderFailed } from './website/pages/OrderFailed'
+import { domain, useAuthStore } from './store'
+import { useEffect } from 'react'
+import axios from 'axios'
+import { About } from './website/pages/About'
+import { Contact } from './website/pages/Contact'
 
 
 export const App = () => {
+	// Email Sync
+	const {user, token, setUpdateUser} = useAuthStore()
+
+	useEffect( () => {
+
+			if(token) {
+						const syncData = async () => {
+				let url = domain + '/api/users/me'
+				try {
+					const res = await axios.get(url , {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					})
+
+					if(res.data.email !== user?.email || res.data.username !== user?.email) {
+						setUpdateUser(res.data)
+					}
+					
+				} catch (error) {
+					console.log(error);
+				}
+			}
+			syncData()
+		}
+	} ,[token])
+
   return (
 	<>
 		<div className='w-full h-dvh'>
@@ -46,13 +77,12 @@ export const App = () => {
 								<Route path='reviews' element={<Reviews />}/>
 							</Route>
 						</Route>
-						<Route path='about' element={<h1>About page</h1>} /> 
-						<Route path='contact' element={<h1>Contact page</h1>} />
+						<Route path='about' element={<About />} /> 
+						<Route path='contact' element={<Contact />} />
 						<Route path='cart' element={<CartPage />} />
 						<Route path='account' element={<AccountLayout />}>
 							<Route index element={<AccountOrders />} />
 							<Route path='wishlist' element={<AccountWishlist />} />
-							<Route path='address' element={<AccountAddress />} />
 							<Route path='password' element={<AccountPassword />} />
 							<Route path='account-details' element={<AccountDetails />} />
 						</Route>

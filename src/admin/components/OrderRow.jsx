@@ -12,7 +12,7 @@ export const OrderRow = () => {
                 <span>Mens Black T-Shirts</span>
             </td>
             <td className="px-6 py-4">20 Mar, 2023</td>
-            <td className="px-6 py-4">$75.00</td>
+            <td className="px-6 py-4">75.00 EGP</td>
             <td className="px-6 py-4">Processing</td>
             <td className="px-6 py-4 underline cursor-pointer">View details</td>
             <td className="px-6 py-4 cursor-pointer relative" onClick={ () => setIsdropdowngopen(!isDropdownOpen)}><img src={More} alt="" />

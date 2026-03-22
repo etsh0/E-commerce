@@ -69,3 +69,8 @@
   max-height: 100%;    
 }
 
+@media (min-width:549px) {
+    .cart-item {
+        flex-direction: row;
+    }
+}
