@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { domain } from "../../../store";
 import { ProductCard } from "../../../components/ProductCard";
+// swiper
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, FreeMode, Autoplay } from 'swiper/modules';
 
 export const FeaturedLatest = () => {
     const [products, setProducts] = useState([]);
@@ -12,7 +18,7 @@ export const FeaturedLatest = () => {
             try {
                 const params = {
                     populate: "*",
-                    pagination: { limit: 4 }, 
+                    pagination: { limit: 10 }, 
                 };
 
                 if (activeTab === "latest") {
@@ -38,7 +44,7 @@ export const FeaturedLatest = () => {
             <div className="container mx-auto px-4">
 
                 <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-                    <h2 className="text-3xl font-bold uppercase tracking-tight">
+                    <h2 className="text-2xl font-bold uppercase tracking-tight">
                         {activeTab === "latest" ? "New Arrivals" : "Featured Items"}
                     </h2>
                     
@@ -57,12 +63,35 @@ export const FeaturedLatest = () => {
                         </button>
                     </div>
                 </div>
+                {/* swiper */}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <Swiper
+                    slidesPerView={1.5}       
+                    spaceBetween={15}        
+                    freeMode={true}          
+                    grabCursor={true}      
+                    autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    }}
+                    pagination={{
+                        clickable: true,
+                        dynamicBullets: true,
+                    }}
+                    breakpoints={{
+                        640: { slidesPerView: 2.5, spaceBetween: 20 },
+                        1024: { slidesPerView: 3.5, spaceBetween: 30 },
+                        1280: { slidesPerView: 4, spaceBetween: 30 },
+                    }}
+                    modules={[FreeMode, Pagination, Autoplay]}
+                    className="mySwiper pb-14!" 
+                >
                     {products.map((product) => (
-                        <ProductCard key={product.documentId} product={product}/>
+                        <SwiperSlide key={product.documentId}>
+                            <ProductCard product={product} />
+                        </SwiperSlide>
                     ))}
-                </div>
+                </Swiper>
             </div>
         </section>
     );

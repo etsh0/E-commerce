@@ -1,7 +1,16 @@
+import { useEffect } from "react"
 import { SearchBar } from "../../components/SearchBar"
 import { OrderRow } from "../components/OrderRow"
+import { useAuthStore, useOrderStore } from "../../store"
 
 export const Orders = () => {
+  const {fetchAllOrders, allOrders} = useOrderStore()
+  const {token} = useAuthStore()
+
+  useEffect( () => {
+    fetchAllOrders(token)
+  } ,[])
+
   return (
     <>
       <div className='bg-secondary px-10'>
@@ -15,30 +24,21 @@ export const Orders = () => {
                 <thead className="sticky top-0 bg-white z-10">
                   <tr className="text-text border-y border-border">
                     <th className="px-6 py-4 font-medium">Order</th>
+                    <th className="px-6 py-4 font-medium">Customer</th>
                     <th className="px-6 py-4 font-medium">Date</th>
+                    <th className="px-6 py-4 font-medium">Items</th>
+                    <th className="px-6 py-4 font-medium">Price</th>
                     <th className="px-6 py-4 font-medium">Total</th>
                     <th className="px-6 py-4 font-medium">Status</th>
-                    <th className="px-6 py-4 font-medium">Details</th>
                     <th className="px-6 py-4 font-medium">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border overflow-auto">
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
-                  <OrderRow />
+                  {
+                    allOrders.map( (order) => (
+                      <OrderRow key={order.documentId} order={order} />
+                    ))
+                  }
                 </tbody>
               </table>
           </div>

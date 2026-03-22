@@ -12,6 +12,12 @@ import { domain } from '../../store'
 import axios from 'axios'
 import { ProductCard } from '../../components/ProductCard'
 
+// swiper
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, FreeMode } from 'swiper/modules';
 
 export const Home = () => {
     const [bestSellingProducts , setBestSellingProducts] = useState([])
@@ -29,7 +35,7 @@ export const Home = () => {
                             }
                         },
                         pagination : {
-                            limit: 4
+                            limit: 8
                         }
                     }
                 })
@@ -57,12 +63,34 @@ export const Home = () => {
                 <p className='text-text text-p uppercase'>Shop Now</p>
                 <h3 className='text-h3 text-primary font-bold'>Best Selling Products</h3>
             </div>
-            <div className="bestSelling container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-20">
-                {
-                    bestSellingProducts?.map( (product) => (
-                        <ProductCard key={product.documentId} product={product}/>
-                    ))
-                }
+            <div className="bestSelling container mt-20">
+                <Swiper
+                    slidesPerView={1.5}       
+                    spaceBetween={15}        
+                    freeMode={true}          
+                    grabCursor={true}      
+                    // autoplay={{
+                    //     delay: 3000,
+                    //     disableOnInteraction: false,
+                    // }}
+                    pagination={{
+                        clickable: true,
+                        dynamicBullets: true,
+                    }}
+                    breakpoints={{
+                        640: { slidesPerView: 2.5, spaceBetween: 20 },
+                        1024: { slidesPerView: 3.5, spaceBetween: 30 },
+                        1280: { slidesPerView: 4, spaceBetween: 30 },
+                    }}
+                    modules={[FreeMode, Pagination]}
+                    className="mySwiper pb-14!" 
+                >
+                    {bestSellingProducts?.map((product) => (
+                        <SwiperSlide key={product.documentId}>
+                            <ProductCard product={product} />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
             </div>
         </div>
         <div className="newSession bg-secondary">

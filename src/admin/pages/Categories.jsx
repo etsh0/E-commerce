@@ -1,10 +1,30 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { SearchBar } from "../../components/SearchBar"
 import { CategoryRow } from "../components/CategoryRow"
 import { MdClose } from "react-icons/md"
+import { useCategoriesStore } from "../../store"
+import { Field, Form, Formik } from "formik"
+
 
 export const Categories = () => {
   const [modalIsOpen,setModalIsOpen] = useState(false)
+  const {categories, fetchCategories, addCategory} = useCategoriesStore()
+
+  useEffect( () => {
+    fetchCategories()    
+  } ,[])
+  
+  const initialValues = {
+    name:'',
+    slug:''
+  }
+
+  const handleSubmitCategory =  (values, { resetForm }) => {
+    addCategory(values);
+    setModalIsOpen(false)
+    resetForm()
+  };
+
   return (
     <>
       <div className="bg-secondary px-10">
@@ -20,27 +40,18 @@ export const Categories = () => {
               <table className="w-full text-left">
                 <thead className="sticky top-0 bg-white z-10">
                   <tr className="text-text border-y border-border">
-                    <th className="px-6 py-4 font-medium">Name</th>
-                    <th className="px-6 py-4 font-medium">Description</th>
+                    <th className="px-6 py-4 font-medium">Category Name</th>
+                    <th className="px-6 py-4 font-medium">URL Slug</th>
+                    <th className="px-6 py-4 font-medium">Products Count</th>
                     <th className="px-6 py-4 font-medium">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border overflow-auto">
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
-                  <CategoryRow />
+                  {
+                    categories.map( (cat) => (
+                      <CategoryRow key={cat.documentId} category={cat} />
+                    ))
+                  }
                 </tbody>
               </table>
           </div>
@@ -53,17 +64,19 @@ export const Categories = () => {
                   <h3 className="text-xl font-semibold">Add Category</h3>
                   <MdClose size={"20px"} className="cursor-pointer" onClick={() => setModalIsOpen(false)} />
                   </div>
-                  <form action="" className="flex flex-col gap-4 py-6">
-                  <label className="flex flex-col gap-2 text-sm font-medium text-primary" htmlFor="">
-                      Name
-                      <input className="input" type="text" />
-                  </label>
-                  <label className="flex flex-col gap-2 text-sm font-medium text-primary" htmlFor="">
-                      Description
-                      <textarea className="resize-none w-full input h-35"></textarea>
-                  </label> 
-                  </form>
-                  <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">Add Category</button>
+                  <Formik initialValues={initialValues} onSubmit={handleSubmitCategory}>
+                    <Form action="" className="flex flex-col gap-4 py-6">
+                      <label className="flex flex-col gap-2 text-sm font-medium text-primary" htmlFor="">
+                          Category Name
+                          <Field name='name' className="input" type="text" />
+                      </label>
+                      <label className="flex flex-col gap-2 text-sm font-medium text-primary" htmlFor="">
+                          URL Slug
+                          <Field name='slug' className="input" type='text'></Field>
+                      </label> 
+                      <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">Add Category</button>
+                    </Form>
+                  </Formik>
               </div>
           </div>
           )

@@ -5,6 +5,37 @@ import { persist } from 'zustand/middleware'
 
 export const domain = "http://localhost:1337"
 
+// fetch categories function 
+export const useCategoriesStore = create( (set) => ({
+    categories:[],
+    fetchCategories: async () => {
+        let url = domain + '/api/categories'
+        try {
+            const res = await axios.get(url, {
+                params: {
+                    populate: '*'
+                }
+            })
+            set({categories: res.data.data})
+        } catch (error) {
+            console.log(error);
+            
+        }
+    },
+    addCategory: async (newCategory) => {
+        let url = domain + '/api/categories'
+        try {
+            const res = await axios.post(url , {
+                data: newCategory
+            })
+            set((state) => ({categories: [...state.categories, res.data.data]}))
+            toast.success("Category added successfully")            
+        } catch (error) {
+            console.log(error.message);  
+        }
+    }
+}))
+
 export const useDrawerStore = create((set) => ({
     isMenuOpen: false, // menuBar
     isSideFiltersOpen: false, // sideFilters
@@ -34,7 +65,6 @@ export const useDrawerStore = create((set) => ({
     openProductModal: (product) => set({isProductModalOpen:true, selectedProduct: product}),
     closeProductModal: () => set({isProductModalOpen:false})
 }))
-
 
 export const useAuthStore = create(persist(
     (set) => ({
@@ -227,7 +257,8 @@ export const useReviewsCounter = create( persist( (set) => ({
 
 // orders store 
 export const useOrderStore = create( (set) => ({
-    orders:[],
+    userOrders:[],
+    allOrders:[],
     fetchUserOrders: async (userId, token) => {
         try {
             let url = domain + '/api/orders'
@@ -243,7 +274,25 @@ export const useOrderStore = create( (set) => ({
                     Authorization: `Bearer ${token}`
                 }
             })
-            set({orders: res.data.data})
+            set({userOrders: res.data.data})
+        } catch (error) {
+            console.log(error); 
+        }
+    },
+    fetchAllOrders: async (token) => {
+        try {
+            let url = domain + '/api/orders'
+            const res = await axios.get(url, {
+                params: {
+                    populate: '*'
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            set({allOrders: res.data.data})
+            console.log(res.data.data);
+            
         } catch (error) {
             console.log(error); 
         }

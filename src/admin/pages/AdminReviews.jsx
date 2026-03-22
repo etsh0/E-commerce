@@ -12,7 +12,7 @@ export const AdminReviews = () => {
           </div>
           <div className="overflow-y-auto grow mt-8">
               <table className="w-full text-left">
-                <thead classNameName="sticky top-0 bg-white z-10">
+                <thead className="sticky top-0 bg-white z-10">
                   <tr className="text-text border-y border-border">
                     <th className="px-6 py-4 font-medium">Name</th>
                     <th className="px-6 py-4 font-medium">Review</th>

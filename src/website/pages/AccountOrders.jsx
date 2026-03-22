@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom"
-import img from "../../assets/T-Shirt.svg"
 import { AccountHeader } from "../components/AccountHeader"
 import { useAuthStore, useOrderStore } from "../../store"
 import { useEffect } from "react"
 import { domain } from './../../store/index';
 export const AccountOrders = () => {
-    const {fetchUserOrders, orders} = useOrderStore()
+
+    const {fetchUserOrders, userOrders} = useOrderStore()
     const {user, token} = useAuthStore()
     useEffect( () => {        
         fetchUserOrders(user?.documentId , token)
@@ -17,7 +17,7 @@ export const AccountOrders = () => {
             <AccountHeader title={"My Orders"} />
             <div className="orders-container overflow-auto flex flex-col gap-1">
                 {
-                    orders.length === 0 ? (
+                    userOrders.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
                         <h3 className="text-xl font-bold text-primary mb-2">No orders yet</h3>
                         <p className="text-sm text-text max-w-70 mb-8">
@@ -32,7 +32,7 @@ export const AccountOrders = () => {
                         </NavLink>
                     </div>
                     ) : (
-                        orders.map((order) => (
+                        userOrders.map((order) => (
                             <div key={order.documentId} className="order-wrapper border-b-2 border-border pb-6 mb-6">
             
                                 <div className="flex justify-between items-center mb-4 bg-secondary/30 p-2 rounded">

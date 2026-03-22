@@ -1,31 +1,21 @@
 
-import { useEffect, useState } from 'react';
-import { domain, useDrawerStore, useFilterStore } from '../../../store';
+import { useEffect } from 'react';
+import { useCategoriesStore, useDrawerStore, useFilterStore } from '../../../store';
 import { Colors } from '../Colors';
 import { Sizes } from '../Sizes';
 import RangeSlider from './RangeSlider';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+
 
 export const SideFilters = () => {
-    const [categories , setCategories] = useState([])
 
     const {selectedCategories,setSelectedCategories, resetFilters} = useFilterStore()
     
+    const {categories, fetchCategories} = useCategoriesStore()
 
-    useEffect(() => {
-        let url = domain + "/api/categories"
-        const fetchCategories = async () => {
-            try { 
-                const res = await axios.get(url)
-                setCategories(res.data.data)
-            }
-            catch(error) {           
-                toast.error(error.response.data.error.message)
-            }
-        }
-        fetchCategories()
+    useEffect( () => {
+        fetchCategories()    
     } ,[])
+
 
     const {isSideFiltersOpen} = useDrawerStore()
 
