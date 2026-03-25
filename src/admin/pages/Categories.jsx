@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { SearchBar } from "../../components/SearchBar"
 import { CategoryRow } from "../components/CategoryRow"
 import { MdClose } from "react-icons/md"
@@ -8,22 +8,35 @@ import { Field, Form, Formik } from "formik"
 
 export const Categories = () => {
   const [modalIsOpen,setModalIsOpen] = useState(false)
-  const {categories, fetchCategories, addCategory} = useCategoriesStore()
+  const {categories, addCategory, upadteCategory} = useCategoriesStore()
 
-  useEffect( () => {
-    fetchCategories()    
-  } ,[])
-  
+  const [selectedCategory, setselectedCategory] = useState(null)
+
+  const handleEditClick = (category) => {
+    setselectedCategory(category)
+    setModalIsOpen(true)
+  }
+
+  const handleAddClick = () => {
+    setselectedCategory(null)
+    setModalIsOpen(true)
+  }
+
   const initialValues = {
-    name:'',
-    slug:''
+    name:selectedCategory?.name || '',
+    slug:selectedCategory?.slug || ''
   }
 
   const handleSubmitCategory =  (values, { resetForm }) => {
-    addCategory(values);
+    if(selectedCategory) {
+      upadteCategory(selectedCategory.documentId , values)
+    }else {
+      addCategory(values);
+      resetForm()
+    }
     setModalIsOpen(false)
-    resetForm()
   };
+
 
   return (
     <>
@@ -33,7 +46,7 @@ export const Categories = () => {
             <h4 className="text-lg text-primary font-semibold">Categories</h4>
             <div className="flex gap-4">
                 <SearchBar />
-                <button className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer" onClick={ () => setModalIsOpen(true) }>Add Category</button>
+                <button className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer" onClick={handleAddClick}>Add Category</button>
             </div>
           </div>
           <div className="overflow-y-auto grow mt-8">
@@ -49,7 +62,7 @@ export const Categories = () => {
                 <tbody className="divide-y divide-border overflow-auto">
                   {
                     categories.map( (cat) => (
-                      <CategoryRow key={cat.documentId} category={cat} />
+                      <CategoryRow key={cat.documentId} category={cat} onEdit={() => handleEditClick(cat)}/>
                     ))
                   }
                 </tbody>
@@ -61,10 +74,10 @@ export const Categories = () => {
             <div className="modal fixed inset-0 z-50 flex items-center justify-center bg-black/50">
               <div className="bg-white shadow border border-border w-full max-w-lg relative rounded-lg p-8">
                   <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold">Add Category</h3>
+                  <h3 className="text-xl font-semibold">{selectedCategory ? "Edit Category" : "Add Category"}</h3>
                   <MdClose size={"20px"} className="cursor-pointer" onClick={() => setModalIsOpen(false)} />
                   </div>
-                  <Formik initialValues={initialValues} onSubmit={handleSubmitCategory}>
+                  <Formik initialValues={initialValues} onSubmit={handleSubmitCategory} enableReinitialize={true}>
                     <Form action="" className="flex flex-col gap-4 py-6">
                       <label className="flex flex-col gap-2 text-sm font-medium text-primary" htmlFor="">
                           Category Name
@@ -74,7 +87,7 @@ export const Categories = () => {
                           URL Slug
                           <Field name='slug' className="input" type='text'></Field>
                       </label> 
-                      <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">Add Category</button>
+                      <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">{selectedCategory ? "Save Changes" : "Add Category"}</button>
                     </Form>
                   </Formik>
               </div>

@@ -1,11 +1,11 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import Google from "../../../assets/Google.svg"
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { domain, useAuthStore, useCartStore, useWishlistStore } from "../../../store";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const Login = () => {
 
@@ -13,6 +13,7 @@ export const Login = () => {
     const {clearWishList} = useWishlistStore()
     const {clearCart} = useCartStore()
     const navigate = useNavigate()
+    const [isBlocked, setIsBlocked] = useState(false);
 
     const initialValues = {
         identifier: "",
@@ -51,11 +52,31 @@ export const Login = () => {
             navigate("/")
         }
     } ,[token])
+
+    
+    // if user Blocked
+    useEffect(() => {
+        const blockedFlag = sessionStorage.getItem("was_blocked");
+        
+        if (blockedFlag === "true") {
+            setIsBlocked(true);
+            
+            sessionStorage.removeItem("was_blocked");
+        }
+    }, []);
     
   return (
     <>
         <div className='flex items-center justify-center w-full h-full py-10'>
             <div className='w-70 sm:w-100 md:w-120 flex flex-col gap-6'>
+                {/* user is blocked */}
+                {isBlocked && (
+                    <div className="bg-red-50 text-center text-red-600 p-4 rounded-xl text-xs font-bold mb-6 border border-red-100 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div className="text-lg mb-1">⚠️</div>
+                        YOUR ACCOUNT IS SUSPENDED
+                        <p className="font-medium opacity-80 mt-1 uppercase tracking-tighter">Please contact our support team to appeal.</p>
+                    </div>
+                )}
                 <div className='border-2 border-border w-full flex items-center justify-center gap-4 py-2 rounded cursor-pointer'>
                     <img src={Google} alt="" />
                     <p className="text-sm text-text">Continue with Google</p>

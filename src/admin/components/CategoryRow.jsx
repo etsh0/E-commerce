@@ -1,9 +1,8 @@
-import { useState } from "react"
-import More from "../../assets/More.svg"
+import { useCategoriesStore } from "../../store"
+import { TableActions } from "./TableActions"
 
-
-export const CategoryRow = ({category}) => {
-    const [isDropdownOpen,setIsdropdowngopen] = useState(false)
+export const CategoryRow = ({category , onEdit}) => {
+    const {deleteCategory} = useCategoriesStore()
   return (
     <>
         <tr className="text-gray-600 text-sm hover:bg-gray-50 transition">
@@ -12,11 +11,20 @@ export const CategoryRow = ({category}) => {
             </td>
             <td className="px-6 py-4">{category.slug}</td>
             <td className="px-6 py-4">{category?.products?.length || 0}</td>
-            <td className="px-6 py-4 cursor-pointer relative" onClick={ () => setIsdropdowngopen(!isDropdownOpen)}><img src={More} alt="" />
-                <div className={`absolute left-7 z-50 w-30 bg-white shadow border border-border py-3  flex-col gap-1 ${isDropdownOpen ? "flex" : "hidden"}`}>
-                    <button className="px-2 py-1 w-full text-left font-medium text-sm hover:bg-secondary transition-colors duration-300 cursor-pointer whitespace-nowrap">Edit</button>
-                    <button className="px-2 py-1 w-full text-left font-medium text-sm hover:bg-secondary transition-colors duration-300 cursor-pointer whitespace-nowrap">Delete</button>
-                </div>
+            <td className="px-6 py-4">
+                <TableActions>
+                    <button onClick={onEdit} className="edit flex items-center gap-3 px-4 py-2 w-full text-left text-xs font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors cursor-pointer">
+                        <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                        Edit Category
+                    </button>
+
+                    <div className="h-px bg-gray-100 my-1 mx-2"></div>
+
+                    <button onClick={ () => deleteCategory(category.documentId)} className="delete flex items-center gap-3 px-4 py-2 w-full text-left text-xs font-bold text-red-600 hover:bg-red-50 transition-colors cursor-pointer whitespace-nowrap">
+                        <span className="w-2 h-2 rounded-full bg-red-600"></span>
+                        Delete Category
+                    </button>
+                </TableActions>
             </td>
         </tr>   
     </>

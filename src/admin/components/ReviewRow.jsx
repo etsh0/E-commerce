@@ -1,31 +1,42 @@
-import { useState } from "react"
-import More from "../../assets/More.svg"
-import star from "../../assets/FillStar.svg"
+import { BsStar, BsStarFill } from "react-icons/bs"
+import { TableActions } from "./TableActions"
 
 
-export const ReviewRow = () => {
-    const [isDropdownOpen,setIsdropdowngopen] = useState(false)
+
+export const ReviewRow = ({review, onDelete}) => {
+
+
   return (
     <>
         <tr className="text-gray-600 text-sm hover:bg-gray-50 transition">
             <td className="px-6 py-4 font-medium text-gray-800 flex items-center gap-4">
-                <div className="bg-secondary text-[#4078FF] px-4 py-3 rounded">BT</div>
-                <span className="truncate">Esther Howard</span>
+                <div className="bg-secondary text-[#4078FF] px-4 py-3 rounded">{review.reviewer_name.slice(0,2).toUpperCase()}</div>
+                <span className="truncate">{review.reviewer_name}</span>
             </td>
-            <td className="px-6 py-4 max-w-50 truncate whitespace-nowrap">
-                Completed the task and added the required documentation, can someone please
+            <td className="px-6 py-4">
+                {review.product.title}
+            </td>
+            <td className="px-6 py-4 max-w-50 truncate whitespace-nowrap ">
+                {review.comment}
             </td>
             <td className="px-6 py-4 flex items-center">
-                <img src={star} alt="" />
-                <img src={star} alt="" />
-                <img src={star} alt="" />
-                <img src={star} alt="" />
-                <img src={star} alt="" /> 
+                {
+                    [1,2,3,4,5].map( (num) => (
+                        <span key={num}>
+                            {
+                                num <= review.rating ?  (<BsStarFill className="text-text" />) : (<BsStar className="text-text" />)
+                            }
+                        </span>
+                    ))
+                }
             </td>
-            <td className="px-6 py-4 cursor-pointer relative" onClick={ () => setIsdropdowngopen(!isDropdownOpen)}><img src={More} alt="" />
-                <div className={`absolute left-7 z-50 w-30 bg-white shadow border border-border py-3  flex-col gap-1 ${isDropdownOpen ? "flex" : "hidden"}`}>
-                    <button className="px-2 py-1 w-full text-left font-medium text-sm hover:bg-secondary transition-colors duration-300 cursor-pointer whitespace-nowrap">Delete</button>
-                </div>
+            <td className="px-6 py-4">
+                <TableActions>
+                    <button onClick={onDelete} className="delete flex items-center gap-3 px-4 py-2 w-full text-left text-xs font-bold text-red-600 hover:bg-red-50 transition-colors cursor-pointer whitespace-nowrap">
+                        <span className="w-2 h-2 rounded-full bg-red-600"></span>
+                        Delete Review
+                    </button>
+                </TableActions>
             </td>
         </tr>   
     </>

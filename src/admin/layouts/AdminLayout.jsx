@@ -16,11 +16,11 @@ export const AdminLayout = () => {
   
   return (
     <>
-      <div className="flex min-h-screen">
-        <div className="w-65 self-stretch h-auto bg-white shadow-2xl">
+      <div className="flex min-h-screen overflow-hidden">
+        <div className="w-65 shrink-0 self-stretch h-auto bg-white shadow-2xl">
             <SideBar />
         </div>
-        <div className="grow h-full bg-secondary">
+        <div className="grow flex flex-col min-w-0 bg-secondary h-full overflow-hidden">
           <Outlet />
         </div>
       </div>

@@ -11,6 +11,14 @@ export const AccountOrders = () => {
         fetchUserOrders(user?.documentId , token)
     },[user , token])
 
+    const statusColor = {
+        pending: { label: "Pending", color: " text-amber-600" },
+        processing: { label: "Processing", color: " text-blue-600" },
+        shipped: { label: "Shipped", color: "text-purple-600" },
+        delivered: { label: "Delivered", color: "text-emerald-600" },
+        cancelled: { label: "Cancelled", color: " text-rose-600" },
+    };
+
   return (
     <>
         <div className="">
@@ -36,10 +44,16 @@ export const AccountOrders = () => {
                             <div key={order.documentId} className="order-wrapper border-b-2 border-border pb-6 mb-6">
             
                                 <div className="flex justify-between items-center mb-4 bg-secondary/30 p-2 rounded">
-                                    <div>
+                                    <div className="flex flex-col gap-1">
                                         <p className="text-xs text-text font-bold">Order ID: #{order.id}</p>
+                                        <p className="text-xs text-text font-bold">
+                                            Order Status:
+                                            <span className={`text-xs font-bold uppercase tracking-wider ${statusColor[order.order_status]?.color}`}>
+                                                {order.order_status}
+                                            </span>
+                                        </p>
                                         <p className="text-[10px] text-text">
-                                        Date: {new Date(order.createdAt).toLocaleDateString('en-US')}
+                                         Date: {new Date(order.createdAt).toLocaleDateString('en-US')}
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-3">

@@ -32,6 +32,7 @@ export const Reviews = () => {
   })
 
   const fetchReviews = async () => {
+    if (!productId) return;
     let url = domain + '/api/reviews'
     try {
       const res = await axios.get(url, {

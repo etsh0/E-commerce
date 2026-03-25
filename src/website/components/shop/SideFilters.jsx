@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useCategoriesStore, useDrawerStore, useFilterStore } from '../../../store';
 import { Colors } from '../Colors';
@@ -10,11 +9,7 @@ export const SideFilters = () => {
 
     const {selectedCategories,setSelectedCategories, resetFilters} = useFilterStore()
     
-    const {categories, fetchCategories} = useCategoriesStore()
-
-    useEffect( () => {
-        fetchCategories()    
-    } ,[])
+    const {categories} = useCategoriesStore()
 
 
     const {isSideFiltersOpen} = useDrawerStore()
@@ -30,6 +25,7 @@ export const SideFilters = () => {
           document.body.style.overflow = 'auto';
         }
       },[isSideFiltersOpen])
+
   return (
     <>
         <div className='flex flex-col gap-10'>

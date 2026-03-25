@@ -53,7 +53,7 @@ export const CheckoutPage = () => {
                     ...values,
                     totalAmount: shippingPrice + subTotal,
                     cartItems: cart,
-                    orderStatus: "pending",
+                    order_status: "pending",
                     user_id: String(user.documentId)
                 }
             }
@@ -69,7 +69,7 @@ export const CheckoutPage = () => {
                 
             } catch (error) {
                 navigate("/order-faild" , { state: { fromCheckout: true } })
-                console.log(error);
+                console.log(error.message);
             }
          }
 

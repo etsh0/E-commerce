@@ -5,15 +5,37 @@ import { persist } from 'zustand/middleware'
 
 export const domain = "http://localhost:1337"
 
+// user blocked status
+axios.interceptors.response.use(
+  (response) => response, 
+  (error) => {
+    if (error.response && error.response.status === 401) {
+
+      localStorage.removeItem("auth-storage"); 
+      
+      sessionStorage.setItem("was_blocked", "true");
+      
+      window.location.href = "/login"; 
+    }
+    return Promise.reject(error);
+  }
+);
+
+
 // fetch categories function 
 export const useCategoriesStore = create( (set) => ({
     categories:[],
-    fetchCategories: async () => {
+    fetchCategories: async (searchquery = '') => {
         let url = domain + '/api/categories'
         try {
             const res = await axios.get(url, {
                 params: {
-                    populate: '*'
+                    populate: '*',
+                    filters: {
+                        name:{
+                            $containsi: searchquery
+                        }
+                    }
                 }
             })
             set({categories: res.data.data})
@@ -32,6 +54,26 @@ export const useCategoriesStore = create( (set) => ({
             toast.success("Category added successfully")            
         } catch (error) {
             console.log(error.message);  
+        }
+    },
+    deleteCategory: async (categoryID) => {
+        let url = domain + `/api/categories/${categoryID}`
+        try {
+            const res = await axios.delete(url)
+            set( (state) => ({categories: state.categories.filter( cat => cat.documentId !== categoryID )}) )
+            toast.success("Category deleted successfully")
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    upadteCategory: async (categoryId, updateCategory) => {
+        let url = domain + `/api/categories/${categoryId}`
+        try {
+            const res = await axios.put(url, {data: updateCategory})
+            set( (state) => ({categories: state.categories.map( (cat) => cat.documentId === categoryId ? res.data.data : cat)}))
+            toast.success("Category Updated successfully")
+        } catch (error) {
+            console.log(error);
         }
     }
 }))
@@ -279,22 +321,77 @@ export const useOrderStore = create( (set) => ({
             console.log(error); 
         }
     },
-    fetchAllOrders: async (token) => {
+    fetchAllOrders: async (token, searchQuery,filterStatus) => {
         try {
             let url = domain + '/api/orders'
+            const queryFilters = {
+            $or: [
+                { firstName: { $containsi: searchQuery } },
+                { lastName: { $containsi: searchQuery } },
+                { phone: { $containsi: searchQuery } },
+                {id: {$containsi: searchQuery}},
+            ],
+            };
+
+            if (filterStatus !== "all") {
+            queryFilters.order_status = {
+                $eq: filterStatus
+            };
+            }
+            
             const res = await axios.get(url, {
                 params: {
-                    populate: '*'
+                    populate: '*',
+                    filters: queryFilters,
+                    sort: 'createdAt:desc',
                 },
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            })
+            })                        
             set({allOrders: res.data.data})
-            console.log(res.data.data);
             
         } catch (error) {
             console.log(error); 
+        }
+    },
+    changeStatusOrder: async (token,orderId,newOrderStatus) => {
+        let url = domain + `/api/orders/${orderId}`
+        
+        try {
+            const res = await axios.put(url, {
+                data:{order_status: newOrderStatus}
+            },
+            {
+                headers:{
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
+
+        set((state) => ({
+            allOrders: state.allOrders.map((order) => order.documentId === orderId ? { ...order, order_status: newOrderStatus } : order)
+        }));
+            toast.success("Status updated successfully!");
+        } catch (error) {
+            console.log(error.message);
+            toast.error("Failed to update status");
+        }
+    },
+    deleteOrder: async (token,orderId) => {
+        let url = domain + `/api/orders/${orderId}`
+        try {
+            const res = await axios.delete(url,{
+                headers:{
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            set((state) => ({
+                allOrders: state.allOrders.filter( o => o.documentId !== orderId)
+            }))            
+            toast.success("Order deleted successfully!");
+        } catch (error) {
+            console.log(error);
         }
     }
 }))

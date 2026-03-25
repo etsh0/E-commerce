@@ -1,27 +1,49 @@
 import { useState } from "react"
-import Check from "../../assets/Check.svg"
 import More from "../../assets/More.svg"
-import img from "../../assets/T-Shirt.svg"
+import { domain } from "../../store"
+import { FaCheck } from "react-icons/fa"
+import { IoClose, IoCloseSharp } from "react-icons/io5"
+import { TableActions } from "./TableActions"
 
-export const ProductRow = () => {
+export const ProductRow = ({product}) => {
     const [isDropdownOpen,setIsdropdowngopen] = useState(false)
     return (
         <>
         <tr className="text-gray-600 text-sm hover:bg-gray-50 transition">
             <td className="px-6 py-4 font-medium text-gray-800 line-clamp-1 flex items-center gap-2">
-                <img className="w-10" src={img} alt="" />
-                <span>Mens Black T-Shirts</span>
+                <img className="w-10 object-contain" src={domain + product.images[0].url} alt="" />
+                <span>{product.title}</span>
             </td>
-            <td className="px-6 py-4">$75.00</td>
-            <td className="px-6 py-4">In Stock</td>
-            <td className="px-6 py-4">Basic Tees</td>
-            <td className="px-6 py-4"><img src={Check} alt="" /></td>
-            <td className="px-6 py-4 cursor-pointer relative" onClick={ () => setIsdropdowngopen(!isDropdownOpen)}><img src={More} alt="" />
-                <div className={`absolute right-0 z-50 w-30 bg-white shadow border border-border py-3  flex-col gap-1 ${isDropdownOpen ? "flex" : "hidden"}`}>
-                <button className="px-4 py-1 w-full text-left font-medium text-sm hover:bg-secondary transition-colors duration-300 cursor-pointer">Edit</button>
-                <button className="px-4 py-1 w-full text-left font-medium text-sm hover:bg-secondary transition-colors duration-300 cursor-pointer">Delete</button>
-                <button className="px-4 py-1 w-full text-left font-medium text-sm hover:bg-secondary transition-colors duration-300 cursor-pointer">View</button>
-                </div>
+            <td className="px-6 py-4">{product.price}</td>
+            <td className="px-6 py-4">{product.stock_status}</td>
+            <td className="px-6 py-4">{product.category.name}</td>
+            <td className="px-6 py-4">
+                {
+                    product.isFeatured ? <FaCheck /> : <IoClose size={"20"} />
+                }      
+            </td>
+            <td className="px-6 py-4">
+                {
+                    product.isBestSelling ? <FaCheck /> : <IoClose size={"20"} />
+                } 
+            </td>
+            <td className="px-6 py-4">
+                <TableActions>
+                    <button className="edit flex items-center gap-3 px-4 py-2 w-full text-left text-xs font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors cursor-pointer">
+                        <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                        View Product
+                    </button>
+                    <div className="h-px bg-gray-100 my-1 mx-2"></div>
+                    <button className="edit flex items-center gap-3 px-4 py-2 w-full text-left text-xs font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors cursor-pointer">
+                        <span className="w-2 h-2 rounded-full bg-emerald-900"></span>
+                        Edit Product
+                    </button>
+                    <div className="h-px bg-gray-100 my-1 mx-2"></div>
+                    <button className="delete flex items-center gap-3 px-4 py-2 w-full text-left text-xs font-bold text-red-600 hover:bg-red-50 transition-colors cursor-pointer whitespace-nowrap">
+                        <span className="w-2 h-2 rounded-full bg-red-600"></span>
+                        Delete Product
+                    </button>
+                </TableActions>
             </td>
         </tr>
     </>

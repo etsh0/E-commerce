@@ -26,6 +26,7 @@ export const Colors = ({product_colors}) => {
             setColors(product_colors)
         }
     } ,[product_colors, isProductPage])
+    
   return (
     <div className="colors">
         <div className="flex items-center flex-wrap gap-4 mt-4">

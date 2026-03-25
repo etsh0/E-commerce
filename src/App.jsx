@@ -26,7 +26,7 @@ import { AddProduct } from './admin/pages/AddProduct'
 import { Toaster } from 'react-hot-toast'
 import { OrderSuccess } from './website/pages/OrderSuccess'
 import { OrderFailed } from './website/pages/OrderFailed'
-import { domain, useAuthStore } from './store'
+import { domain, useAuthStore, useCategoriesStore } from './store'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { About } from './website/pages/About'
@@ -34,13 +34,19 @@ import { Contact } from './website/pages/Contact'
 
 
 export const App = () => {
+
+	const {fetchCategories} = useCategoriesStore()
+	useEffect( () => {
+        fetchCategories()    
+    } ,[])
+
 	// Email Sync
 	const {user, token, setUpdateUser} = useAuthStore()
 
 	useEffect( () => {
 
 			if(token) {
-						const syncData = async () => {
+				const syncData = async () => {
 				let url = domain + '/api/users/me'
 				try {
 					const res = await axios.get(url , {
@@ -113,6 +119,7 @@ export const App = () => {
 
 					// error page
 					<Route path='*' element={<h1>Error 404</h1>} /> 
+
 				</Routes>
 			</BrowserRouter>
 		</div>
