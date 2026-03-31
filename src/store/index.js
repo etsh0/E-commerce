@@ -22,7 +22,78 @@ axios.interceptors.response.use(
 );
 
 
-// fetch categories function 
+// product store dashoard (add/edit product) and fetch all products 
+export const useProductStore = create( (set) => ({
+    products:[],
+    selectedProduct: null,
+    setSelectedProduct: (product) => set({selectedProduct: product}),
+    resetSelectedProduct: () => set({selectedProduct: null}),
+
+    fetchAllProducts: async (value) => {
+        let url = domain + '/api/products'
+        try {
+        const res = await axios.get(url , {
+            params: {
+            populate: '*',
+            filters: {
+                title: {
+                    $containsi : value
+                }
+            }
+            }
+        })
+            set({products: res.data.data})
+        } 
+        catch (error) {
+            console.log(error);
+        }
+    },
+    addProduct: async (newProduct) => {
+        let url = domain + '/api/products'
+        const token = useAuthAdmin.getState().adminToken
+        try {
+            const res = await axios.post(url,{data:newProduct},{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            set( (state) => ({products: [...state.products , res.data.data]}))
+            toast.success("Product added successfully")
+        } catch (error) {
+            console.log(error); 
+        }
+    },
+    updateProduct: async (productId, updateProduct) => {
+        let url = domain + `/api/products/${productId}`
+        const token = useAuthAdmin.getState().adminToken
+        try {
+            const res = await axios.put(url,{data: updateProduct},{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            set( (state) => ({products: state.products.map( (product) => product.documentId === productId ? res.data.data : product)}))
+            toast.success("Product Updated successfully")
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    },
+    deleteProduct : async (productId) => {
+        let url = domain + `/api/products/${productId}`
+        try {
+            const res = await axios.delete(url)
+            set( (state) => ({products: state.products.filter( product => product.documentId !== productId )}) )
+            toast.success("Product deleted successfully")
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+}))
+
+// category store dashoard (add/edit category) and fetch all categories 
 export const useCategoriesStore = create( (set) => ({
     categories:[],
     fetchCategories: async (searchquery = '') => {
@@ -39,7 +110,8 @@ export const useCategoriesStore = create( (set) => ({
                 }
             })
             set({categories: res.data.data})
-        } catch (error) {
+        } 
+        catch (error) {
             console.log(error);
             
         }
@@ -128,13 +200,15 @@ export const useAuthStore = create(persist(
     logout:  () => {
         set({user: null , token: null , isAuthenticated : false});
         localStorage.removeItem('auth-storage');
-}
+    },
+
     
 }),
 {
     name: 'auth-storage'
 }
 ));
+
 
 export const useAuthAdmin = create(persist(
     (set) => ({
@@ -301,6 +375,7 @@ export const useReviewsCounter = create( persist( (set) => ({
 export const useOrderStore = create( (set) => ({
     userOrders:[],
     allOrders:[],
+    ordersCount: 0,
     fetchUserOrders: async (userId, token) => {
         try {
             let url = domain + '/api/orders'
@@ -349,7 +424,7 @@ export const useOrderStore = create( (set) => ({
                     Authorization: `Bearer ${token}`
                 }
             })                        
-            set({allOrders: res.data.data})
+            set({allOrders: res.data.data , ordersCount: res.data.data.length})
             
         } catch (error) {
             console.log(error); 
@@ -395,3 +470,32 @@ export const useOrderStore = create( (set) => ({
         }
     }
 }))
+
+// cutomers store 
+export const useCutomersStore = create((set) => ({
+  customersCount: 0,
+  customers: [],
+  fetchAllUsers: async (token,value) => {
+    try {
+      const res = await axios.get(`${domain}/api/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: {
+          filters: {
+            $or: [
+              {username: {$containsi: value}},
+              {email: {$containsi: value}},
+            ]
+          }
+        }
+      });
+      const customersOnly = res.data.filter(user => user.isAdmin !== true);
+      set({ 
+        customers: customersOnly, 
+        customersCount: customersOnly.length 
+      });
+    } catch (error) {
+      console.error("Fetch Users Error:", error);
+    }
+  }
+}));
+

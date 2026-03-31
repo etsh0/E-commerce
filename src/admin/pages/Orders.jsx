@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { SearchBar } from "../../components/SearchBar"
 import { OrderRow } from "../components/OrderRow"
-import { useAuthStore, useOrderStore } from "../../store"
+import { useAuthAdmin, useOrderStore } from "../../store"
 
 export const Orders = () => {
   const {fetchAllOrders, allOrders} = useOrderStore()
-  const {token} = useAuthStore()
+  const {adminToken} = useAuthAdmin()
 
   const [activeFilter, setActiveFilter] = useState("all")
 
@@ -19,7 +19,7 @@ export const Orders = () => {
   ]
 
   useEffect( () => {
-    fetchAllOrders(token,"",activeFilter)
+    fetchAllOrders(adminToken,"",activeFilter)
   } ,[activeFilter])
 
   return (

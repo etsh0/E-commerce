@@ -1,51 +1,211 @@
 import { Formik, Form, Field } from "formik";
-import { domain, useCategoriesStore } from "../../store";
+import { domain, useAuthAdmin, useCategoriesStore, useProductStore } from "../../store";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { IoIosClose } from "react-icons/io";
 
-export const AddProduct = ({ selectedProduct }) => {
+
+export const AddProduct = () => {
+
+  const {adminToken} = useAuthAdmin()
   const { categories } = useCategoriesStore();
+  const {selectedProduct,addProduct,updateProduct} = useProductStore()
   const [colors , setColors] = useState([])
   const [sizes , setSizes] = useState([])
+  const [newColorData, setNewColorData] = useState({ name: '', hex_code: '', slug: '' });
+  const [newSizeData, setNewSizeData] = useState({ size_value: '', slug: '' });
+  let url_color = domain + "/api/colors"
+  let url_size = domain + "/api/sizes"
+
 
   const initialValues = {
     title: selectedProduct?.title || '',
     price: selectedProduct?.price || '',
-    stock_status: selectedProduct?.stock_status || 'in_stock',
+    stock_status: selectedProduct?.stock_status || 'IN STOCK',
     category: selectedProduct?.category?.documentId || '',
-    slug: selectedProduct?.slug || '',
     details: selectedProduct?.details || '',
-    available_quantity: selectedProduct?.available_quantity || 0,
+    rate: selectedProduct?.rate || '',
+    available_qty: selectedProduct?.available_qty || 0,
     colors: selectedProduct?.colors?.map(c => c.documentId) || [],
     sizes: selectedProduct?.sizes?.map(s => s.documentId) || [],
     isBestSelling: selectedProduct?.isBestSelling || false,
     isFeatured: selectedProduct?.isFeatured || false,
+    images: [],
+    reviews:[]
   };
 
+
+  // to upload images to strapi
+  const [selectedFiles, setSelectedFiles] = useState([]); // state to hold selected files (user)
+  const [previewUrls, setPreviewUrls] = useState([]); // state to hold preview URLs for selected images (for user to see before uploading)
+  const [uploading, setUploading] = useState(false);
+
+  // Handle file selection
+  const handleFileChange = (e) => {
+    // Convert FileList to an array and update state
+    const files = Array.from(e.target.files);
+    setSelectedFiles((prev) =>  [...prev, ...files]);
+    // Generate preview URLs for the selected files
+    const newPreviews = files.map((file) => URL.createObjectURL(file));
+    setPreviewUrls((prev) => [...prev, ...newPreviews]);
+  }
+
+  // Remove image from selection
+  const removeImage = (index) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviewUrls((prev) => {
+      URL.revokeObjectURL(prev[index]);
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
+  // Function to upload images to Strapi and get their IDs
+  const uploadImagesToStrapi = async () => {
+    if (selectedFiles.length === 0) return [];
+    const formData = new FormData();
+    selectedFiles.forEach((file) => {
+      formData.append("files", file);
+    });
+    const res = await axios.post(`${domain}/api/upload`, formData, {
+      headers: {
+         "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${adminToken}`,
+        },
+    });
+    return res.data.map((file) => file.id);
+  };
+
+  
+  // ✅ إضافة state للصور الموجودة على Strapi
+  const [existingImages, setExistingImages] = useState(selectedProduct?.images || []);
+
+  // ✅ دالة لحذف صورة موجودة من Strapi
+  const removeExistingImage = async (imageId) => {
+  try {
+    await axios.delete(`${domain}/api/upload/files/${imageId}`,{
+      headers: {
+          Authorization: `Bearer ${adminToken}`,
+      }
+    });
+    setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
+  } catch (error) {
+    console.log(error);
+  }
+  };
+
+
+const handleSubmitProduct = async (values, { resetForm }) => {
+  try {
+    setUploading(true);
+
+    const newImageIds = await uploadImagesToStrapi();
+    const existingImageIds = existingImages.map((img) => img.id);
+
+    const finalValues = {
+      ...values,
+      images: [...existingImageIds, ...newImageIds],
+    };
+
+    if (selectedProduct) {
+      await updateProduct(selectedProduct.documentId, finalValues); // ✅ await
+    } else {
+      await addProduct(finalValues); // ✅ await
+      resetForm();
+      setSelectedFiles([]);
+      setPreviewUrls([]);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    setUploading(false); // ✅ دلوقتي بتشتغل بعد ما الـ request يخلص فعلاً
+  }
+};
+  
   const fetchColors = async () => {
-      let url = domain + "/api/colors"
       try{
-          const res = await axios.get(url)
+          const res = await axios.get(url_color, {
+            headers: {
+              Authorization: `Bearer ${adminToken}`,
+            }
+          })
           setColors(res.data.data)
-          
       }
       catch(error) {
           console.log(error);
       }
+  }
+
+  const addNewColorToSystem = async () => {
+    try {
+      const res = await axios.post(url_color, {data:newColorData}, {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        }
+      })
+      setColors([...colors, res.data.data])
+      setNewColorData({ name: '', hex_code: '', slug: '' });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const fetchSizes = async () => {
-      let url = domain + "/api/sizes"
       try{
-          const res = await axios.get(url)
+          const res = await axios.get(url_size, {
+            headers: {
+              Authorization: `Bearer ${adminToken}`,
+            }
+          })
           setSizes(res.data.data)
-          
       }
       catch(error) {
           console.log(error);
       }
   }
+
+  const addNewSizeToSystem = async () => {
+    try {
+      const res = await axios.post(url_size, {data: newSizeData}, {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        }
+      })
+      setSizes([...sizes, res.data.data])
+      setNewSizeData({size_value: '', slug: ''})
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const removeColorFromSystem = async (colorId) => {
+    try {
+      const res = await axios.delete(url_color + "/" + colorId , {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        }
+      })
+      setColors(colors.filter(c => c.documentId !== colorId))      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  const removeSizeFromSystem = async (SizeId) => {
+    try {
+      const res = await axios.delete(url_size + "/" + SizeId , {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        }
+      })
+      setSizes(sizes.filter(s => s.documentId !== SizeId))      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
 
   useEffect( () => {
       fetchColors()
@@ -62,145 +222,193 @@ export const AddProduct = ({ selectedProduct }) => {
           <Link className="bg-primary text-white py-1 px-4 rounded text-sm font-bold" to={"/admin/products"}>Back</Link>
         </div>
 
-        <Formik
-          initialValues={initialValues}
-          enableReinitialize={true}
-          onSubmit={(values) => console.log(values)}
-        >
-          {({ setFieldValue, values }) => (
-            <Form className="grid grid-cols-12 gap-8 p-8">
-              
-              <div className="col-span-8 space-y-6">
-                <div className="grid grid-cols-2 gap-6">
+        <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={handleSubmitProduct}>
+              <Form className="grid grid-cols-12 gap-8 p-8">  
+                <div className="col-span-8 space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <label className="flex flex-col gap-2 text-sm font-medium text-primary">
+                      Title
+                      <Field name="title" className="input" placeholder="Product name" />
+                    </label>
+                    <label className="flex flex-col gap-2 text-sm font-medium text-primary">
+                      Price
+                      <Field name="price" className="input" type="number" placeholder="Write Product price here..." />
+                    </label>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-6">
+                    <label className="flex flex-col gap-2 text-sm font-medium text-primary">
+                      Available quantity
+                      <Field name="available_qty" className="input" type="number" />
+                    </label>
+                    <label className="flex flex-col gap-2 text-sm font-medium text-primary">
+                      Rate
+                      <Field name="rate" className="input" type="number" placeholder="Write Product rate here..." />
+                    </label>
+                  </div>
+
                   <label className="flex flex-col gap-2 text-sm font-medium text-primary">
-                    Title
-                    <Field name="title" className="input" placeholder="Product name" />
+                    Details
+                    <Field as="textarea" name="details" className="input h-40 resize-none overflow-y-auto" placeholder="Write Product Details here..."/>
                   </label>
-                  <label className="flex flex-col gap-2 text-sm font-medium text-primary">
-                    Price
-                    <Field name="price" className="input" type="number" />
-                  </label>
-                </div>
 
-                <div className="grid grid-cols-2 gap-6">
-                  <label className="flex flex-col gap-2 text-sm font-medium text-primary">
-                    Slug
-                    <Field name="slug" className="input" />
-                  </label>
-                  <label className="flex flex-col gap-2 text-sm font-medium text-primary">
-                    Available quantity
-                    <Field name="available_quantity" className="input" type="number" />
-                  </label>
-                </div>
+                  {/* images */}
+                  <div className="border-2 h-fit border-dashed border-border rounded-lg p-10 flex flex-col items-center justify-center gap-4 bg-gray-50">
 
-                <label className="flex flex-col gap-2 text-sm font-medium text-primary">
-                  Details
-                  <Field as="textarea" name="details" className="input h-40 resize-none overflow-y-auto" />
-                </label>
+                    <input type="file" multiple id="img-upload" className="hidden"  accept="image/*" onChange={handleFileChange} />
+                    <label htmlFor="img-upload" className="cursor-pointer bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold">
+                        + Add Media (Images)
+                    </label>
 
-                <div className="border-2 h-60 border-dashed border-border rounded-lg p-10 flex flex-col items-center justify-center gap-4 bg-gray-50">
-                   <input 
-                    type="file" multiple id="img-upload" className="hidden" 
-                    onChange={(e) => setFieldValue("images", Array.from(e.target.files))}
-                   />
-                   <label htmlFor="img-upload" className="cursor-pointer bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold">
-                      + Add Media (Images)
-                   </label>
-                   {values?.images?.length > 0 && <p className="text-xs text-gray-500">{values.images.length} files selected</p>}
-                </div>
-              </div>
-
-              <div className="col-span-4 space-y-6 bg-gray-50 p-6 rounded-xl border border-border">
-                
-                {/* Stock & Category */}
-                <label className="flex flex-col gap-2 text-sm font-medium text-primary">
-                  Stock Status
-                  <Field as="select" name="stock_status" className="input">
-                    <option value="in_stock">In Stock</option>
-                    <option value="out_of_stock">Out of Stock</option>
-                  </Field>
-                </label>
-
-                <label className="flex flex-col gap-2 text-sm font-medium text-primary">
-                  Category
-                  <Field as="select" name="category" className="input">
-                    <option value="">Select Category</option>
-                    {categories.map(cat => (
-                      <option key={cat.id} value={cat.documentId}>{cat.name}</option>
-                    ))}
-                  </Field>
-                </label>
-
-                {/* Colors Section */}
-                <div className="space-y-3">
-                    <span className="text-sm font-bold text-primary block border-b pb-2">Add New Color</span>
-                    <div className="grid grid-cols-2 gap-2">
-                    <input type="text" className="input h-9 text-[10px]" placeholder="Color Name (Red)" />
-                    <input type="text" className="input h-9 text-[10px]" placeholder="HEX (#FF0000)" />
+                  {/* ✅ الصور الموجودة على Strapi */}
+                  {existingImages.length > 0 && (
+                    <div className="w-full">
+                      <p className="text-xs text-gray-400 mb-2">Existing Images</p>
+                      <div className="flex flex-wrap gap-3">
+                        {existingImages.map((img) => (
+                          <div key={img.id} className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
+                            <img src={domain + img.url} alt={img.name} className="w-full h-full object-cover" />
+                            <button
+                              type="button"
+                              onClick={() => removeExistingImage(img.id)}
+                              className="absolute top-0 right-0 bg-red-500 text-white rounded-bl-lg p-0.5"
+                            >
+                              <IoIosClose size={16} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <input type="text" className="input h-9 text-[10px]" placeholder="Slug (red-color)" />
-                    
-                    <button type="button" className="w-full py-2 bg-primary text-white rounded-md text-xs font-bold hover:bg-primary/90 transition-colors cursor-pointer">
-                    + Add Color to System
-                    </button>
-                  <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
-                    {/* Placeholder للـ Checkboxes */}
-                    {
-                        colors.map( (c) => (
-                            <label key={c.documentId} className="flex items-center gap-2 bg-white border border-border px-2 py-1 rounded text-xs cursor-pointer">
-                                <Field type="checkbox" name="colors" value={c.slug} />
-                                 {c.slug}
+                  )}
+
+
+
+                     {/* Preview selected images */}
+                    {previewUrls.length > 0 && (
+                      <div className="flex flex-wrap gap-3 w-full mt-2">
+                        {previewUrls.map((url, index) => (
+                          <div key={index} className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
+                            <img src={url} alt={`preview-${index}`} className="w-full h-full object-cover" />
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              className="absolute top-0 right-0 bg-red-500 text-white rounded-bl-lg p-0.5"
+                            >
+                              <IoIosClose size={16} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                  )}
+
+                  </div>
+                </div>
+
+                <div className="col-span-4 space-y-6 bg-gray-50 p-6 rounded-xl border border-border">
+                  
+                  {/* Stock & Category */}
+                  <label className="flex flex-col gap-2 text-sm font-medium text-primary">
+                    Stock Status
+                    <Field as="select" name="stock_status" className="input">
+                      <option value="IN STOCK">IN STOCK</option>
+                      <option value="OUT OF STOCK">OUT OF STOCK</option>
+                    </Field>
+                  </label>
+
+                  <label className="flex flex-col gap-2 text-sm font-medium text-primary">
+                    Category
+                    <Field as="select" name="category" className="input">
+                      <option value="">Select Category</option>
+                      {categories.map(cat => (
+                        <option key={cat.documentId} value={cat.documentId}>{cat.name}</option>
+                      ))}
+                    </Field>
+                  </label>
+
+                  {/* Colors Section */}
+
+                  {
+                    (selectedProduct?.colors.length > 0 || selectedProduct === null) && (
+                      <div className="space-y-3">
+                          <span className="text-sm font-bold text-primary block border-b pb-2">Add New Color</span>
+                          <div className="grid grid-cols-2 gap-2">
+                            <input onChange={ (e) => setNewColorData({...newColorData, name:e.target.value})} name="name" type="text" value={newColorData.name} className="input h-9 text-[10px]" placeholder="Color Name (Red)" />
+                            <input onChange={ (e) => setNewColorData({...newColorData, hex_code:e.target.value})} name="hex_code" type="text" value={newColorData.hex_code}  className="input h-9 text-[10px]" placeholder="HEX (#FF0000)" />
+                          </div>
+                          <input onChange={ (e) => setNewColorData({...newColorData, slug:e.target.value})} name="slug" type="text" value={newColorData.slug}  className="input h-9 text-[10px]" placeholder="Slug (red)" />
+                          
+                          <button onClick={() => addNewColorToSystem()} type="button" className="w-full py-2 bg-primary text-white rounded-md text-xs font-bold hover:bg-primary/90 transition-colors cursor-pointer">
+                            + Add Color to System
+                          </button>
+                        <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
+                          {
+                              colors.map( (c) => (
+                                  <label key={c.documentId} className="relative flex items-center gap-2 bg-white border border-border pl-2 pr-2.5 py-1 rounded text-xs cursor-pointer">
+                                      <Field type="checkbox" name="colors" value={c.documentId} />
+                                      {c.slug}
+                                  <div className="absolute -top-1.5 -right-1.5">
+                                    <IoIosClose onClick={() => removeColorFromSystem(c.documentId)} size={"20"} className="text-red-500" />
+                                  </div>
+                                  </label>
+                              ))
+                          }
+                        </div>
+                      </div>
+                    )
+                  }
+
+                  {/* Sizes Section */}
+                  {
+                    (selectedProduct?.sizes.length > 0 || selectedProduct === null) && (
+                      <div className="space-y-3 pt-2">
+                          <span className="text-[11px] font-bold text-primary uppercase tracking-wider block border-b pb-2">New Size Entry</span>
+                          <div className="space-y-2">
+                              <div className="grid grid-cols-2 gap-2">
+                                  <input onChange={ (e) => setNewSizeData({...newSizeData, size_value:e.target.value})} name="size_value" value={newSizeData.size_value} type="text" className="input h-9 text-[11px]" placeholder="Value (e.g. XL)" />
+                                  <input onChange={ (e) => setNewSizeData({...newSizeData, slug:e.target.value})} name="slug" value={newSizeData.slug} type="text" className="input h-9 text-[11px]" placeholder="Slug(xl)" />
+                              </div>
+                              <button onClick={() => addNewSizeToSystem()} type="button" className="w-full py-2 bg-primary text-white rounded text-xs font-bold hover:bg-primary/90 transition-colors cursor-pointer">
+                                  + Add Size to System
+                              </button>
+                          </div>
+                        <div className="flex flex-wrap gap-2">
+                          {sizes.map(s => (
+                            <label key={s.documentId} className="cursor-pointer">
+                              <Field type="checkbox" name="sizes" value={s.documentId} className="hidden peer" />
+                              <div className="relative w-9 h-9 flex items-center justify-center border border-border rounded bg-white text-xs font-bold peer-checked:bg-primary peer-checked:text-white transition-all">
+                                {s.slug}
+                                <div className="absolute -top-1.5 -right-1.5">
+                                  <IoIosClose onClick={() => removeSizeFromSystem(s.documentId)} size={"20"} className="text-red-500" />
+                                </div>
+                              </div>
                             </label>
-                        ))
-                    }
-                  </div>
-                </div>
-
-                {/* Sizes Section */}
-                <div className="space-y-3 pt-2">
-                    <span className="text-[11px] font-bold text-primary uppercase tracking-wider block border-b pb-2">New Size Entry</span>
-                    <div className="space-y-2">
-                        <div className="grid grid-cols-2 gap-2">
-                            <input type="text" className="input h-9 text-[11px]" placeholder="Value (e.g. XL)" />
-                            <input type="text" className="input h-9 text-[11px]" placeholder="Slug" />
+                          ))}
                         </div>
-                        <button type="button" className="w-full py-2 bg-primary text-white rounded text-xs font-bold cursor-pointer">
-                            Create & Link Size
-                        </button>
-                    </div>
-                  <div className="flex flex-wrap gap-2">
-                    {sizes.map(s => (
-                      <label key={s.documentId} className="cursor-pointer">
-                        <Field type="checkbox" name="sizes" value={s.size_value} className="hidden peer" />
-                        <div className="w-9 h-9 flex items-center justify-center border border-border rounded bg-white text-xs font-bold peer-checked:bg-primary peer-checked:text-white transition-all">
-                          {s.slug}
-                        </div>
-                      </label>
-                    ))}
+                      </div>
+                    )
+                  }
+
+                  {/* Checkboxes */}
+                  <div className="flex flex-col gap-4 pt-4 border-t border-border">
+                    <label className="flex items-center gap-3 cursor-pointer">
+                        <Field type="checkbox" name="isBestSelling" className="w-4 h-4" />
+                        <span className="text-sm font-medium">Best Selling</span>
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer">
+                        <Field type="checkbox" name="isFeatured" className="w-4 h-4" />
+                        <span className="text-sm font-medium">Featured Product</span>
+                    </label>
                   </div>
+
+                  <button disabled={uploading} type="submit" className="w-full py-3 bg-primary text-white font-bold rounded shadow-lg hover:opacity-90 transition-all mt-4 cursor-pointer">
+                      {uploading ? selectedProduct ? "Updating..." : "Uploading..." : selectedProduct ? "Update Product" : "Publish Product"}
+                  </button>
                 </div>
 
-                {/* Checkboxes */}
-                <div className="flex flex-col gap-4 pt-4 border-t border-border">
-                   <label className="flex items-center gap-3 cursor-pointer">
-                      <Field type="checkbox" name="isBestSelling" className="w-4 h-4" />
-                      <span className="text-sm font-medium">Best Selling</span>
-                   </label>
-                   <label className="flex items-center gap-3 cursor-pointer">
-                      <Field type="checkbox" name="isFeatured" className="w-4 h-4" />
-                      <span className="text-sm font-medium">Featured Product</span>
-                   </label>
-                </div>
-
-                <button type="submit" className="w-full py-3 bg-primary text-white font-bold rounded-lg shadow-lg hover:opacity-90 transition-all mt-4">
-                  {selectedProduct ? "Update Product" : "Publish Product"}
-                </button>
-              </div>
-
-            </Form>
-          )}
+              </Form>
         </Formik>
       </div>
     </div>
   );
 };
+

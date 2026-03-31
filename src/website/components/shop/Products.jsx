@@ -133,9 +133,20 @@ export const Products = () => {
             </div>
             <div className="products-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4">
               {
-                products.map( (product) => (
-                  <ProductCard key={product.documentId} product={product}/>
-                ))
+                products.length >  0 ? (
+                  products.map( (product) => (
+                    <ProductCard key={product.documentId} product={product}/>
+                  ))
+                ) : (
+                    <div className="col-span-full flex flex-col items-center justify-center py-20 px-4 text-center mt-10">
+                        <h3 className="text-sm md:text-xl font-bold text-gray-800 mb-2">
+                          No Products Founds
+                        </h3>
+                        <p className="text-xs md:text-sm text-text mx-auto mb-8">
+                          We couldn't find any products matching your current filters.
+                        </p>
+                    </div>
+                )
               }
             </div>
             <div className="pagination w-full flex items-center justify-center mt-16">

@@ -1,6 +1,19 @@
-import { Badge } from "../../components/Badge"
+// import { Badge } from "../../components/Badge"
+import { useCutomersStore, useOrderStore } from "../../store"
 
 export const Dashboard = () => {
+  
+  const {ordersCount, allOrders} = useOrderStore()
+  const {customersCount} = useCutomersStore()
+
+  const totalSales = allOrders?.reduce((acc, order) => {
+    const orderTotal = order.cartItems?.reduce((sum, item) => {
+      return sum + (Number(item.price) * (item.qty || 1));
+    }, 0);
+    return acc + orderTotal;
+  }, 0);
+
+
   return (
     <>
       <div className="flex flex-col gap-6 p-10">
@@ -9,18 +22,18 @@ export const Dashboard = () => {
                 <div className="flex items-center justify-between">
                     <div className="">
                       <h4 className="text-primary text-base font-bold">Total Sales</h4>
-                      <span className="text-xs text-text uppercase">this month</span>
+                      {/* <span className="text-xs text-text uppercase">this month</span> */}
                     </div>
-                    <div className="total-price text-xl text-primary font-bold">$4,235</div>
+                    <div className="total-price text-xl text-primary font-bold">{totalSales} EGP</div>
                 </div>
             </div>
             <div className="box-total-sales shadow border border-border rounded-lg bg-white p-6">
                 <div className="flex items-center justify-between">
                     <div className="">
-                      <h4 className="text-primary text-base font-bold">Customers</h4>
-                      <span className="text-xs text-text uppercase">this month</span>
+                      <h4 className="text-primary text-base font-bold">Total Customers</h4>
+                      {/* <span className="text-xs text-text uppercase">this month</span> */}
                     </div>
-                    <div className="total-price text-xl text-primary font-bold">2,571</div>
+                    <div className="total-price text-xl text-primary font-bold">{customersCount}</div>
                 </div>
             </div>
             <div className="box-total-sales shadow border border-border rounded-lg bg-white p-6">
@@ -29,12 +42,12 @@ export const Dashboard = () => {
                       <h4 className="text-primary text-base font-bold">Orders</h4>
                       <span className="text-xs text-text uppercase">Monthly GOALS : 1,000</span>
                     </div>
-                    <div className="total-price text-xl text-primary font-bold">734</div>
+                    <div className="total-price text-xl text-primary font-bold">{ordersCount}</div>
                 </div>
             </div>
           </div>
           <div className="flex gap-6">
-              <div className="w-[382.66px] shadow border border-border rounded-lg bg-white p-6">
+              {/* <div className="w-[382.66px] shadow border border-border rounded-lg bg-white p-6">
                   <div className="mb-6">
                     <h4 className="text-primary text-base font-bold">Best Selling</h4>
                     <span className="text-xs text-text uppercase">this month</span>
@@ -47,7 +60,7 @@ export const Dashboard = () => {
                           <Badge title={"Essential Neutrals —  $740 Sales"} />
                       </div>
                   </div>
-              </div>
+              </div> */}
               <div className="grow flex flex-col shadow border border-border rounded-lg bg-white p-6 h-130">
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="text-lg font-bold text-primary">Recent Orders</h4>
@@ -63,42 +76,20 @@ export const Dashboard = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border overflow-auto">
-                        <tr className="text-gray-600 hover:bg-gray-50 transition">
-                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td className="px-6 py-4">20 Mar, 2023</td>
-                          <td className="px-6 py-4">$75.00</td>
-                          <td className="px-6 py-4">Processing</td>
-                        </tr>
-                        <tr className="text-gray-600 hover:bg-gray-50 transition">
-                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td className="px-6 py-4">20 Mar, 2023</td>
-                          <td className="px-6 py-4">$75.00</td>
-                          <td className="px-6 py-4">Processing</td>
-                        </tr>
-                        <tr className="text-gray-600 hover:bg-gray-50 transition">
-                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td className="px-6 py-4">20 Mar, 2023</td>
-                          <td className="px-6 py-4">$75.00</td>
-                          <td className="px-6 py-4">Processing</td>
-                        </tr>
-                        <tr className="text-gray-600 hover:bg-gray-50 transition">
-                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td className="px-6 py-4">20 Mar, 2023</td>
-                          <td className="px-6 py-4">$75.00</td>
-                          <td className="px-6 py-4">Processing</td>
-                        </tr>
-                        <tr className="text-gray-600 hover:bg-gray-50 transition">
-                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td className="px-6 py-4">20 Mar, 2023</td>
-                          <td className="px-6 py-4">$75.00</td>
-                          <td className="px-6 py-4">Processing</td>
-                        </tr>
-                        <tr className="text-gray-600 hover:bg-gray-50 transition">
-                          <td className="px-6 py-4 font-medium text-gray-800">Mens Black T-Shirts</td>
-                          <td className="px-6 py-4">20 Mar, 2023</td>
-                          <td className="px-6 py-4">$75.00</td>
-                          <td className="px-6 py-4">Processing</td>
-                        </tr>
+
+
+                        {
+                          allOrders.slice(0,7).map( (order) => (
+                            order.cartItems.map( item => (
+                              <tr className="text-gray-600 hover:bg-gray-50 transition">
+                                <td className="px-6 py-4 font-medium text-gray-800">{item.title}</td>
+                                <td className="px-6 py-4">{new Date(order.createdAt).toLocaleDateString('en-US')}</td>
+                                <td className="px-6 py-4">{item.qty * item.price} EGP</td>
+                                <td className="px-6 py-4">{order.order_status}</td>
+                              </tr>
+                            ))
+                          ))
+                        }
                         </tbody>
                     </table>
                   </div>

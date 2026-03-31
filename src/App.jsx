@@ -26,7 +26,7 @@ import { AddProduct } from './admin/pages/AddProduct'
 import { Toaster } from 'react-hot-toast'
 import { OrderSuccess } from './website/pages/OrderSuccess'
 import { OrderFailed } from './website/pages/OrderFailed'
-import { domain, useAuthStore, useCategoriesStore } from './store'
+import { domain, useAuthAdmin, useAuthStore, useCategoriesStore, useCutomersStore, useOrderStore } from './store'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { About } from './website/pages/About'
@@ -34,11 +34,21 @@ import { Contact } from './website/pages/Contact'
 
 
 export const App = () => {
-
+	const {adminToken} = useAuthAdmin()
 	const {fetchCategories} = useCategoriesStore()
+	const {fetchAllUsers} = useCutomersStore()
+	const {fetchAllOrders} = useOrderStore()
+
 	useEffect( () => {
-        fetchCategories()    
+        fetchCategories() 
     } ,[])
+
+	useEffect( () => {
+		if(adminToken) { 
+			fetchAllUsers(adminToken, "")
+			fetchAllOrders(adminToken, "" , "all")
+		}
+	} ,[adminToken])
 
 	// Email Sync
 	const {user, token, setUpdateUser} = useAuthStore()

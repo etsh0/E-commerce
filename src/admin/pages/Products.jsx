@@ -1,30 +1,22 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { SearchBar } from "../../components/SearchBar"
 import { ProductRow } from "../components/ProductRow"
-import { useEffect, useState } from "react"
-import { domain } from "../../store"
-import axios from "axios"
+import { useEffect } from "react"
+import { useProductStore } from "../../store"
 
 export const Products = () => {
-  const [allProducts , setAllProducts] = useState([])
+  const {fetchAllProducts, products, setSelectedProduct,resetSelectedProduct} = useProductStore()
+  const navigate = useNavigate()
   
-  const fetchAllProducts = async (value) => {
-    let url = domain + '/api/products'
-    try {
-      const res = await axios.get(url , {
-        params: {
-          populate: '*',
-          filters: {
-            title: {
-               $containsi : value
-            }
-          }
-        }
-      })
-      setAllProducts(res.data.data)
-    } catch (error) {
-      console.log(error);
-    }
+
+  const handleAddProduct = () => {
+    resetSelectedProduct()
+    navigate("/admin/products/add-product")
+  }
+
+  const handleEditProduct = (product) => {
+    setSelectedProduct(product)
+    navigate("/admin/products/add-product")
   }
 
   useEffect( () => {
@@ -39,7 +31,7 @@ export const Products = () => {
             <h4 className="text-lg text-primary font-semibold">Products</h4>
             <div className="flex gap-4">
                 <SearchBar fetchAllProducts={ (value) => fetchAllProducts(value)}/>
-                <NavLink to={"add-product"} className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer">Add Product</NavLink>
+                <NavLink to={"add-product"} onClick={handleAddProduct} className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer">Add Product</NavLink>
             </div>
           </div>
           <div className="overflow-y-auto grow mt-8">
@@ -57,8 +49,8 @@ export const Products = () => {
                 </thead>
                 <tbody className="divide-y divide-border overflow-auto">
                   {
-                    allProducts.map( (product) => (
-                      <ProductRow key={product.documentId} product={product} />
+                    products.map( (product) => (
+                      <ProductRow key={product.documentId} product={product} onEdit={() => handleEditProduct(product)}/>
                     ))
                   }
                 </tbody>

@@ -1,42 +1,10 @@
-import { useEffect, useState } from "react"
 import { SearchBar } from "../../components/SearchBar"
 import { CustomerRow } from "../components/CustomerRow"
-import axios from "axios"
-import { domain, useAuthAdmin } from "../../store"
+import { useAuthAdmin, useCutomersStore } from "../../store"
 
 export const Customers = () => {
   const {adminToken} = useAuthAdmin()
-  const [customers , setCustomers] = useState([])
-
-  const fetchAllUsers = async (token, value) => {
-    let url = domain + '/api/users'
-    try {
-      const res = await axios.get(url , {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        params: {
-          filters: {
-            $or: [
-              {username: {$containsi: value}},
-              {email: {$containsi: value}},
-            ]
-          }
-        }
-      })
-      
-      const customersOnly = res.data.filter( user => user.isAdmin !== true )
-      setCustomers(customersOnly)
-      
-    } catch (error) {
-      console.log(error);
-      
-    }
-  }
-
-  useEffect( () => {
-    fetchAllUsers(adminToken, "")
-  } ,[])
+  const {fetchAllUsers,customers} = useCutomersStore()
   
   return (
     <>
