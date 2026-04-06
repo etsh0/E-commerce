@@ -1,5 +1,5 @@
 import axios from 'axios';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -20,7 +20,6 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 // product store dashoard (add/edit product) and fetch all products 
 export const useProductStore = create( (set) => ({
@@ -344,10 +343,10 @@ export const useWishlistStore = create(
         const isExisting = state.wishList?.some((item) => item.id === product.id);
 
         if (!isExisting) {
-          toast.success("Adding to wishlist...")
+          toast.success("Product Adding to wishlist")
           return { wishList: [...state.wishList, product] };
         } else {
-            toast.error("Removed from wishlist") 
+            toast.error("Product Removed from wishlist") 
           return {wishList: state.wishList.filter( (item) => item.id !== product.id )}
         }
       }),
@@ -385,7 +384,8 @@ export const useOrderStore = create( (set) => ({
                         user_id : {
                             $eq : userId
                         }
-                    }
+                    },
+                    sort: 'createdAt:desc',
                 },
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -499,3 +499,9 @@ export const useCutomersStore = create((set) => ({
   }
 }));
 
+// ui store (loading state)
+export const useUiStore = create((set) => ({
+    isAppLoading: true,   
+    isProductsLoading: false, 
+    setLoading: (key, value) => set(() => ({ [key]: value })),
+}))

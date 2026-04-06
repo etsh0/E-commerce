@@ -2,10 +2,13 @@ import { Field, Form, Formik } from "formik"
 import { AccountHeader } from "../components/AccountHeader"
 import { domain, useAuthStore } from "../../store"
 import axios from "axios"
-import toast from "react-hot-toast"
+import { useState } from "react"
+import { toast } from "sonner"
+import { Spinner } from "../../components/Spinner"
 
 export const AccountPassword = () => {
     const {user, token} = useAuthStore()
+    const [isSubmitting, setIsSubmitting] = useState(false);
     
     const initialValues = {
         password:'',
@@ -23,7 +26,7 @@ export const AccountPassword = () => {
             toast.error("Password must be at least 8 characters.");
             return;
         }
-
+        setIsSubmitting(true)
         let url = domain + `/api/users/${user.id}`
         try {
             const res = await axios.put(url , {password: values.password}, {
@@ -32,6 +35,7 @@ export const AccountPassword = () => {
                 }
             })
             resetForm()
+            setIsSubmitting(false)
             toast.success("Password changed successfully! 🔐");
             
         } catch (error) {
@@ -54,7 +58,11 @@ export const AccountPassword = () => {
                         Confirm Password
                         <Field name='confirmPassword' className="input" type="password" required />
                     </label>
-                    <button type="submit" className="bg-primary text-white px-4 py-2 rounded text-sm font-medium cursor-pointer">Change Password</button>
+                    <button type="submit" className="bg-primary text-white px-4 py-2 rounded text-sm font-medium cursor-pointer">
+                        {
+                           isSubmitting ? <Spinner /> : "Change Password" 
+                        }
+                    </button>
                 </Form>
             </Formik>
         </div>

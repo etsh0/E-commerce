@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import { domain, useReviewsCounter } from './../store/index';
 import  axios  from 'axios';
 import toast from "react-hot-toast"
+import { Spinner } from "./Spinner"
 
 export const Reviews = () => {
 
@@ -17,6 +18,7 @@ export const Reviews = () => {
   const [allReviews, setAllReviews] = useState([])
   const {reviewsCount, setReviewsCount} = useReviewsCounter()
   const [selectedRating, setSelectedRating] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
 
   const initialValues = {
@@ -69,10 +71,11 @@ export const Reviews = () => {
         rating : selectedRating
       }
     }
-
+    setIsSubmitting(true)
     let url = domain + '/api/reviews?populate=*'
     try {
       const res = await axios.post(url, reviewData)
+      setIsSubmitting(false)
       toast.success("Review submitted!")
       resetForm()
       fetchReviews()
@@ -152,7 +155,11 @@ export const Reviews = () => {
                           ))
                         }
                       </div>
-                      <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">Submit Your Review</button>
+                      <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">
+                        {
+                          isSubmitting ? <Spinner /> : "Submit Review"
+                        }
+                      </button>
                     </Form>
                   </Formik>
               </div>

@@ -5,13 +5,19 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { BsQuestionCircle } from 'react-icons/bs';
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import noImg from "../../assets/noImg.png"
+import { Spinner } from "../../components/Spinner";
+
+
+
 export const CheckoutPage = () => {
 
         const {cart, getSubTotal, shippingPrice} = useCartStore()
         const {token, user} = useAuthStore()
         const subTotal = getSubTotal()
         const navigate = useNavigate()
+        const [isSubmitting, setIsSubmitting] = useState(false);
 
         useEffect( () => {
             if(!token) {
@@ -58,13 +64,14 @@ export const CheckoutPage = () => {
                 }
             }
             let url = domain + '/api/orders'
+            setIsSubmitting(true)
             try {
                 const res = await axios.post(url, orderData, {
                     headers: {
                         'Authorization' : `Bearer ${token}`
                     }
                 })
-                console.log(res.data);
+                setIsSubmitting(false)
                 navigate("/order-success" , { state: { fromCheckout: true } })
                 
             } catch (error) {
@@ -154,8 +161,16 @@ export const CheckoutPage = () => {
                                 <ErrorMessage name="phone" component="span" className="text-red-500 text-xs px-1" />
                             </div>
                     </section>
-                    <button type="submit" disabled={cart.length === 0} className="disabled:bg-gray-600 disabled:cursor-not-allowed w-full bg-primary text-white p-4 rounded-md font-bold hover:bg-gray-800 transition-colors mt-4 cursor-pointer">
-                        Place Order
+                    <button type="submit" disabled={cart.length === 0} className="disabled:bg-gray-600 disabled:cursor-not-allowed w-full bg-primary text-white p-4 rounded-md font-bold hover:bg-gray-800 transition-colors mt-4 cursor-pointer flex items-center justify-center">
+                        {
+                            isSubmitting ? 
+                            <>
+                                <Spinner />
+                                <span className="ml-2">Placing Order...</span>
+                            </> 
+                            
+                            : "Place Order"
+                        }
                     </button>
                     </Form>
                 </Formik>
@@ -172,7 +187,7 @@ export const CheckoutPage = () => {
                             <div key={order.documentId} className="order-item flex items-center justify-between">
                                 <div className="flex gap-4">
                                     <div className="image shadow bg-gray-300 relative">
-                                        <img className="w-17 sm:w-20 aspect-square object-contain" src={domain + order.images[0].url} alt="" />
+                                        <img className="w-17 sm:w-20 aspect-square object-contain" src={order?.images?.length > 0 ? domain + order.images[0].url : noImg} alt="" />
                                         <span className="qty absolute -top-2 -right-2 bg-black text-white w-5 h-5 rounded-full flex items-center justify-center">{order.qty}</span>
                                     </div>
                                     <div className="flex items-center gap-2">

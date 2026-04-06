@@ -23,14 +23,15 @@ import { AdminReviews } from './admin/pages/AdminReviews'
 import { LoginPage } from './admin/pages/LoginPage'
 import { Categories } from './admin/pages/Categories'
 import { AddProduct } from './admin/pages/AddProduct'
-import { Toaster } from 'react-hot-toast'
 import { OrderSuccess } from './website/pages/OrderSuccess'
 import { OrderFailed } from './website/pages/OrderFailed'
-import { domain, useAuthAdmin, useAuthStore, useCategoriesStore, useCutomersStore, useOrderStore } from './store'
+import { domain, useAuthAdmin, useAuthStore, useCategoriesStore, useCutomersStore, useOrderStore, useUiStore } from './store'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { About } from './website/pages/About'
 import { Contact } from './website/pages/Contact'
+import { GlobalLoader } from './components/GlobalLoader'
+import { Toaster } from 'sonner'
 
 
 export const App = () => {
@@ -38,11 +39,25 @@ export const App = () => {
 	const {fetchCategories} = useCategoriesStore()
 	const {fetchAllUsers} = useCutomersStore()
 	const {fetchAllOrders} = useOrderStore()
-
+	const {user, token, setUpdateUser} = useAuthStore()
+	const{isAppLoading, setLoading} = useUiStore()
+	
 	useEffect( () => {
-        fetchCategories() 
+		const startAppLoading = () => { 
+			try {
+				fetchCategories() 
+				setTimeout( () => {
+					setLoading("isAppLoading", false)
+				} ,1500)
+			} catch (error) {
+				setLoading("isAppLoading", false)
+				console.log(error);
+			}
+		}
+		startAppLoading()
     } ,[])
 
+	// dashboard data fetch
 	useEffect( () => {
 		if(adminToken) { 
 			fetchAllUsers(adminToken, "")
@@ -51,8 +66,6 @@ export const App = () => {
 	} ,[adminToken])
 
 	// Email Sync
-	const {user, token, setUpdateUser} = useAuthStore()
-
 	useEffect( () => {
 
 			if(token) {
@@ -79,8 +92,17 @@ export const App = () => {
 
   return (
 	<>
-		<div className='w-full h-dvh'>
-			<Toaster position="top-center" />
+		{
+			isAppLoading && (
+				<div className='fixed inset-0 bg-white z-9999 flex flex-col items-center justify-center'>
+					<GlobalLoader />
+				</div>
+			)
+		}
+		{/* i will use framer motion here*/}
+		<div className={`w-full h-dvh ${isAppLoading ? "hidden" : "block"}`}> 
+			{/* sonner library */}
+			<Toaster richColors position="top-left" />
 			<BrowserRouter>
 				<Routes>
 					// website layouts

@@ -25,7 +25,6 @@ export const MenuBar = () => {
           </div>
           <div className="flex flex-col mt-10 p-8">
               <h2 className="text-3xl font-medium mb-10 uppercase">Menu</h2>
-              {/* <img className="w-40 mb-10" src={Logo} alt="" /> */}
               <div className="links flex flex-col gap-8">
                 {
                   navLinks.map((link,idx) => (

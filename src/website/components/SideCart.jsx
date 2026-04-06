@@ -1,6 +1,6 @@
 import { MdClose } from "react-icons/md"
-import { useCartStore, useDrawerStore } from "../../store"
-import { Link, useNavigate } from "react-router-dom"
+import { useCartStore, useDrawerStore, useUiStore } from "../../store"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { SideCartItem } from "./SideCartItem"
 
@@ -9,6 +9,8 @@ export const SideCart = () => {
     const {isSideCartOpen,CloseSideCart} = useDrawerStore()
     const {cart, getSubTotal} = useCartStore()
     const navigate = useNavigate()
+    const location = useLocation();
+    const{setLoading} = useUiStore()
 
     const subTotal = getSubTotal()
     
@@ -23,6 +25,18 @@ export const SideCart = () => {
           document.body.style.overflow = 'auto';
         }
     } ,[isSideCartOpen])
+
+    const handleViewCart = () => {
+
+        if (location.pathname === '/cart') {
+            CloseSideCart();
+            return; 
+        }
+        
+        setLoading("isAppLoading", true)
+        CloseSideCart()
+        navigate("/cart")
+    }
   return (
     <>
         <div className={`overlay fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${isSideCartOpen ? "opacity-100 visible backdrop-blur-xs" : "opacity-0 invisible"}`} onClick={CloseSideCart}></div>
@@ -37,7 +51,6 @@ export const SideCart = () => {
                     :(cart?.map( (item) => (
                         <SideCartItem key={item.documentId} item={item}/>
                     ))) 
-
                 }
             </div>
             <div className="px-8 pt-4 pb-6 border-t-2 border-border">
@@ -45,9 +58,7 @@ export const SideCart = () => {
                     <span>Total</span>
                     <span>{subTotal} EGP</span>
                 </div>
-                <Link to={"/cart"}>
-                    <button className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mb-8" onClick={CloseSideCart}>View Cart</button>
-                </Link>
+                <button className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mb-8" onClick={handleViewCart}>View Cart</button>
                 <button 
                     disabled={cart.length === 0} 
                     onClick={() => {

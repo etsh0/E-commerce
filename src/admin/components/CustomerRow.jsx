@@ -1,6 +1,6 @@
 import axios from "axios"
 import { domain, useAuthAdmin } from "../../store"
-import toast from "react-hot-toast"
+import { toast } from "sonner"
 
 export const CustomerRow = ({user,fetchCustomers}) => {
 

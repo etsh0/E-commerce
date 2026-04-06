@@ -9,11 +9,12 @@ import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io"
 import { NavLink, Outlet, useParams } from "react-router-dom"
 import { NewsLetter } from "../../components/NewsLetter"
 import { ImgSwiper } from "../../components/ImgSwiper"
-import { domain, useCartStore, useDrawerStore, useFilterStore, useReviewsCounter, useWishlistStore } from "../../store"
+import { domain, useCartStore, useDrawerStore, useFilterStore, useReviewsCounter, useUiStore, useWishlistStore } from "../../store"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { ProductCard } from "../../components/ProductCard"
-import toast from "react-hot-toast"
+import { Spinner } from "../../components/Spinner"
+import { toast } from "sonner"
 
 export const ProductDetails = () => {
     const params = useParams()
@@ -25,6 +26,9 @@ export const ProductDetails = () => {
     const {wishList, setAddToWishList} = useWishlistStore()
     const {reviewsCount, setReviewsCount} = useReviewsCounter()
     const [similarProducts, setSimilarProducts] = useState()
+    const {setLoading} = useUiStore()
+    const [isAdding, setIsAdding] = useState(false);
+    const [isWishloading, setIsWishLoading] = useState(false);
 
     const isInwishList = wishList.some( (item) => item.id === product.id)
 
@@ -51,6 +55,8 @@ export const ProductDetails = () => {
             }
             catch(error) {
                 console.log(error);
+            }finally {
+                setLoading("isAppLoading", false)
             }
         }
 
@@ -94,12 +100,28 @@ export const ProductDetails = () => {
             toast.error("Please select size and color first!");
             return;
         }
-        setAddToCart( product , productSize, color_hex_code, qty)
-        setQty(1)
-        resetProductSelection()
-        openSideCart()
+
+        setIsAdding(true)
+
+        setTimeout(() => {
+            setAddToCart(product, productSize, color_hex_code, qty);
+            setQty(1);
+            resetProductSelection();
+
+            setIsAdding(false);     
+            openSideCart();
+            toast.success("Product added to cart!");
+        }, 500);
     }
 
+    const handleAddToWishList = (product) => {
+        setIsWishLoading(true)
+
+        setTimeout( () => {
+            setIsWishLoading(false)
+            setAddToWishList(product)
+        }, 500)
+    } 
 
 
   return (
@@ -134,11 +156,24 @@ export const ProductDetails = () => {
                         <Quantity qty={qty} Increment={() => setQty( q => q + 1)} Decrement={() => setQty(Math.max(1, qty - 1))}/>   
                     </div>
                     <div className="add-to-cart mt-8 flex items-center gap-4">
-                        <button onClick={() => {handleAddToCart()}} className="bg-primary flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap">Add to cart</button>
-                        <div onClick={() => setAddToWishList(product)} className="wishlist border-2 border-border px-2 py-2 rounded cursor-pointer">
+                        <button onClick={() => {handleAddToCart()}}  className={`${isAdding ? "bg-primary/80" : "bg-primary"} flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap`}>
                             {
-                                isInwishList ?  <IoMdHeart className="text-primary" size={"22px"} /> : <IoMdHeartEmpty size={"22px"} />
+                                isAdding ? 
+                                <>
+                                    <Spinner />
+                                    <span className="ml-2">Adding...</span>
+                                </> 
+                                
+                                : "Add to Cart"
                             }
+                        </button>
+                        <div onClick={() => handleAddToWishList(product)} className="wishlist border-2 border-border px-2 py-2 rounded cursor-pointer flex items-center justify-center min-w-10 min-h-10">
+   
+                            {!isWishloading && (
+                                isInwishList ? <IoMdHeart className="text-primary" size={"22px"} /> : <IoMdHeartEmpty size={"22px"} />
+                            )}
+
+                            {isWishloading && <Spinner className="text-primary" />}
                         </div>
                     </div>
                     <p className="text-text text-sm mt-4">— Free shipping on orders 100+</p>

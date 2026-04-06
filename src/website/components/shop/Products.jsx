@@ -3,10 +3,11 @@ import { ProductCard } from './../../../components/ProductCard';
 import PaginationRounded from "./PaginationRounded";
 import { IoFilter } from "react-icons/io5";
 import { SideFilters } from "./SideFilters";
-import { domain, useDrawerStore, useFilterStore } from "../../../store";
+import { domain, useDrawerStore, useFilterStore, useUiStore } from "../../../store";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
+import { ProductsLoader } from "../../../components/ProductsLoader";
 
 
 export const Products = () => {
@@ -15,11 +16,13 @@ export const Products = () => {
   const [products, setProducts] = useState([])
   const {page , selectedCategories, setSelectedCategories, selectedColors, setSelectedColors, selectedSizes, setSelectedSizes, priceRange, sortBy} = useFilterStore()
   const [pageCount, setPageCount] = useState(1)
+  const {isProductsLoading, setLoading} = useUiStore()
 
 
   useEffect( () => {
     let url = domain + '/api/products'
     const fetchProducts = async () => {
+        setLoading("isProductsLoading", true)
         try {
             const res = await axios.get(url , {
                 params: {
@@ -53,9 +56,9 @@ export const Products = () => {
                   },
                     sort : sortBy
                 }
-            })                    
+            })          
+            setLoading("isProductsLoading", false)          
             setProducts(res.data.data)    
-            
             setPageCount(res.data.meta.pagination.pageCount)
             
         }
@@ -69,7 +72,14 @@ export const Products = () => {
   
   return (
     <>
-        <div className='grow px-4 py-6 border border-border rounded shadow mb-32'>
+        <div className='grow px-4 py-6 border border-border rounded shadow mb-32 relative'>
+          {
+            isProductsLoading && (
+              <div className="absolute inset-0 z-50 flex justify-center pt-50 bg-white transition-all">
+                <ProductsLoader />
+              </div>
+            )
+          }
           {
             (selectedCategories.length > 0 || selectedColors.length > 0 || selectedSizes.length > 0)  && (
               <div className="apply-filter mb-6">

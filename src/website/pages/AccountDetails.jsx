@@ -1,11 +1,14 @@
 import { domain, useAuthStore } from "../../store"
 import { AccountHeader } from "../components/AccountHeader"
 import axios from "axios"
-import toast from "react-hot-toast"
 import { Field, Form, Formik } from "formik"
+import { useState } from "react"
+import { Spinner } from "../../components/Spinner"
+import { toast } from "sonner"
 
 export const AccountDetails = () => {
     const {user, setUpdateUser, token} = useAuthStore()
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const initialValues = {
         username: user?.username,
@@ -13,6 +16,7 @@ export const AccountDetails = () => {
     };
 
     const handleUpdateUserData = async (values) => {
+        setIsSubmitting(true)
         let url = domain + `/api/users/${user.id}`
         try {
             const res = await axios.put(url ,values, {
@@ -20,6 +24,7 @@ export const AccountDetails = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
+            setIsSubmitting(false)
             toast.success("Changes saved successfully! 🎉")
             setUpdateUser(res.data)
             
@@ -43,7 +48,11 @@ export const AccountDetails = () => {
                         Email
                         <Field name="email" className="input" type="email" />
                     </label>
-                    <button type="submit" className="bg-primary text-white px-4 py-2 rounded text-sm font-medium cursor-pointer">Save Changes</button>
+                    <button type="submit" className="bg-primary text-white px-4 py-2 rounded text-sm font-medium cursor-pointer flex items-center justify-center">
+                        {
+                            isSubmitting ? <Spinner /> : "Save Changes"
+                        }
+                    </button>
                 </Form>
             </Formik>
         </div>

@@ -328,7 +328,7 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                   {/* Colors Section */}
 
                   {
-                    (selectedProduct?.colors.length > 0 || selectedProduct === null) && (
+                    selectedProduct?.category.slug !== "perfumes" && (
                       <div className="space-y-3">
                           <span className="text-sm font-bold text-primary block border-b pb-2">Add New Color</span>
                           <div className="grid grid-cols-2 gap-2">
@@ -359,7 +359,7 @@ const handleSubmitProduct = async (values, { resetForm }) => {
 
                   {/* Sizes Section */}
                   {
-                    (selectedProduct?.sizes.length > 0 || selectedProduct === null) && (
+                    selectedProduct?.category.slug !== "perfumes"  && (
                       <div className="space-y-3 pt-2">
                           <span className="text-[11px] font-bold text-primary uppercase tracking-wider block border-b pb-2">New Size Entry</span>
                           <div className="space-y-2">

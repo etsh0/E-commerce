@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom"
 import { AccountHeader } from "../components/AccountHeader"
-import { domain, useWishlistStore } from "../../store"
+import { domain, useUiStore, useWishlistStore } from "../../store"
+import noImg from "../../assets/noImg.png"
 
 export const AccountWishlist = () => {
     const {wishList, removeWishListItem} = useWishlistStore()
+    const {setLoading} = useUiStore()
   return (
     <>
         <div className="">
@@ -16,7 +18,7 @@ export const AccountWishlist = () => {
                             <div key={product.documentId} className="order-item flex flex-col sm:flex-row gap-4 justify-between border-b-2 border-border pb-4">
                                 <div className="flex items-center gap-4">
                                     <div className="image bg-secondary">
-                                        <img className="aspect-square w-17 md:w-20 object-contain" src={domain + product.images[0].url} alt="" />
+                                        <img className="aspect-square w-17 md:w-20 object-contain" src={product?.images?.length > 0 ? domain + product.images[0].url : noImg} alt="" />
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <h3 className="text-xs md:text-sm font-medium text-primary line-clamp-1">{product.title}</h3>
@@ -26,7 +28,7 @@ export const AccountWishlist = () => {
                                 <div className="flex items-center justify-center gap-6">
                                     <span className="font-medium">${product.price}</span>
                                     <Link to={`/shop/product-details/${product.documentId}`}>
-                                        <button className="text-primary text-xs sm:text-sm border border-primary py-2 px-4 rounded font-semibold hover:bg-primary hover:text-white transition-colors duration-300 cursor-pointer whitespace-nowrap">View Item</button>
+                                        <button  onClick={() => setLoading("isAppLoading", true)} className="text-primary text-xs sm:text-sm border border-primary py-2 px-4 rounded font-semibold hover:bg-primary hover:text-white transition-colors duration-300 cursor-pointer whitespace-nowrap">View Item</button>
                                     </Link>
                                 </div>
                             </div>

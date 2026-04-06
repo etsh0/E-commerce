@@ -1,14 +1,21 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 import { SideAccount } from '../components/SideAccount'
 import { useEffect } from 'react'
-import { useAuthStore } from '../../store'
+import { useAuthStore, useUiStore } from '../../store'
 
 
 export const AccountLayout = () => {
 
   const navigate = useNavigate()
-
+  const {setLoading} = useUiStore() 
   const {token} = useAuthStore()
+
+  useEffect( () => {
+      const timer = setTimeout(() => {
+          setLoading("isAppLoading", false);
+      }, 800); 
+      return () => clearTimeout(timer);
+  } ,[])
 
   useEffect( () => {
     if(!token) {

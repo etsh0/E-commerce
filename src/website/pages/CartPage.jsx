@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom"
 import { OrderItem } from "../components/OrderItem"
-import { useCartStore } from "../../store"
+import { useCartStore, useUiStore } from "../../store"
+import { useEffect, useState } from "react"
+import { Spinner } from "../../components/Spinner"
 
 
 
@@ -9,7 +11,27 @@ export const CartPage = () => {
     const {cart, getSubTotal, shippingPrice} = useCartStore()
     const subTotal = getSubTotal()
     const navigate = useNavigate()
+    const { setLoading } = useUiStore();
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
 
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading("isAppLoading", false);
+        }, 800); 
+        return () => clearTimeout(timer);
+    }, []);
+
+
+
+    const handleCheckout = () => {
+        setIsCheckingOut(true);
+        
+        setTimeout(() => {
+            navigate("/checkout");
+        }, 400); 
+    };
   return (
     <>
         <div className='container flex flex-col xl:flex-row gap-20 py-10'>
@@ -42,8 +64,17 @@ export const CartPage = () => {
                         <span>Total</span>
                         <span>{cart.length > 0 ? shippingPrice + subTotal : 0} EGP</span>
                     </div>
-                    <button onClick={() => navigate("/checkout")} disabled={cart.length === 0} className="disabled:cursor-not-allowed bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap my-6">
-                        Checkout
+                    <button onClick={handleCheckout} disabled={cart.length === 0} className="disabled:cursor-not-allowed bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap my-6">
+                        {
+                            isCheckingOut ? 
+                            
+                            <>
+                                <Spinner />
+                                <span className="ml-2">Processing...</span>
+                            </> 
+                            
+                            : "Proceed to Checkout"
+                        }
                     </button>
                     <button className="flex justify-center text-primary self-center font-medium underline w-full">
                         <Link to={"/shop"}>

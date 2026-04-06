@@ -1,12 +1,17 @@
 import { NavLink } from "react-router-dom"
 import { AccountHeader } from "../components/AccountHeader"
-import { useAuthStore, useOrderStore } from "../../store"
+import { useAuthStore, useOrderStore, useUiStore } from "../../store"
 import { useEffect } from "react"
 import { domain } from './../../store/index';
+import noImg from "../../assets/noImg.png"
+
+
 export const AccountOrders = () => {
 
     const {fetchUserOrders, userOrders} = useOrderStore()
     const {user, token} = useAuthStore()
+    const {setLoading} = useUiStore()
+    
     useEffect( () => {        
         fetchUserOrders(user?.documentId , token)
     },[user , token])
@@ -68,7 +73,7 @@ export const AccountOrders = () => {
                                         
                                             <div className="flex items-center gap-4">
                                                 <div className="image bg-secondary rounded overflow-hidden">
-                                                    <img className="aspect-square w-16 md:w-20 object-contain" src={domain + item.images[0].url} alt={item.title} />
+                                                    <img className="aspect-square w-16 md:w-20 object-contain" src={item?.images?.length > 0 ? domain + item.images[0].url : noImg} alt={item.title} />
                                                 </div>
                                                 <div className="flex flex-col gap-1">
                                                     <h3 className="text-xs md:text-sm font-medium text-primary line-clamp-1">
@@ -80,7 +85,7 @@ export const AccountOrders = () => {
                                             </div>
 
                                             <NavLink to={`/shop/product-details/${item.documentId}`}>
-                                                <button className="text-primary text-[10px] sm:text-xs border border-primary py-1 px-3 rounded font-semibold hover:bg-primary hover:text-white transition-all cursor-pointer whitespace-nowrap">
+                                                <button onClick={() => setLoading("isAppLoading", true)} className="text-primary text-[10px] sm:text-xs border border-primary py-1 px-3 rounded font-semibold hover:bg-primary hover:text-white transition-all cursor-pointer whitespace-nowrap">
                                                     View Item
                                                 </button>
                                             </NavLink>

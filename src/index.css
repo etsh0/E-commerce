@@ -74,3 +74,48 @@
         flex-direction: row;
     }
 }
+
+
+/* global loader */
+@keyframes global-loading {
+  0% {
+    left: 0;
+    transform: translateX(0);
+  }
+  50% {
+    left: 100%;
+    transform: translateX(-100%);
+  }
+  100% {
+    left: 0;
+    transform: translateX(0);
+  }
+}
+
+.animate-global-loading {
+  animation: global-loading  1.2s ease-in-out infinite;
+}
+
+/* Products loader */
+.loader {
+ width: 50px;
+ height: 50px;
+}
+
+.loader::before {
+ content: "";
+ box-sizing: border-box;
+ position: absolute;
+ width: 50px;
+ height: 50px;
+ border-radius: 50%;
+ border-top: 2px solid #0E1422;
+ border-right: 2px solid transparent;
+ animation: spinner8217 0.8s linear infinite;
+}
+
+@keyframes spinner8217 {
+ to {
+  transform: rotate(360deg);
+ }
+}

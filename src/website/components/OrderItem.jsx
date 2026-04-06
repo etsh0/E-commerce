@@ -1,6 +1,7 @@
 import { domain, useCartStore } from "../../store"
 import { Quantity } from './Quantity'
 import { MdClose } from 'react-icons/md'
+import noImg from "../../assets/noImg.png"
 
 export const OrderItem = ({order}) => {
     const setUpdateCart = useCartStore(state => state.setUpdateCart);
@@ -10,7 +11,7 @@ export const OrderItem = ({order}) => {
         <div className="cart-item flex flex-col gap-4 justify-between w-full">
             <div className="flex items-center gap-8 md:gap-8">
                 <div className="image bg-secondary">
-                    <img className="w-15 md:w-18 aspect-square object-contain" src={domain + order.images[0].url} alt="" />
+                    <img className="w-15 md:w-18 aspect-square object-contain" src={order?.images?.length > 0 ? domain + order.images[0].url : noImg} alt="" />
                 </div>
                 <div>
                     <h3 className="text-sm md:text-base font-medium mb-2 line-clamp-1">{order?.title}</h3>
