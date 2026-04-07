@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { domain } from "../../../store";
 import { ProductCard } from "../../../components/ProductCard";
+import { ProductSkeletonCard } from "../../../components/ProductSkeletonCard";
+
 // swiper
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -12,9 +14,11 @@ import { Pagination, FreeMode, Autoplay } from 'swiper/modules';
 export const FeaturedLatest = () => {
     const [products, setProducts] = useState([]);
     const [activeTab, setActiveTab] = useState("latest"); 
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const fetchProducts = async () => {
+            setIsLoading(true)
             try {
                 const params = {
                     populate: "*",
@@ -33,6 +37,9 @@ export const FeaturedLatest = () => {
                 setProducts(res.data.data);
             } catch (error) {
                 console.error("Error:", error);
+            }
+            finally {
+                setIsLoading(false)
             }
         };
 
@@ -86,11 +93,22 @@ export const FeaturedLatest = () => {
                     modules={[FreeMode, Pagination, Autoplay]}
                     className="mySwiper pb-14!" 
                 >
-                    {products.map((product) => (
+                    {
+                        isLoading ? (
+                            Array.from({ length: 8 }).map((_, index) => (
+                                <SwiperSlide key={index}>
+                                    <ProductSkeletonCard />
+                                </SwiperSlide>
+                            ))
+                        )
+                    :
+                    products.map((product) => (
                         <SwiperSlide key={product.documentId}>
                             <ProductCard product={product} />
                         </SwiperSlide>
-                    ))}
+                    ))
+                    
+                    }
                 </Swiper>
             </div>
         </section>

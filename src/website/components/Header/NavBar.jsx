@@ -4,7 +4,7 @@ import Cart from '../../../assets/Cart.svg'
 import User from '../../../assets/User.svg'
 import Menu from '../../../assets/Menu.svg'
 import { MenuBar } from './MenuBar';
-import { useCartStore, useDrawerStore, useUiStore } from '../../../store'
+import { useAuthStore, useCartStore, useDrawerStore, useUiStore } from '../../../store'
 import { SearchBar } from './SearchBar'
 
 
@@ -16,6 +16,7 @@ export const NavBar = () => {
     const location = useLocation()
     const {setLoading} = useUiStore()
     const {cart} = useCartStore()
+    const {token} = useAuthStore()
 
     const {openSideCart} = useDrawerStore()
 
@@ -27,7 +28,13 @@ export const NavBar = () => {
     ]
 
     const handleAccountClick = () => {
-        if (location.pathname === '/account') return;
+        if (location.pathname.startsWith('/account')) return;
+
+        if (!token) {          
+            navigate('/login');
+            return;
+        }
+        
         setLoading("isAppLoading", true); 
         navigate('/account');
     };

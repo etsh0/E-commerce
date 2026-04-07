@@ -10,6 +10,7 @@ import { domain, useReviewsCounter } from './../store/index';
 import  axios  from 'axios';
 import toast from "react-hot-toast"
 import { Spinner } from "./Spinner"
+import { ReviewSkeleton } from "./ReviewSkeleton"
 
 export const Reviews = () => {
 
@@ -19,6 +20,7 @@ export const Reviews = () => {
   const {reviewsCount, setReviewsCount} = useReviewsCounter()
   const [selectedRating, setSelectedRating] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   
 
   const initialValues = {
@@ -35,6 +37,7 @@ export const Reviews = () => {
 
   const fetchReviews = async () => {
     if (!productId) return;
+    setIsLoading(true)
     let url = domain + '/api/reviews'
     try {
       const res = await axios.get(url, {
@@ -55,7 +58,9 @@ export const Reviews = () => {
       
     } catch (error) {
       console.log(error);
-      
+    }
+    finally {
+      setIsLoading(false)
     }
   }
 
@@ -96,7 +101,12 @@ export const Reviews = () => {
             </div>
             <div className="reviews-container flex flex-col gap-15 mt-4 pt-10 border-t-2 2xl:pr-50 border-border">
               {
-                allReviews?.length === 0 ? 
+                isLoading ? (
+                  [1,2,3].map( (num) => (
+                    <ReviewSkeleton  key={num}/>
+                  ))
+                ) : (
+                   allReviews?.length === 0 ? 
               (               
                 <div className="empty-state text-center">
                   <div className="w-full flex items-center justify-center">
@@ -108,6 +118,7 @@ export const Reviews = () => {
               ) : allReviews.map( (review) => (
                 <ReviewCard key={review.documentId} review={review}/>
               ))
+                )
               }             
             </div>
         </div>

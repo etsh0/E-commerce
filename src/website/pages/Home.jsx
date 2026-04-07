@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react'
 import { domain } from '../../store'
 import axios from 'axios'
 import { ProductCard } from '../../components/ProductCard'
+import { ProductSkeletonCard } from '../../components/ProductSkeletonCard'
+
 
 // swiper
 import 'swiper/css';
@@ -21,9 +23,11 @@ import { Pagination, FreeMode } from 'swiper/modules';
 
 export const Home = () => {
     const [bestSellingProducts , setBestSellingProducts] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect( () => {
         const fetchBestSellingProducts = async () => {
+            setIsLoading(true)
             let url = domain + '/api/products'
             try {
                 const res = await axios.get(url , {
@@ -43,6 +47,9 @@ export const Home = () => {
                 
             } catch (error) {
                 console.log(error);
+            }
+            finally {
+                setIsLoading(false)
             }
         }
         fetchBestSellingProducts()
@@ -69,10 +76,6 @@ export const Home = () => {
                     spaceBetween={15}        
                     freeMode={true}          
                     grabCursor={true}      
-                    // autoplay={{
-                    //     delay: 3000,
-                    //     disableOnInteraction: false,
-                    // }}
                     pagination={{
                         clickable: true,
                         dynamicBullets: true,
@@ -85,7 +88,16 @@ export const Home = () => {
                     modules={[FreeMode, Pagination]}
                     className="mySwiper pb-14!" 
                 >
-                    {bestSellingProducts?.map((product) => (
+                    {
+                    isLoading ? (
+                        Array.from({ length: 8 }).map((_, index) => (
+                            <SwiperSlide key={index}>
+                                <ProductSkeletonCard />
+                            </SwiperSlide>
+                        ))
+                    )
+                    :
+                    bestSellingProducts?.map((product) => (
                         <SwiperSlide key={product.documentId}>
                             <ProductCard product={product} />
                         </SwiperSlide>

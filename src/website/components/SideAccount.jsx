@@ -26,24 +26,20 @@ export const SideAccount = () => {
     const handleLogOut = () => {
         Swal.fire({
             text: "You will be logged out of your account!",
-            icon: "warning",
+            icon: "question",
             showCancelButton: true,
+            confirmButtonColor: "#0E1422",
+            cancelButtonColor: "#ccc",
+            confirmButtonText: "Yes, log me out!",
+            width: "500px",
         }).then((result) => {
             if (result.isConfirmed) {
                 logout(); 
-                
-                Swal.fire({
-                    title: "Logged Out!",
-                    text: "See you soon! 👋",
-                    icon: "success",
-                });
-
-                setTimeout(() => {
-                    navigate("/login");
-                }, 1500);
+                navigate("/login");
             }
         });
     };
+
 
 
   return (

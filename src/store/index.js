@@ -7,15 +7,18 @@ export const domain = "http://localhost:1337"
 
 // user blocked status
 axios.interceptors.response.use(
-  (response) => response, 
+  (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
+      
+      const isLoggedOut = !localStorage.getItem("auth-storage"); // ✅ لو مفيش token أصلاً يعني logout عادي
 
-      localStorage.removeItem("auth-storage"); 
-      
-      sessionStorage.setItem("was_blocked", "true");
-      
-      window.location.href = "/login"; 
+      if (!isLoggedOut) {
+        // ✅ دي الحالة الحقيقية للبلوك — كان عنده token بس Strapi رفضه
+        sessionStorage.setItem("was_blocked", "true");
+        localStorage.removeItem("auth-storage");
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }
@@ -375,7 +378,10 @@ export const useOrderStore = create( (set) => ({
     userOrders:[],
     allOrders:[],
     ordersCount: 0,
+    isOrdersLoading: false,
+
     fetchUserOrders: async (userId, token) => {
+        set({isOrdersLoading: true})
         try {
             let url = domain + '/api/orders'
             const res = await axios.get(url, {
@@ -394,6 +400,9 @@ export const useOrderStore = create( (set) => ({
             set({userOrders: res.data.data})
         } catch (error) {
             console.log(error); 
+        }
+        finally {
+            set({isOrdersLoading: false})
         }
     },
     fetchAllOrders: async (token, searchQuery,filterStatus) => {

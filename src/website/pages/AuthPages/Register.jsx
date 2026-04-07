@@ -5,7 +5,8 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { domain, useAuthStore, useCartStore, useWishlistStore } from './../../../store/index';
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Spinner } from "../../../components/Spinner";
 
 export const Register = () => {
 
@@ -13,6 +14,8 @@ export const Register = () => {
     const {clearWishList} = useWishlistStore()
     const {clearCart} = useCartStore()
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false);
+
     const initialValues = {
         username : "",
         email : "" ,
@@ -26,6 +29,8 @@ export const Register = () => {
     });
 
     const handleRegister = async (values) => {
+
+        setIsLoading(true);
         
         if (values.password.length < 8) {
             toast.error("Password must be at least 8 characters.");
@@ -40,6 +45,7 @@ export const Register = () => {
             toast.success("Welcome to our Fashion Store!")
             clearCart()
             clearWishList()
+            setIsLoading(false);
             navigate("/")
         }
         catch(error) {
@@ -80,7 +86,11 @@ export const Register = () => {
                             <Field name="password" className="input" type="password" placeholder="Enter Password" />
                             <ErrorMessage name="password" component={"p"} className="text-red-500" />
                         </label>
-                        <button type="submit" className="bg-primary text-white px-4 py-2 rounded font-medium cursor-pointer">Create account</button>
+                        <button type="submit" className="bg-primary text-white px-4 py-2 rounded font-medium cursor-pointer flex items-center justify-center">
+                            {
+                                isLoading ? <Spinner />: "Create account"
+                            }
+                        </button>
                     </Form>
                 </Formik>
                 <p className="text-sm text-text text-center">Already have an account? <Link to={"/login"}>Log in</Link></p>

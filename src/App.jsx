@@ -1,3 +1,5 @@
+import "primereact/resources/themes/lara-light-cyan/theme.css"; 
+import "primereact/resources/primereact.min.css";
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AdminLayout } from './admin/layouts/AdminLayout'
 import { ShopLayout } from './website/layouts/ShopLayout'
@@ -32,6 +34,7 @@ import { About } from './website/pages/About'
 import { Contact } from './website/pages/Contact'
 import { GlobalLoader } from './components/GlobalLoader'
 import { Toaster } from 'sonner'
+
 
 
 export const App = () => {
@@ -101,6 +104,7 @@ export const App = () => {
 		}
 		{/* i will use framer motion here*/}
 		<div className={`w-full h-dvh ${isAppLoading ? "hidden" : "block"}`}> 
+			
 			{/* sonner library */}
 			<Toaster richColors position="top-left" />
 			<BrowserRouter>

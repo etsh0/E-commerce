@@ -4,8 +4,8 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { domain, useAuthAdmin } from "../../store";
 import axios from "axios";
-import toast from "react-hot-toast";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 
 

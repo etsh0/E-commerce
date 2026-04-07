@@ -4,15 +4,18 @@ import { useAuthStore, useOrderStore, useUiStore } from "../../store"
 import { useEffect } from "react"
 import { domain } from './../../store/index';
 import noImg from "../../assets/noImg.png"
+import { OrderSkeleton } from "../../components/OrderSkeleton";
 
 
 export const AccountOrders = () => {
 
-    const {fetchUserOrders, userOrders} = useOrderStore()
+    const {fetchUserOrders, userOrders, isOrdersLoading} = useOrderStore()
     const {user, token} = useAuthStore()
     const {setLoading} = useUiStore()
+
+  
     
-    useEffect( () => {        
+    useEffect( () => {    
         fetchUserOrders(user?.documentId , token)
     },[user , token])
 
@@ -30,7 +33,12 @@ export const AccountOrders = () => {
             <AccountHeader title={"My Orders"} />
             <div className="orders-container overflow-auto flex flex-col gap-1">
                 {
-                    userOrders.length === 0 ? (
+                    isOrdersLoading ? (
+                        [1,2].map( (item) => (
+                            <OrderSkeleton key={item} />
+                        ))
+                    ) : (
+                userOrders.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
                         <h3 className="text-xl font-bold text-primary mb-2">No orders yet</h3>
                         <p className="text-sm text-text max-w-70 mb-8">
@@ -95,6 +103,7 @@ export const AccountOrders = () => {
                                 </div>
                             </div>
                         ))
+                    )
                     )
                 }
             </div>

@@ -1,11 +1,12 @@
-import { Link, useNavigate, useSearchParams } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Google from "../../../assets/Google.svg"
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { domain, useAuthStore, useCartStore, useWishlistStore } from "../../../store";
 import axios from "axios";
-import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Spinner } from "../../../components/Spinner";
 
 export const Login = () => {
 
@@ -14,6 +15,8 @@ export const Login = () => {
     const {clearCart} = useCartStore()
     const navigate = useNavigate()
     const [isBlocked, setIsBlocked] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const initialValues = {
         identifier: "",
@@ -26,7 +29,7 @@ export const Login = () => {
     })
 
     const handleLogin = async (values) => {
-
+        setIsLoading(true);
         let url = domain + "/api/auth/local"
 
         try {
@@ -39,6 +42,7 @@ export const Login = () => {
             login(res.data.user , res.data.jwt)
             clearCart()
             clearWishList()
+            setIsLoading(false);
             navigate("/")
         }
         catch(error) {
@@ -95,7 +99,11 @@ export const Login = () => {
                             <ErrorMessage name="password" component={"p"} className="text-red-500"/>
                         </label>
                         <button className="text-sm text-text font-medium self-end"><Link>Forgot Password?</Link></button>
-                        <button type="submit" className="bg-primary text-white px-4 py-2 rounded font-medium cursor-pointer">Login</button>
+                        <button type="submit" className="bg-primary text-white px-4 py-2 rounded font-medium cursor-pointer flex items-center justify-center">
+                            {
+                                isLoading ? <Spinner />: "Login"   
+                            }
+                        </button>
                         <p className="text-sm text-text text-center">Don't have an account? <Link to={"/register"}>Sign Up</Link></p>
                     </Form>
                 </Formik>

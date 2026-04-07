@@ -23,6 +23,7 @@ export const AdminReviews = () => {
           }
         }
       })
+      
       setAllReviews(res.data.data)
       
     } catch (error) {
@@ -42,9 +43,9 @@ export const AdminReviews = () => {
       }
   }
 
-  useEffect( () => {
-    fetchAllReviews()
-  } ,[])
+  // useEffect( () => {
+  //   fetchAllReviews()
+  // } ,[])
 
   return (
     <>
@@ -67,7 +68,7 @@ export const AdminReviews = () => {
                 </thead>
                 <tbody className="divide-y divide-border overflow-auto">
                   {
-                    allReviews.map( (review) => (
+                    allReviews?.map( (review) => (
                       <ReviewRow key={review.documentId} review={review} onDelete={() => handleDeleteReview(review.documentId)} />
                     ))
                   }
