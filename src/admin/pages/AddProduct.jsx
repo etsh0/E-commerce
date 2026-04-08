@@ -1,9 +1,10 @@
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { domain, useAuthAdmin, useCategoriesStore, useProductStore } from "../../store";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { IoIosClose } from "react-icons/io";
+import * as Yup from "yup";
 
 
 export const AddProduct = () => {
@@ -34,6 +35,16 @@ export const AddProduct = () => {
     images: [],
     reviews:[]
   };
+
+  const validationSchema = Yup.object({
+    title: Yup.string().required("Product title is required"),
+    price: Yup.number().typeError("Price must be a number").required("Product price is required"),
+    stock_status: Yup.string().oneOf(["IN STOCK", "OUT OF STOCK"], "Invalid stock status").required("Stock status is required"),
+    category: Yup.string().required("Category is required"),
+    details: Yup.string().required("Product details are required"),
+    rate: Yup.number().typeError("Rate must be a number").min(0, "Rate cannot be negative").max(5, "Rate cannot be more than 5").required("Product rate is required"),
+    available_qty: Yup.number().typeError("Available quantity must be a number").min(0, "Available quantity cannot be negative").required("Available quantity is required"),
+  })
 
 
   // to upload images to strapi
@@ -222,17 +233,19 @@ const handleSubmitProduct = async (values, { resetForm }) => {
           <Link className="bg-primary text-white py-1 px-4 rounded text-sm font-bold" to={"/admin/products"}>Back</Link>
         </div>
 
-        <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={handleSubmitProduct}>
+        <Formik initialValues={initialValues} validationSchema={validationSchema} enableReinitialize={true} onSubmit={handleSubmitProduct}>
               <Form className="grid grid-cols-12 gap-8 p-8">  
                 <div className="col-span-8 space-y-6">
                   <div className="grid grid-cols-2 gap-6">
                     <label className="flex flex-col gap-2 text-sm font-medium text-primary">
                       Title
                       <Field name="title" className="input" placeholder="Product name" />
+                      <ErrorMessage name="title" component={"p"} className="text-red-500"/>
                     </label>
                     <label className="flex flex-col gap-2 text-sm font-medium text-primary">
                       Price
                       <Field name="price" className="input" type="number" placeholder="Write Product price here..." />
+                      <ErrorMessage name="price" component={"p"} className="text-red-500"/>
                     </label>
                   </div>
 
@@ -240,16 +253,19 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                     <label className="flex flex-col gap-2 text-sm font-medium text-primary">
                       Available quantity
                       <Field name="available_qty" className="input" type="number" />
+                      <ErrorMessage name="available_qty" component={"p"} className="text-red-500"/>
                     </label>
                     <label className="flex flex-col gap-2 text-sm font-medium text-primary">
                       Rate
                       <Field name="rate" className="input" type="number" placeholder="Write Product rate here..." />
+                      <ErrorMessage name="rate" component={"p"} className="text-red-500"/>
                     </label>
                   </div>
 
                   <label className="flex flex-col gap-2 text-sm font-medium text-primary">
                     Details
                     <Field as="textarea" name="details" className="input h-40 resize-none overflow-y-auto" placeholder="Write Product Details here..."/>
+                    <ErrorMessage name="details" component={"p"} className="text-red-500"/>
                   </label>
 
                   {/* images */}
@@ -313,6 +329,7 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                       <option value="IN STOCK">IN STOCK</option>
                       <option value="OUT OF STOCK">OUT OF STOCK</option>
                     </Field>
+                    <ErrorMessage name="stock_status" component={"p"} className="text-red-500"/>
                   </label>
 
                   <label className="flex flex-col gap-2 text-sm font-medium text-primary">
@@ -323,6 +340,7 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                         <option key={cat.documentId} value={cat.documentId}>{cat.name}</option>
                       ))}
                     </Field>
+                    <ErrorMessage name="category" component={"p"} className="text-red-500"/>
                   </label>
 
                   {/* Colors Section */}

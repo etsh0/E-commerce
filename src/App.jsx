@@ -45,7 +45,7 @@ export const App = () => {
 	const {user, token, setUpdateUser} = useAuthStore()
 	const{isAppLoading, setLoading} = useUiStore()
 	
-	useEffect( () => {
+	useEffect(  () => {
 		const startAppLoading = () => { 
 			try {
 				fetchCategories() 

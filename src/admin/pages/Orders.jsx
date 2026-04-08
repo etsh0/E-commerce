@@ -32,7 +32,7 @@ export const Orders = () => {
             </div>
 
             {/* filter order status */}
-            <div className="flex items-center gap-2 pb-4 overflow-x-auto scrollbar-hide">
+            <div className="flex items-center gap-2 py-4 scrollbar-hide">
               {filters.map((filter) => (
                 <button
                   key={filter.value}

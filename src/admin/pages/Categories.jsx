@@ -3,12 +3,14 @@ import { SearchBar } from "../../components/SearchBar"
 import { CategoryRow } from "../components/CategoryRow"
 import { MdClose } from "react-icons/md"
 import { useCategoriesStore } from "../../store"
-import { Field, Form, Formik } from "formik"
+import { ErrorMessage, Field, Form, Formik } from "formik"
+import { Spinner } from "../../components/Spinner"
+import * as Yup from "yup";
 
 
 export const Categories = () => {
   const [modalIsOpen,setModalIsOpen] = useState(false)
-  const {categories, addCategory, upadteCategory} = useCategoriesStore()
+  const {categories, addCategory, upadteCategory, isLoading} = useCategoriesStore()
 
   const [selectedCategory, setselectedCategory] = useState(null)
 
@@ -27,11 +29,17 @@ export const Categories = () => {
     slug:selectedCategory?.slug || ''
   }
 
-  const handleSubmitCategory =  (values, { resetForm }) => {
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Category name is required"),
+    slug: Yup.string().required("URL slug is required")
+  })
+
+  const handleSubmitCategory =  async (values, { resetForm }) => {
+
     if(selectedCategory) {
-      upadteCategory(selectedCategory.documentId , values)
+      await upadteCategory(selectedCategory.documentId , values)
     }else {
-      addCategory(values);
+      await addCategory(values);
       resetForm()
     }
     setModalIsOpen(false)
@@ -77,17 +85,23 @@ export const Categories = () => {
                   <h3 className="text-xl font-semibold">{selectedCategory ? "Edit Category" : "Add Category"}</h3>
                   <MdClose size={"20px"} className="cursor-pointer" onClick={() => setModalIsOpen(false)} />
                   </div>
-                  <Formik initialValues={initialValues} onSubmit={handleSubmitCategory} enableReinitialize={true}>
+                  <Formik validationSchema={validationSchema} initialValues={initialValues} onSubmit={handleSubmitCategory} enableReinitialize={true}>
                     <Form action="" className="flex flex-col gap-4 py-6">
                       <label className="flex flex-col gap-2 text-sm font-medium text-primary" htmlFor="">
                           Category Name
                           <Field name='name' className="input" type="text" />
+                          <ErrorMessage name="name" component={"p"} className="text-red-500"/>
                       </label>
                       <label className="flex flex-col gap-2 text-sm font-medium text-primary" htmlFor="">
                           URL Slug
                           <Field name='slug' className="input" type='text'></Field>
+                          <ErrorMessage name="slug" component={"p"} className="text-red-500"/>
                       </label> 
-                      <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">{selectedCategory ? "Save Changes" : "Add Category"}</button>
+                      <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">
+                        {
+                          isLoading ? <Spinner />: selectedCategory ? "Update Category" : "Add Category"
+                        }
+                      </button>
                     </Form>
                   </Formik>
               </div>

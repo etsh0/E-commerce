@@ -44,7 +44,7 @@ export const useProductStore = create( (set) => ({
             }
             }
         })
-            set({products: res.data.data})
+            set({products: res.data.data}) 
         } 
         catch (error) {
             console.log(error);
@@ -98,7 +98,10 @@ export const useProductStore = create( (set) => ({
 // category store dashoard (add/edit category) and fetch all categories 
 export const useCategoriesStore = create( (set) => ({
     categories:[],
+    isLoading: false,
+
     fetchCategories: async (searchquery = '') => {
+        
         let url = domain + '/api/categories'
         try {
             const res = await axios.get(url, {
@@ -114,11 +117,13 @@ export const useCategoriesStore = create( (set) => ({
             set({categories: res.data.data})
         } 
         catch (error) {
-            console.log(error);
-            
+            console.log(error);   
         }
     },
     addCategory: async (newCategory) => {
+
+        set({isLoading: true})
+
         let url = domain + '/api/categories'
         try {
             const res = await axios.post(url , {
@@ -129,6 +134,10 @@ export const useCategoriesStore = create( (set) => ({
         } catch (error) {
             console.log(error.message);  
         }
+        finally {
+            set({isLoading: false})
+        }
+
     },
     deleteCategory: async (categoryID) => {
         let url = domain + `/api/categories/${categoryID}`
@@ -141,10 +150,12 @@ export const useCategoriesStore = create( (set) => ({
         }
     },
     upadteCategory: async (categoryId, updateCategory) => {
+        set({isLoading: true})
         let url = domain + `/api/categories/${categoryId}`
         try {
             const res = await axios.put(url, {data: updateCategory})
             set( (state) => ({categories: state.categories.map( (cat) => cat.documentId === categoryId ? res.data.data : cat)}))
+            set({isLoading: false})
             toast.success("Category Updated successfully")
         } catch (error) {
             console.log(error);
@@ -406,6 +417,7 @@ export const useOrderStore = create( (set) => ({
         }
     },
     fetchAllOrders: async (token, searchQuery,filterStatus) => {
+        set({isOrdersLoading: true})
         try {
             let url = domain + '/api/orders'
             const queryFilters = {
@@ -433,13 +445,14 @@ export const useOrderStore = create( (set) => ({
                     Authorization: `Bearer ${token}`
                 }
             })                        
-            set({allOrders: res.data.data , ordersCount: res.data.data.length})
+            set({allOrders: res.data.data , ordersCount: res.data.data.length, isOrdersLoading: false})
             
         } catch (error) {
             console.log(error); 
         }
     },
     changeStatusOrder: async (token,orderId,newOrderStatus) => {
+        set({isOrdersLoading: true})
         let url = domain + `/api/orders/${orderId}`
         
         try {
@@ -460,6 +473,9 @@ export const useOrderStore = create( (set) => ({
         } catch (error) {
             console.log(error.message);
             toast.error("Failed to update status");
+        }
+        finally {
+            set({isOrdersLoading: false})
         }
     },
     deleteOrder: async (token,orderId) => {

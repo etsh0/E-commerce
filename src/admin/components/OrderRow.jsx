@@ -7,7 +7,7 @@ import { TiArrowDown } from "react-icons/ti";
 
 export const OrderRow = ({order}) => {
 
-    const {changeStatusOrder,deleteOrder} = useOrderStore()
+    const {changeStatusOrder,deleteOrder,isOrdersLoading} = useOrderStore()
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(order.order_status);
@@ -96,13 +96,15 @@ export const OrderRow = ({order}) => {
                             </div>
 
                             <button 
-                                onClick={() => {
-                                    changeStatusOrder(adminToken,order.documentId,selectedStatus)
+                                onClick={ async () => {
+                                    await changeStatusOrder(adminToken,order.documentId,selectedStatus)
                                     setIsStatusModalOpen(false);
                                 }}
                                 className="h-10 px-6 bg-primary text-white rounded-lg font-bold text-sm hover:bg-black transition-all active:scale-95 shadow-lg shadow-black/10 cursor-pointer"
                             >
-                                Save
+                                {
+                                    isOrdersLoading ? "Updating..." : "Save Changes"
+                                }
                             </button>
                         </div>
                         <button 

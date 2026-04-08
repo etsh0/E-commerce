@@ -8,6 +8,7 @@ import ReviewsIcon from "../../assets/Empty Star.svg"
 import Logout from "../../assets/Logout.svg"
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuthAdmin } from "../../store"
+import Swal from "sweetalert2"
 
 export const SideBar = () => {
 
@@ -24,9 +25,23 @@ export const SideBar = () => {
     const navigate = useNavigate()
 
     const handleLogOut = () => {
-        adminLogout()
-        navigate("/admin/login")
+        Swal.fire({
+            text: "You will be logged out of your account!",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#0E1422",
+            cancelButtonColor: "#ccc",
+            confirmButtonText: "Yes, log me out!",
+            width: "500px",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                adminLogout()
+                navigate("/admin/login")
+            }
+        });
     }
+    
+
   return (
     <>
         <div className="flex flex-col py-8 h-full">

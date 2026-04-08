@@ -1,9 +1,8 @@
-// import { Badge } from "../../components/Badge"
 import { useCutomersStore, useOrderStore } from "../../store"
 
 export const Dashboard = () => {
   
-  const {ordersCount, allOrders} = useOrderStore()
+  const {ordersCount, allOrders, isOrdersLoading} = useOrderStore()
   const {customersCount} = useCutomersStore()
 
   const totalSales = allOrders?.reduce((acc, order) => {
@@ -22,7 +21,6 @@ export const Dashboard = () => {
                 <div className="flex items-center justify-between">
                     <div className="">
                       <h4 className="text-primary text-base font-bold">Total Sales</h4>
-                      {/* <span className="text-xs text-text uppercase">this month</span> */}
                     </div>
                     <div className="total-price text-xl text-primary font-bold">{totalSales} EGP</div>
                 </div>
@@ -31,7 +29,6 @@ export const Dashboard = () => {
                 <div className="flex items-center justify-between">
                     <div className="">
                       <h4 className="text-primary text-base font-bold">Total Customers</h4>
-                      {/* <span className="text-xs text-text uppercase">this month</span> */}
                     </div>
                     <div className="total-price text-xl text-primary font-bold">{customersCount}</div>
                 </div>
@@ -47,20 +44,6 @@ export const Dashboard = () => {
             </div>
           </div>
           <div className="flex gap-6">
-              {/* <div className="w-[382.66px] shadow border border-border rounded-lg bg-white p-6">
-                  <div className="mb-6">
-                    <h4 className="text-primary text-base font-bold">Best Selling</h4>
-                    <span className="text-xs text-text uppercase">this month</span>
-                  </div>
-                  <div className="py-6 border-t border-border">
-                      <div className="font-bold text-xl">$2,400 — <span className="text-text text-sm font-normal">Total Sales</span></div>
-                      <div className="flex flex-col gap-4 mt-6">
-                          <Badge title={"Classic Monochrome Tees —  $940 Sales"} />
-                          <Badge title={"Monochromatic Wardrobe —  $790 Sales"} />
-                          <Badge title={"Essential Neutrals —  $740 Sales"} />
-                      </div>
-                  </div>
-              </div> */}
               <div className="grow flex flex-col shadow border border-border rounded-lg bg-white p-6 h-130">
                   <div className="flex items-center justify-between mb-4">
                     <h4 className="text-lg font-bold text-primary">Recent Orders</h4>
@@ -76,10 +59,21 @@ export const Dashboard = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border overflow-auto">
-
-
                         {
-                          allOrders.slice(0,7).map( (order) => (
+                          isOrdersLoading ? (
+                            <tr>
+                              <td colSpan="4" className="py-10 text-center">
+                                  <div className="flex flex-col items-center justify-center gap-2">
+                                    {/* لو عندك سبينر جاهز حطه هنا، لو معندكش خليها كلمة loading */}
+                                    <div className="text-xl font-bold text-red-500 animate-pulse">
+                                      Loading Orders...
+                                    </div>
+                                  </div>
+                              </td>
+                            </tr>
+                          ) : 
+                      (
+                        allOrders.slice(0,7).map( (order) => (
                             order.cartItems.map( item => (
                               <tr className="text-gray-600 hover:bg-gray-50 transition">
                                 <td className="px-6 py-4 font-medium text-gray-800">{item.title}</td>
@@ -89,6 +83,7 @@ export const Dashboard = () => {
                               </tr>
                             ))
                           ))
+                          )
                         }
                         </tbody>
                     </table>
