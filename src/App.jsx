@@ -34,6 +34,8 @@ import { About } from './website/pages/About'
 import { Contact } from './website/pages/Contact'
 import { GlobalLoader } from './components/GlobalLoader'
 import { Toaster } from 'sonner'
+import { ForgotPassword } from "./website/pages/AuthPages/ForgotPassword";
+import { ResetPassword } from "./website/pages/AuthPages/ResetPassword";
 
 
 
@@ -132,6 +134,8 @@ export const App = () => {
 						// login and register page
 						<Route path='login' element={<Login />} />
 						<Route path='register' element={<Register />} />
+						<Route path='forgot-password' element={<ForgotPassword />} />
+						<Route path='reset-password' element={<ResetPassword />} />
 					</Route>
 
 					// checkout Page

@@ -3,6 +3,7 @@ import { FaCheck } from "react-icons/fa"
 import { IoClose } from "react-icons/io5"
 import { TableActions } from "./TableActions"
 import { Link } from "react-router-dom"
+import noImg from "../../assets/noImg.png"
 
 export const ProductRow = ({product, onEdit}) => {
     const{deleteProduct} = useProductStore()
@@ -11,11 +12,12 @@ export const ProductRow = ({product, onEdit}) => {
         <>
         <tr className="text-gray-600 text-sm hover:bg-gray-50 transition">
             <td className="px-6 py-4 font-medium text-gray-800 line-clamp-1 flex items-center gap-2">
-                <img className="w-10 object-contain" src={product?.images?.[0]?.url ? domain + product.images[0].url : "/placeholder.png"} alt="" />
+                <img className="w-10 object-contain" src={product?.images?.[0]?.url ? domain + product.images[0].url : noImg} alt="" />
                 <span>{product?.title}</span>
             </td>
             <td className="px-6 py-4">{product?.price}</td>
             <td className="px-6 py-4">{product?.stock_status}</td>
+            <td className="px-6 py-4">{product?.available_qty}</td>
             <td className="px-6 py-4">{product?.category?.name}</td>
             <td className="px-6 py-4">
                 {

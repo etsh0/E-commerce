@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import noImg from "../../../assets/noImg.png"
 
-export const SearchBar = () => {
+export const SearchBar = ({closeMenu}) => {
 
     const [query, setQuery] = useState("")
     const [results, setResults] = useState([])
@@ -49,6 +49,7 @@ export const SearchBar = () => {
     const handleProductClick = (product) => {
         navigate(`/shop/product-details/${product.documentId}`)
         setQuery("")
+        closeMenu()
     }
 
   return (
@@ -62,13 +63,13 @@ export const SearchBar = () => {
             onBlur={() => setTimeout(() => setShowDropdown(false), 200)} 
             type='text' 
             placeholder='Search Products' 
-            className=' w-66 pl-11.75 input' />
+            className='w-66 pl-11.75 input' />
 
             <img src={Search} alt="" className='absolute top-[50%] translate-y-[-50%] left-4' />
             {
                 (showDropdown && results.length > 0) && (
-                    <div className='absolute top-[calc(100%+8px)] bg-white left-0 w-87 border border-gray-100 rounded-lg shadow-xl z-999 overflow-hidden'>
-                        <div className='products-container max-h-100 overflow-y-auto'>
+                    <div className='absolute top-[calc(100%+8px)] bg-white left-0 w-67 lg:w-87 border border-gray-100 rounded-lg shadow-xl z-999 overflow-hidden'>
+                        <div className='products-container max-h-85 lg:max-h-100 overflow-y-auto'>
                             {
                                 results?.map( (product) => (
                                     <div key={product?.documentId} onClick={() => handleProductClick(product)} className="flex items-center gap-3 p-3 cursor-pointer transition-colors border-b border-border last:border-0">

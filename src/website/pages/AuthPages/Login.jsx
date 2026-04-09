@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"
-import Google from "../../../assets/Google.svg"
+// import Google from "../../../assets/Google.svg"
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { domain, useAuthStore, useCartStore, useWishlistStore } from "../../../store";
@@ -42,12 +42,14 @@ export const Login = () => {
             login(res.data.user , res.data.jwt)
             clearCart()
             clearWishList()
-            setIsLoading(false);
             navigate("/")
         }
         catch(error) {
             console.log(error);
             toast.error("Login failed.");
+        }
+        finally {
+            setIsLoading(false);
         }
     }
 
@@ -81,11 +83,11 @@ export const Login = () => {
                         <p className="font-medium opacity-80 mt-1 uppercase tracking-tighter">Please contact our support team to appeal.</p>
                     </div>
                 )}
-                <div className='border-2 border-border w-full flex items-center justify-center gap-4 py-2 rounded cursor-pointer'>
+                {/* <div className='border-2 border-border w-full flex items-center justify-center gap-4 py-2 rounded cursor-pointer'>
                     <img src={Google} alt="" />
                     <p className="text-sm text-text">Continue with Google</p>
-                </div>
-                <div className="uppercase text-text text-center">or</div>
+                </div> */}
+                {/* <div className="uppercase text-text text-center">or</div> */}
                 <Formik initialValues={initialValues} onSubmit={handleLogin} validationSchema={validationSchema}>
                     <Form className="flex flex-col gap-6 w-full">
                         <label className="flex flex-col gap-2 text-sm text-[#474B57]" htmlFor="">
@@ -98,7 +100,7 @@ export const Login = () => {
                             <Field name="password" className="input" type="password" />
                             <ErrorMessage name="password" component={"p"} className="text-red-500"/>
                         </label>
-                        <button className="text-sm text-text font-medium self-end"><Link>Forgot Password?</Link></button>
+                        <button className="text-sm text-text font-medium self-end"><Link to={"/forgot-password"}>Forgot Password?</Link></button>
                         <button type="submit" className="bg-primary text-white px-4 py-2 rounded font-medium cursor-pointer flex items-center justify-center">
                             {
                                 isLoading ? <Spinner />: "Login"   
