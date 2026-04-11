@@ -2,6 +2,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { getFinalPrice } from '../utils/PriceUtils';
 
 export const domain = "http://localhost:1337"
 
@@ -338,7 +339,7 @@ export const useCartStore = create(persist((set, get) => ({
     // total orders 
     getSubTotal: () => {
         const cart = get().cart;
-        return cart.reduce((acc, el) => acc + (el.qty * el.price), 0);
+        return cart.reduce((acc, el) => acc + (el.qty * getFinalPrice(el.price , el.discount)), 0);
     },
 
     shippingPrice: 90,

@@ -101,9 +101,9 @@ export const Login = () => {
                             <ErrorMessage name="password" component={"p"} className="text-red-500"/>
                         </label>
                         <button className="text-sm text-text font-medium self-end"><Link to={"/forgot-password"}>Forgot Password?</Link></button>
-                        <button type="submit" className="bg-primary text-white px-4 py-2 rounded font-medium cursor-pointer flex items-center justify-center">
+                        <button type="submit" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full px-4 py-2 font-medium">
                             {
-                                isLoading ? <Spinner />: "Login"   
+                                isLoading ? <Spinner />: <span>Login</span>   
                             }
                         </button>
                         <p className="text-sm text-text text-center">Don't have an account? <Link to={"/register"}>Sign Up</Link></p>

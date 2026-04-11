@@ -13,7 +13,18 @@ export const AccountWishlist = () => {
             <div className="orders-container overflow-auto flex flex-col gap-6">
                 {/* wishlist item */}
                 {
-                    wishList.length === 0 ? (<div className="text-center text-text uppercase my-auto">Your Wishlist is empty</div>) : (
+                    wishList.length === 0 ? 
+                    (
+                    
+                        <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
+                            <p className="text-xl text-primary mb-6">Your empty wishlist awaits. Fill it with your dreams</p>
+                            <Link to="/shop" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary">
+                                <span>Explore Products</span>
+                            </Link>
+                        </div>
+                    ) 
+                        : 
+                    (
                         wishList?.map( (product) => (
                             <div key={product.documentId} className="order-item flex flex-col sm:flex-row gap-4 justify-between border-b-2 border-border pb-4">
                                 <div className="flex items-center gap-4">
@@ -28,7 +39,9 @@ export const AccountWishlist = () => {
                                 <div className="flex items-center justify-center gap-6">
                                     <span className="font-medium">${product.price}</span>
                                     <Link to={`/shop/product-details/${product.documentId}`}>
-                                        <button  onClick={() => setLoading("isAppLoading", true)} className="text-primary text-xs sm:text-sm border border-primary py-2 px-4 rounded font-semibold hover:bg-primary hover:text-white transition-colors duration-300 cursor-pointer whitespace-nowrap">View Item</button>
+                                        <button onClick={() => setLoading("isAppLoading", true)} className="text-[10px] sm:text-xs py-2 px-3 font-semibold whitespace-nowrap btn-animate bg-white text-primary md:before:bg-primary md:hover:text-white">
+                                            <span>View Product</span>
+                                        </button>
                                     </Link>
                                 </div>
                             </div>

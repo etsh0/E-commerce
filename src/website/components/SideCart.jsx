@@ -41,7 +41,7 @@ export const SideCart = () => {
     <>
         <div className={`overlay fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${isSideCartOpen ? "opacity-100 visible backdrop-blur-xs" : "opacity-0 invisible"}`} onClick={CloseSideCart}></div>
         <div className={`sidecrat flex flex-col w-80 sm:w-100 h-screen bg-white shadow-lg fixed top-0 right-0 z-1000 transform transition-transform duration-300 ease-in-out ${isSideCartOpen ? "translate-x-0" : "translate-x-300"}`}>
-            <div className="bg-secondary p-8 w-full flex items-center justify-between">
+            <div className="bg-secondary/50 p-8 w-full flex items-center justify-between">
                 <h3 className="font-semibold">Shopping Cart</h3>
                 <MdClose onClick={CloseSideCart} size={"24px"} className="cursor-pointer" />
             </div>
@@ -58,20 +58,23 @@ export const SideCart = () => {
                     <span>Total</span>
                     <span>{subTotal} EGP</span>
                 </div>
-                <button className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mb-8" onClick={handleViewCart}>View Cart</button>
-                <button 
-                    disabled={cart.length === 0} 
-                    onClick={() => {
-                        if (cart.length > 0) {
-                        CloseSideCart();
-                        navigate("/checkout");
-                        }
-                    }}
-                    className={`text-text flex m-auto w-fit text-sm underline cursor-pointer 
-                        ${cart.length === 0 ? "opacity-50 cursor-not-allowed no-underline" : ""}`}
-                    >
-                    Checkout
+
+                <button onClick={handleViewCart} className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full mb-8">
+                    <span>View Cart</span>
                 </button>
+
+                <button  
+                    disabled={cart.length === 0}
+                    onClick={() => {
+                            if (cart.length > 0) {
+                                CloseSideCart();
+                                navigate("/checkout");
+                            }
+                    }}
+                    className={`btn-animate bg-white text-primary md:before:bg-primary md:hover:text-white w-full mb-8 ${cart.length === 0 ? "cursor-not-allowed" : ""}`}>
+                    <span>Checkout</span>
+                </button>        
+                
             </div>
         </div>
     </>

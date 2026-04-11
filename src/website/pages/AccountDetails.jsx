@@ -36,7 +36,7 @@ export const AccountDetails = () => {
 
   return (
     <>
-        <div>
+        <div className="">
             <AccountHeader title={"Account Details"} />
             <Formik initialValues={initialValues} onSubmit={handleUpdateUserData} enableReinitialize={true}>
                 <Form className='flex flex-col gap-6 max-w-100 mb-10'>
@@ -48,9 +48,9 @@ export const AccountDetails = () => {
                         Email
                         <Field name="email" className="input" type="email" />
                     </label>
-                    <button type="submit" className="bg-primary text-white px-4 py-2 rounded text-sm font-medium cursor-pointer flex items-center justify-center">
+                    <button type="submit" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full px-4 py-2 text-sm font-medium ">
                         {
-                            isSubmitting ? <Spinner /> : "Save Changes"
+                            isSubmitting ? <Spinner /> : <span>Save Changes</span>
                         }
                     </button>
                 </Form>

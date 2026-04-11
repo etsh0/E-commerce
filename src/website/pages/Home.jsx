@@ -57,7 +57,7 @@ export const Home = () => {
 
   return (
     <>
-        <div className="home h-full bg-secondary overflow-hidden relative py-15 md:py-0">
+        <div className="home">
             <Hero />
         </div>
         <div className="cards container mt-22 mb-18 flex flex-col md:flex-row items-center justify-between gap-13.5">
@@ -107,12 +107,12 @@ export const Home = () => {
         </div>
         <div className="newSession bg-secondary">
             <div className="container flex items-center justify-between">
-                <div className="content">
+                <div className="content relative">
                     <h3 className='text-[12px] md:text-h3 uppercase text-text mb-1'>New Season New Style</h3>
                     <h1 className='md:text-h1 font-medium'>30-70% Off On Men's Apparel</h1>
-                    <button className='mt-5 bg-primary text-white px-4 py-2 text-xs md:text-sm'>
-                        <Link to={"shop"}>Shop Now</Link>
-                    </button>
+                    <Link to={"/shop"} className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary mb-8 py-3 px-8 tracking-wider text-[15px] font-normal uppercase w-fit">
+                        <span>Shop Now</span>
+                    </Link>
                 </div>
                 <div className="image w-100">
                     <img className='w-full' src={Person} alt="" />

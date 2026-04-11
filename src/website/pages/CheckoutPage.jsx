@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import noImg from "../../assets/noImg.png"
 import { Spinner } from "../../components/Spinner";
 import { CheckoutSkeleton } from "../../components/CheckoutSkeleton";
+import { getFinalPrice } from "../../utils/PriceUtils";
 
 
 
@@ -20,6 +21,7 @@ export const CheckoutPage = () => {
         const navigate = useNavigate()
         const [isSubmitting, setIsSubmitting] = useState(false);
         const [isLoading, setIsLoading] = useState(true)
+
 
         useEffect( () => {
             if(!token) {
@@ -169,7 +171,7 @@ export const CheckoutPage = () => {
                                     <ErrorMessage name="phone" component="span" className="text-red-500 text-xs px-1" />
                                 </div>
                         </section>
-                        <button type="submit" disabled={cart.length === 0} className="disabled:bg-gray-600 disabled:cursor-not-allowed w-full bg-primary text-white p-4 rounded-md font-bold hover:bg-gray-800 transition-colors mt-4 cursor-pointer flex items-center justify-center">
+                        <button type="submit" disabled={cart.length === 0} className="disabled:bg-gray-600 disabled:cursor-not-allowed btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full mb-8">
                             {
                                 isSubmitting ? 
                                 <>
@@ -177,7 +179,7 @@ export const CheckoutPage = () => {
                                     <span className="ml-2">Placing Order...</span>
                                 </> 
                                 
-                                : "Place Order"
+                                : <span>Place Order</span>
                             }
                         </button>
                         </Form>
@@ -191,6 +193,7 @@ export const CheckoutPage = () => {
                     <h3 className="font-semibold mb-6">Your Order</h3>
                     <div className="order-container flex flex-col gap-4">
                         {
+                            
                             cart.map( (order) => (
                                 <div key={order.documentId} className="order-item flex items-center justify-between">
                                     <div className="flex gap-4">
@@ -203,7 +206,17 @@ export const CheckoutPage = () => {
                                             <div className="text-xs text-text font-medium flex items-center gap-2"><div style={{ backgroundColor: order?.selectedColor }} className="select-color w-3 h-3 rounded-full"></div>{order?.selectedSize && "—"}<span className="select-size uppercase">{order?.selectedSize}</span></div>
                                         </div>
                                     </div>
-                                    <span>{order.qty * order.price} EGP</span>
+                                    {/* <span>{order.qty * order.price} EGP</span> */}
+                                    <div className="flex flex-col gap-2">
+                                        <span className={`text-sm ${order?.discount ? "text-red-500" : ""}`}>
+                                            {(getFinalPrice(order.price, order.discount) * order.qty).toFixed(2)} EGP
+                                        </span>
+                                        {order?.discount > 0 && (
+                                            <span className="text-xs line-through opacity-50">
+                                                {(order.price * order.qty).toFixed(2)} EGP
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                             ))
                         }

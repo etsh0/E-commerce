@@ -15,6 +15,7 @@ import axios from "axios"
 import { ProductCard } from "../../components/ProductCard"
 import { Spinner } from "../../components/Spinner"
 import { toast } from "sonner"
+import { getFinalPrice } from "../../utils/PriceUtils"
 
 export const ProductDetails = () => {
     const params = useParams()
@@ -123,13 +124,19 @@ export const ProductDetails = () => {
         }, 500)
     } 
 
+    const finalPrice = getFinalPrice(product.price, product.discount)
 
   return (
     <>
         <div className="container mt-6">
             <div className="flex flex-col lg:flex-row gap-15">
-                <div className="product-images bg-secondary w-full lg:w-130 flex items-center justify-center">
+                <div className="product-images relative bg-secondary w-full lg:w-130 flex items-center justify-center">
                     <ImgSwiper product_images={product.images} />
+                    {
+                        product?.discount > 0 && (
+                            <span className="absolute top-3 left-2 bg-red-500 px-3 py-0.5 text-xs text-white tracking-wider uppercase z-1">Save {product?.discount}%</span>
+                        )
+                    }
                 </div>
                 <div className="product-info grow">
                     <div className="flex items-center justify-between">
@@ -140,9 +147,20 @@ export const ProductDetails = () => {
                            <FaStar />
                             {product.rate} — {reviewsCount} Reviews 
                         </div>
-                        <Badge title={"In Stock"} />
+                        <Badge title={`${product.stock_status}`} />
                     </div>
-                    <div className="price font-semibold text-primary mt-6 text-xl">{product.price} EGP</div>
+                    <div className="flex items-center gap-3 mt-6">
+                        <span className={`font-semibold ${product.discount ? "text-red-500" : "text-primary"}`}>
+                            {finalPrice} EGP
+                        </span>
+                        {product.discount > 0 && (
+                            <>
+                                <span className="text-primary font-semibold line-through opacity-50">
+                                    {product.price} EGP
+                                </span>
+                            </>
+                        )}
+                    </div>
                     <div className={`colors mt-8 ${product?.colors?.length === 0 && "hidden"}`}>
                         <h4 className="text-[12px] text-text uppercase font-medium">Available Colors</h4>
                         <Colors product_colors={product.colors} />      
@@ -156,7 +174,7 @@ export const ProductDetails = () => {
                         <Quantity qty={qty} Increment={() => setQty( q => q + 1)} Decrement={() => setQty(Math.max(1, qty - 1))}/>   
                     </div>
                     <div className="add-to-cart mt-8 flex items-center gap-4">
-                        <button onClick={() => {handleAddToCart()}}  className={`${isAdding ? "bg-primary/80" : "bg-primary"} flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap`}>
+                        <button onClick={() => {handleAddToCart()}}  className={`${isAdding ? "bg-primary/80" : "bg-primary"} flex items-center justify-center btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary px-15 sm:px-30 lg:px-40 py-2 cursor-pointer whitespace-nowrap`}>
                             {
                                 isAdding ? 
                                 <>
@@ -164,9 +182,10 @@ export const ProductDetails = () => {
                                     <span className="ml-2">Adding...</span>
                                 </> 
                                 
-                                : "Add to Cart"
+                                : <span>Add to Cart</span>
                             }
                         </button>
+
                         <div onClick={() => handleAddToWishList(product)} className="wishlist border-2 border-border px-2 py-2 rounded cursor-pointer flex items-center justify-center min-w-10 min-h-10">
    
                             {!isWishloading && (

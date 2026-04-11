@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import noImg from "../../../assets/noImg.png"
 
-export const SearchBar = ({closeMenu}) => {
+export const SearchBar = () => {
 
     const [query, setQuery] = useState("")
     const [results, setResults] = useState([])
@@ -49,7 +49,6 @@ export const SearchBar = ({closeMenu}) => {
     const handleProductClick = (product) => {
         navigate(`/shop/product-details/${product.documentId}`)
         setQuery("")
-        closeMenu()
     }
 
   return (
@@ -68,11 +67,11 @@ export const SearchBar = ({closeMenu}) => {
             <img src={Search} alt="" className='absolute top-[50%] translate-y-[-50%] left-4' />
             {
                 (showDropdown && results.length > 0) && (
-                    <div className='absolute top-[calc(100%+8px)] bg-white left-0 w-67 lg:w-87 border border-gray-100 rounded-lg shadow-xl z-999 overflow-hidden'>
+                    <div className='absolute top-[calc(100%+8px)] bg-white left-0 w-67 lg:w-87 border border-gray-100 rounded-lg shadow-xl z-9999 overflow-hidden'>
                         <div className='products-container max-h-85 lg:max-h-100 overflow-y-auto'>
                             {
                                 results?.map( (product) => (
-                                    <div key={product?.documentId} onClick={() => handleProductClick(product)} className="flex items-center gap-3 p-3 cursor-pointer transition-colors border-b border-border last:border-0">
+                                    <div key={product?.documentId} onClick={() => handleProductClick(product)} className="flex items-center gap-3 p-3 cursor-pointer transition-colors border-b border-border last:border-0 hover:bg-gray-100">
                                         <div className="w-12 h-12 bg-gray-100 rounded-md overflow-hidden shrink-0">
                                             <img src={product?.images?.length > 0 ? domain + product.images[0].url : noImg} alt="" className="w-full h-full object-cover" />
                                         </div>

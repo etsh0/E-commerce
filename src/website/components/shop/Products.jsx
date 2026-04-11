@@ -31,7 +31,7 @@ export const Products = () => {
 
                     pagination : {
                     page : `${page}` ,
-                    pageSize : 6,
+                    pageSize : 20,
                   },
                     filters : {
                       category : {

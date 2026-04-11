@@ -54,7 +54,9 @@ export const Categories = () => {
             <h4 className="text-lg text-primary font-semibold">Categories</h4>
             <div className="flex gap-4">
                 <SearchBar />
-                <button className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer" onClick={handleAddClick}>Add Category</button>
+                <button className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full py-2.5 px-4 text-sm font-medium" onClick={handleAddClick}>
+                  <span>Add Category</span>
+                </button>
             </div>
           </div>
           <div className="overflow-y-auto grow mt-8">
@@ -97,9 +99,9 @@ export const Categories = () => {
                           <Field name='slug' className="input" type='text'></Field>
                           <ErrorMessage name="slug" component={"p"} className="text-red-500"/>
                       </label> 
-                      <button type="submit" className="bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap mt-6">
+                      <button type="submit" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full py-2 whitespace-nowrap mt-6">
                         {
-                          isLoading ? <Spinner />: selectedCategory ? "Update Category" : "Add Category"
+                          isLoading ? <Spinner />: selectedCategory ? <span>Update Category</span> : <span>Add Category</span>
                         }
                       </button>
                     </Form>

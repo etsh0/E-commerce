@@ -29,7 +29,9 @@ export const Products = () => {
             <h4 className="text-lg text-primary font-semibold">Products</h4>
             <div className="flex gap-4">
                 <SearchBar fetchAllProducts={ (value) => fetchAllProducts(value)}/>
-                <NavLink to={"add-product"} onClick={handleAddProduct} className="bg-primary py-2.5 px-4 rounded-lg text-sm font-medium text-white cursor-pointer">Add Product</NavLink>
+                <NavLink to={"add-product"} onClick={handleAddProduct} className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full py-2.5 px-4 text-sm font-medium cursor-pointer">
+                  <span>Add Product</span>
+                </NavLink>
             </div>
           </div>
           <div className="overflow-y-auto grow mt-8">

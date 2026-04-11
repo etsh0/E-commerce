@@ -64,7 +64,7 @@ export const CartPage = () => {
                         <span>Total</span>
                         <span>{cart.length > 0 ? shippingPrice + subTotal : 0} EGP</span>
                     </div>
-                    <button onClick={handleCheckout} disabled={cart.length === 0} className="disabled:cursor-not-allowed bg-primary flex items-center justify-center text-white w-full py-2 rounded cursor-pointer whitespace-nowrap my-6">
+                    <button onClick={handleCheckout} disabled={cart.length === 0} className="disabled:cursor-not-allowed btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full whitespace-nowrap my-6">
                         {
                             isCheckingOut ? 
                             
@@ -73,7 +73,7 @@ export const CartPage = () => {
                                 <span className="ml-2">Processing...</span>
                             </> 
                             
-                            : "Proceed to Checkout"
+                            : <span>Proceed to Checkout</span>
                         }
                     </button>
                     <button className="flex justify-center text-primary self-center font-medium underline w-full">

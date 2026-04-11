@@ -18,7 +18,7 @@ export const NavBar = () => {
     const {cart} = useCartStore()
     const {token} = useAuthStore()
 
-    const {openSideCart} = useDrawerStore()
+    const {openSideCart,closeSideFilters} = useDrawerStore()
 
     const navLinks = [
         { name: 'Home', path: '/' },
@@ -41,19 +41,23 @@ export const NavBar = () => {
 
   return (
     <>
-        <div className='w-full container py-5 bg-white flex items-center justify-between'>
+        <div className='w-full px-8 py-5 bg-white flex items-center justify-between sticky top-0 z-50 border-b border-border'>
             <img src={Logo} alt="" />
-            <div className="links items-center gap-8 text-sm text-text font-medium hidden lg:flex">
+            <div className="links items-center gap-8 text-sm uppercase tracking-wide text-text font-medium hidden lg:flex">
                 {
                     navLinks.map( (link,idx) => (
-                        <NavLink to={link.path} key={idx} className={({ isActive }) => isActive ? "text-primary" : ""}>
+                        <NavLink to={link.path} key={idx} className={({ isActive }) => `relative group py-1 ${isActive ? "text-primary" : "text-text"}`}>
                             {link.name}
+                            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
                         </NavLink>
                     ))
                 }
             </div>  
             <MenuBar />
-            <div className='lg:hidden block cursor-pointer' onClick={openMenu}>
+            <div className='lg:hidden block cursor-pointer' onClick={() => { 
+                    openMenu(); 
+                    closeSideFilters()
+            }}>
                 <img src={Menu} alt="" />
             </div>
             <div className='hidden lg:flex'>

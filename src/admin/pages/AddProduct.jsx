@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { IoIosClose } from "react-icons/io";
 import * as Yup from "yup";
+import { Spinner } from "../../components/Spinner";
 
 
 export const AddProduct = () => {
@@ -32,6 +33,7 @@ export const AddProduct = () => {
     sizes: selectedProduct?.sizes?.map(s => s.documentId) || [],
     isBestSelling: selectedProduct?.isBestSelling || false,
     isFeatured: selectedProduct?.isFeatured || false,
+    discount: selectedProduct?.discount || 0,
     images: [],
     reviews:[]
   };
@@ -256,6 +258,10 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                       <ErrorMessage name="available_qty" component={"p"} className="text-red-500"/>
                     </label>
                     <label className="flex flex-col gap-2 text-sm font-medium text-primary">
+                      Discount 
+                      <Field name="discount" className="input" type="number" />
+                    </label>
+                    <label className="flex flex-col gap-2 text-sm font-medium text-primary">
                       Rate
                       <Field name="rate" className="input" type="number" placeholder="Write Product rate here..." />
                       <ErrorMessage name="rate" component={"p"} className="text-red-500"/>
@@ -355,8 +361,8 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                           </div>
                           <input onChange={ (e) => setNewColorData({...newColorData, slug:e.target.value})} name="slug" type="text" value={newColorData.slug}  className="input h-9 text-[10px]" placeholder="Slug (red)" />
                           
-                          <button onClick={() => addNewColorToSystem()} type="button" className="w-full py-2 bg-primary text-white rounded-md text-xs font-bold hover:bg-primary/90 transition-colors cursor-pointer">
-                            + Add Color to System
+                          <button onClick={() => addNewColorToSystem()} type="button" className="py-2 btn-animate bg-primary text-white before:bg-white hover:text-primary w-full text-xs font-bold">
+                            <span>+ Add Color to System</span>
                           </button>
                         <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
                           {
@@ -385,8 +391,8 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                                   <input onChange={ (e) => setNewSizeData({...newSizeData, size_value:e.target.value})} name="size_value" value={newSizeData.size_value} type="text" className="input h-9 text-[11px]" placeholder="Value (e.g. XL)" />
                                   <input onChange={ (e) => setNewSizeData({...newSizeData, slug:e.target.value})} name="slug" value={newSizeData.slug} type="text" className="input h-9 text-[11px]" placeholder="Slug(xl)" />
                               </div>
-                              <button onClick={() => addNewSizeToSystem()} type="button" className="w-full py-2 bg-primary text-white rounded text-xs font-bold hover:bg-primary/90 transition-colors cursor-pointer">
-                                  + Add Size to System
+                              <button onClick={() => addNewSizeToSystem()} type="button" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full py-2 text-xs font-bold">
+                                  <span>+ Add Size to System</span>
                               </button>
                           </div>
                         <div className="flex flex-wrap gap-2">
@@ -418,8 +424,8 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                     </label>
                   </div>
 
-                  <button disabled={uploading} type="submit" className="w-full py-3 bg-primary text-white font-bold rounded shadow-lg hover:opacity-90 transition-all mt-4 cursor-pointer">
-                      {uploading ? selectedProduct ? "Updating..." : "Uploading..." : selectedProduct ? "Update Product" : "Publish Product"}
+                  <button disabled={uploading} type="submit" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full py-3 font-bold mt-4">
+                      {uploading ? selectedProduct ? <Spinner /> : <Spinner /> : selectedProduct ? <span>Update Product</span> : <span>Publish Product</span>}
                   </button>
                 </div>
 

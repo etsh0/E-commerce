@@ -28,7 +28,7 @@ export const SideFilters = () => {
 
   return (
     <>
-        <div className='flex flex-col gap-10'>
+        <div className='flex flex-col gap-10 -z-10'>
             <div className="categories">
                 <div className='flex items-center justify-between'>
                     <h4 className='text-xl font-medium'>Categories</h4>

@@ -88,9 +88,9 @@ export const Register = () => {
                             <Field name="password" className="input" type="password" placeholder="Enter Password" />
                             <ErrorMessage name="password" component={"p"} className="text-red-500" />
                         </label>
-                        <button type="submit" className="bg-primary text-white px-4 py-2 rounded font-medium cursor-pointer flex items-center justify-center">
+                        <button type="submit" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full px-4 py-2 font-medium">
                             {
-                                isLoading ? <Spinner />: "Create account"
+                                isLoading ? <Spinner />: <span>Create account</span>
                             }
                         </button>
                     </Form>

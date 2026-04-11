@@ -43,15 +43,12 @@ export const OrderSuccess = () => {
       <div className="flex flex-col sm:flex-row gap-4">
         <Link 
           to="/shop" 
-          className="bg-black text-white px-8 py-3 rounded-md font-semibold hover:bg-gray-800 transition-all"
+          className="px-8 py-3 btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full mb-8"
         >
-          Continue Shopping
+          <span>Continue Shopping</span>
         </Link>
-        <Link 
-          to="/account" 
-          className="border border-gray-300 px-8 py-3 rounded-md font-semibold hover:bg-gray-50 transition-all"
-        >
-          Track My Order
+        <Link to={"/account"} className={`btn-animate bg-white text-primary md:before:bg-primary md:hover:text-white w-full mb-8`}>
+          <span>View my account</span> 
         </Link>
       </div>
     </div>

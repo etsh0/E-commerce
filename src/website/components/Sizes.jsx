@@ -33,7 +33,7 @@ export const Sizes = ({product_sizes}) => {
                 sizes?.map( (size) => {
                     const isSelected = isProductPage ? productSize === size.slug : selectedSizes.includes(size.slug)
                     return (
-                    <span onClick={() => isProductPage ? setProductSize(size.slug)  : setSelectedSizes(size.slug)} key={size.documentId} className={`px-4 py-3 border border-border rounded-lg uppercase text-xs font-medium text-text cursor-pointer ${isSelected && "bg-primary text-white"}`}>{size.size_value}</span>
+                    <span onClick={() => isProductPage ? setProductSize(size.slug)  : setSelectedSizes(size.slug)} key={size.documentId} className={`px-4 py-3 border border-border rounded uppercase text-xs font-semibold text-text cursor-pointer hover:border-primary transition-all duration-200 ${isSelected && "bg-primary text-white"}`}>{size.size_value}</span>
                 )
                 })
             }

@@ -2,10 +2,13 @@ import { domain, useCartStore } from "../../store"
 import { Quantity } from './Quantity'
 import { MdClose } from 'react-icons/md'
 import noImg from "../../assets/noImg.png"
+import { getFinalPrice } from "../../utils/PriceUtils"
 
 export const OrderItem = ({order}) => {
     const setUpdateCart = useCartStore(state => state.setUpdateCart);
     const removeCartItem = useCartStore(state => state.removeCartItem);
+    const finalPrice = getFinalPrice(order?.price, order?.discount);
+
   return (
     <>
         <div className="cart-item flex flex-col gap-4 justify-between w-full">
@@ -19,7 +22,15 @@ export const OrderItem = ({order}) => {
                 </div>
             </div>
             <div className="flex items-center gap-8">
-                <span className="text-sm md:text-base font-medium">{order?.price} EGP</span>
+                <div className="price flex flex-col gap-2">
+                    <span className={`text-sm md:text-base font-medium ${order?.discount ? "text-red-500" : ""}`}>
+                        {finalPrice} EGP
+                    </span>
+                    {
+                        order?.discount  && (
+                        <span className="text-xs md:text-sm line-through opacity-50">{order?.price} EGP</span>
+                    )}
+                </div>
                 <Quantity qty={order?.qty} 
                 Increment={() => setUpdateCart(order.id , order.selectedSize, order.selectedColor, order.qty + 1)} 
                 Decrement={() => setUpdateCart(order.id , order.selectedSize, order.selectedColor, order.qty - 1)}/>

@@ -1,7 +1,6 @@
 import { FaStar } from "react-icons/fa"
 import { AiOutlineClose } from "react-icons/ai";
 import { ImgSwiper } from "../../../components/ImgSwiper"
-import Badge from "@mui/material/Badge"
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io"
 import { Quantity } from "../Quantity"
 import { useCartStore, useDrawerStore, useFilterStore, useWishlistStore } from "../../../store"
@@ -11,6 +10,8 @@ import { Sizes } from "../Sizes";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Spinner } from "../../../components/Spinner";
+import { getFinalPrice } from './../../../utils/PriceUtils';
+import { Badge } from "../../../components/Badge";
 
 
 export const ProductModal = () => {
@@ -27,6 +28,8 @@ export const ProductModal = () => {
     if (!selectedProduct) return null;
 
     const isInwishList = wishList.some( (item) => item.id === selectedProduct.id) // return true or false
+
+    const finalPrice = getFinalPrice(selectedProduct.price, selectedProduct.discount)
 
     const handleCardClick = () => {
         navigate(`/shop/product-details/${selectedProduct.documentId}`);
@@ -93,9 +96,27 @@ export const ProductModal = () => {
                         <FaStar />
                         {selectedProduct.rate} — {selectedProduct.reviews_count} Reviews 
                     </div>
-                    <Badge title={"In Stock"} />
+                    <Badge title={`${selectedProduct.stock_status}`} />
                 </div>
-                <div className="price font-semibold text-primary mt-6 text-xl">${selectedProduct.price}</div>
+
+
+                <div className="flex items-center gap-3 mt-6">
+                    <span className={`font-semibold text-xl ${selectedProduct.discount ? "text-red-500" : "text-primary"}`}>
+                         {finalPrice} EGP
+                    </span>
+                    {selectedProduct.discount > 0 && (
+                        <>
+                            <span className="text-primary text-xl font-semibold line-through opacity-50">
+                                 {selectedProduct.price} EGP
+                            </span>
+                            <span className="text-xs font-bold text-white bg-red-500 px-2 py-0.5 rounded-full">
+                                -{selectedProduct.discount}%
+                            </span>
+                        </>
+                    )}
+                </div>
+
+
                 <div className={`colors mt-8 ${selectedProduct?.colors?.length === 0 && "hidden"}`}>
                     <h4 className="text-[12px] text-text uppercase font-medium">Available Colors</h4>
                     <Colors product_colors={selectedProduct.colors} />      
@@ -109,7 +130,7 @@ export const ProductModal = () => {
                     <Quantity qty={qty} Increment={() => setQty( q => q + 1)} Decrement={() => setQty(Math.max(1, qty - 1))}/> 
                 </div>
                 <div className="add-to-cart mt-8 flex items-center gap-4">
-                    <button onClick={handleAddToCart} className={`${isAdding ? "bg-primary/80" : "bg-primary"} flex items-center justify-center text-white px-15 sm:px-30 lg:px-40 py-2 rounded cursor-pointer whitespace-nowrap`}>
+                        <button onClick={() => {handleAddToCart()}}  className={`${isAdding ? "bg-primary/80" : "bg-primary"} flex items-center justify-center btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary px-15 sm:px-30 lg:px-40 py-2 cursor-pointer whitespace-nowrap`}>
                             {
                                 isAdding ? 
                                 <>
@@ -117,9 +138,9 @@ export const ProductModal = () => {
                                     <span className="ml-2">Adding...</span>
                                 </> 
                                 
-                                : "Add to Cart"
+                                : <span>Add to Cart</span>
                             }
-                    </button>
+                        </button>
                     <div onClick={() => handleAddToWishList(selectedProduct)} className={`wishlist border-2 border-border px-2 py-2 rounded cursor-pointer flex items-center justify-center min-w-10 min-h-10`}>
 
                         {!isWishloading && (

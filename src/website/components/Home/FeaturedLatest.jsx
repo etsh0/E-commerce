@@ -58,13 +58,13 @@ export const FeaturedLatest = () => {
                     <div className="flex gap-6 mt-4 md:mt-0 text-sm font-medium">
                         <button 
                             onClick={() => setActiveTab("latest")}
-                            className={`cursor-pointer transition-colors ${activeTab === 'latest' ? 'text-black border-b-2 border-black' : 'text-gray-400'}`}
+                            className={`cursor-pointer transition-colors hover:text-primary duration-300 ${activeTab === 'latest' ? 'text-black border-b-2 border-black' : 'text-gray-400'}`}
                         >
                             LATEST
                         </button>
                         <button 
                             onClick={() => setActiveTab("featured")}
-                            className={`cursor-pointer transition-colors ${activeTab === 'featured' ? 'text-black border-b-2 border-black' : 'text-gray-400'}`}
+                            className={`cursor-pointer transition-colors hover:text-primary duration-300 ${activeTab === 'featured' ? 'text-black border-b-2 border-black' : 'text-gray-400'}`}
                         >
                             FEATURED
                         </button>

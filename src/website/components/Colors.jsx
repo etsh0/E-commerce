@@ -36,8 +36,9 @@ export const Colors = ({product_colors}) => {
                     const isSelected = isProductPage ? productColor === color.slug : selectedColors.includes(color.slug)
 
                     return (
-                    <div onClick={() => isProductPage ? setProductColor(color.slug , color.hex_code) : setSelectedColors(color.slug)} key={color.documentId} className={`p-1 rounded-full cursor-pointer ${isSelected && "border"}`}>
+                    <div onClick={() => isProductPage ? setProductColor(color.slug , color.hex_code) : setSelectedColors(color.slug)} key={color.documentId} className={`relative p-1 rounded-full cursor-pointer group transition-all duration-200 ${isSelected ? "border border-primary" : "border border-transparent"}`}>
                         <div style={{ backgroundColor: color.hex_code }} className={`circle w-6 h-6 rounded-full`}></div>
+                        <span className="color-name absolute -top-6 left-1/2 -translate-x-1/2 bg-primary text-white px-2 py-0.5 text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{color.slug}</span>
                     </div>
                 )
                 })

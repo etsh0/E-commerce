@@ -2,11 +2,14 @@ import { MdClose } from "react-icons/md"
 import { Quantity } from "./Quantity"
 import { domain, useCartStore } from "../../store"
 import noImg from "../../assets/noImg.png"
+import { getFinalPrice } from "../../utils/PriceUtils"
 
 
 export const SideCartItem = ({item}) => {
     const setUpdateCart = useCartStore(state => state.setUpdateCart);
     const removeCartItem = useCartStore(state => state.removeCartItem);
+    const finalPrice = getFinalPrice(item?.price, item?.discount);
+
   return (
     <>
         <div className="flex items-center gap-6">
@@ -23,7 +26,15 @@ export const SideCartItem = ({item}) => {
                     <Quantity qty={item?.qty} 
                     Increment={() => setUpdateCart(item.id , item.selectedSize, item.selectedColor, item.qty + 1)} 
                     Decrement={() => setUpdateCart(item.id , item.selectedSize, item.selectedColor, item.qty - 1)}/>
-                    <span className="text-sm">{item?.price} EGP</span>
+                    <div className="flex items=center gap-2">
+                        <span className={`text-sm ${item?.discount ? "text-red-500" : ""}`}>
+                            {finalPrice} EGP
+                        </span>
+                        {
+                            item?.discount  && (
+                            <span className="text-xs line-through opacity-50">{item?.price} EGP</span>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

@@ -22,7 +22,7 @@ export const ImgSwiper = ({product_images}) => {
                 <img 
                   src={domain + img.url} 
                   alt={`product-image-${idx}`} 
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover"
                 />
               </SwiperSlide>
             ))

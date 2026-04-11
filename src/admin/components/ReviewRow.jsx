@@ -14,7 +14,7 @@ export const ReviewRow = ({review, onDelete}) => {
                 <span className="truncate">{review?.reviewer_name}</span>
             </td>
             <td className="px-6 py-4">
-                {review?.product?.title}
+                {review?.product?.title ? review?.product?.title : "Product Deleted"}
             </td>
             <td className="px-6 py-4 max-w-50 truncate whitespace-nowrap ">
                 {review?.comment}

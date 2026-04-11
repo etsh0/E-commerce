@@ -1,21 +1,16 @@
-import HeroImg from '../../../assets/دون عنوان (720 x 1280 بيكسل).png'
-import classic from '../../../assets/Classic.svg'
-import { Button } from './../../../components/Button';
+import { Link } from 'react-router-dom';
+import HeroImg from '../../../assets/060426-eg-m-yeni_jpg.webp'
 
 export const Hero = () => {
   return (
     <>
-        <div className="container flex flex-col md:flex-row items-center justify-between h-full">
-            <div className="content z-10 w-full text-center md:text-left pt-25 md:pt-0">
-                <h2 className='text-[40px] md:text-h1 text-primary font-medium mb-3'>Fresh Arrivals Online</h2> 
-                <p className='text-text mb-6'>Discover Our Newest Collection Today.</p>
-                <Button text={"View Collection"} />
-            </div>
-            <div className="image w-full md:mt-0">
-                <img className='hidden md:flex' src={HeroImg} alt="" />
-            </div>
-            <img className='md:hidden absolute w-full' src={classic} alt="" />
+        <div className="hero-content relative h-screen">
+            <img className='w-full h-full object-cover' src={HeroImg} alt="" />
+            <Link to={"/shop"} className="btn-animate bg-white text-primary md:before:bg-primary md:hover:text-white mb-8 absolute bottom-15 left-1/2 -translate-x-1/2 -translate-y-1/2 py-3 px-8 tracking-wider text-[15px] font-normal uppercase border-0">
+                <span>Shop Now</span>
+            </Link>
         </div>
     </>
   )
 }
+

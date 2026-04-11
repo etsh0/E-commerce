@@ -58,9 +58,9 @@ export const AccountPassword = () => {
                         Confirm Password
                         <Field name='confirmPassword' className="input" type="password" required />
                     </label>
-                    <button type="submit" className="bg-primary text-white px-4 py-2 rounded text-sm font-medium cursor-pointer">
+                    <button type="submit" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full px-4 py-2 text-sm font-medium">
                         {
-                           isSubmitting ? <Spinner /> : "Change Password" 
+                           isSubmitting ? <Spinner /> : <span>Change Password</span> 
                         }
                     </button>
                 </Form>

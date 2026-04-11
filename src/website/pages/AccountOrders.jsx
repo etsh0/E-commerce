@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { AccountHeader } from "../components/AccountHeader"
 import { useAuthStore, useOrderStore, useUiStore } from "../../store"
 import { useEffect } from "react"
@@ -41,16 +41,13 @@ export const AccountOrders = () => {
                 userOrders.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
                         <h3 className="text-xl font-bold text-primary mb-2">No orders yet</h3>
-                        <p className="text-sm text-text max-w-70 mb-8">
+                        <p className="text-sm text-text max-w-70 mb-6">
                             Looks like you haven't made your choice yet. Your future orders will appear here!
                         </p>
 
-                        <NavLink 
-                            to="/shop" 
-                            className="bg-primary text-white px-8 py-3 rounded font-semibold hover:bg-primary/90 transition-all duration-300 shadow-sm"
-                        >
-                            Start Shopping
-                        </NavLink>
+                        <Link to="/shop" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary">
+                            <span>Start Shopping</span>
+                        </Link>
                     </div>
                     ) : (
                         userOrders.map((order) => (
@@ -71,7 +68,7 @@ export const AccountOrders = () => {
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <span className="text-xs font-medium underline">{order.orderStatus}</span>
-                                        <span className="font-semibold text-primary">{order.totalAmount} EGP</span>
+                                        <span className="font-semibold text-primary">Total: {order.totalAmount} EGP</span>
                                     </div>
                                 </div>
 
@@ -93,8 +90,8 @@ export const AccountOrders = () => {
                                             </div>
 
                                             <NavLink to={`/shop/product-details/${item.documentId}`}>
-                                                <button onClick={() => setLoading("isAppLoading", true)} className="text-primary text-[10px] sm:text-xs border border-primary py-1 px-3 rounded font-semibold hover:bg-primary hover:text-white transition-all cursor-pointer whitespace-nowrap">
-                                                    View Item
+                                                <button onClick={() => setLoading("isAppLoading", true)} className="text-[10px] sm:text-xs py-2 px-3 font-semibold whitespace-nowrap btn-animate bg-white text-primary md:before:bg-primary md:hover:text-white">
+                                                    <span>View Product</span>
                                                 </button>
                                             </NavLink>
                                         
