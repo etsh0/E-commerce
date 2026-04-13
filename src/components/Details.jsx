@@ -7,7 +7,7 @@ export const Details = () => {
         <div className=''>
             <h4 className='text-xl font-semibold'>Detils</h4>
             <div className='content text-text text-sm mt-6'>
-                <p className='mb-2 whitespace-pre-line max-w-220'>{details}</p>
+                <p className='mb-2 whitespace-pre-line max-w-220'>{details}</p>   l
             </div>
         </div>
     </>
