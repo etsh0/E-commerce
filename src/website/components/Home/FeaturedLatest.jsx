@@ -50,7 +50,7 @@ export const FeaturedLatest = () => {
         <section className="py-20 bg-gray-50">
             <div className="container mx-auto px-4">
 
-                <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+                <div data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-in-sine" className="flex flex-col md:flex-row justify-between items-center mb-12">
                     <h2 className="text-2xl font-bold uppercase tracking-tight">
                         {activeTab === "latest" ? "New Arrivals" : "Featured Items"}
                     </h2>
@@ -71,45 +71,46 @@ export const FeaturedLatest = () => {
                     </div>
                 </div>
                 {/* swiper */}
-
-                <Swiper
-                    slidesPerView={1.5}       
-                    spaceBetween={15}        
-                    freeMode={true}          
-                    grabCursor={true}      
-                    autoplay={{
-                        delay: 3000,
-                        disableOnInteraction: false,
-                    }}
-                    pagination={{
-                        clickable: true,
-                        dynamicBullets: true,
-                    }}
-                    breakpoints={{
-                        640: { slidesPerView: 2.5, spaceBetween: 20 },
-                        1024: { slidesPerView: 3.5, spaceBetween: 30 },
-                        1280: { slidesPerView: 4, spaceBetween: 30 },
-                    }}
-                    modules={[FreeMode, Pagination, Autoplay]}
-                    className="mySwiper pb-14!" 
-                >
-                    {
-                        isLoading ? (
-                            Array.from({ length: 8 }).map((_, index) => (
-                                <SwiperSlide key={index}>
-                                    <ProductSkeletonCard />
-                                </SwiperSlide>
-                            ))
-                        )
-                    :
-                    products.map((product) => (
-                        <SwiperSlide key={product.documentId}>
-                            <ProductCard product={product} />
-                        </SwiperSlide>
-                    ))
-                    
-                    }
-                </Swiper>
+                <div data-aos="fade-up" data-aos-offset="300" data-aos-easing="ease-in-sine" data-aos-duration="800">
+                    <Swiper
+                        slidesPerView={1.5}       
+                        spaceBetween={15}        
+                        freeMode={true}          
+                        grabCursor={true}      
+                        autoplay={{
+                            delay: 3000,
+                            disableOnInteraction: false,
+                        }}
+                        pagination={{
+                            clickable: true,
+                            dynamicBullets: true,
+                        }}
+                        breakpoints={{
+                            640: { slidesPerView: 2.5, spaceBetween: 20 },
+                            1024: { slidesPerView: 3.5, spaceBetween: 30 },
+                            1280: { slidesPerView: 4, spaceBetween: 30 },
+                        }}
+                        modules={[FreeMode, Pagination, Autoplay]}
+                        className="mySwiper pb-14!" 
+                    >
+                        {
+                            isLoading ? (
+                                Array.from({ length: 8 }).map((_, index) => (
+                                    <SwiperSlide key={index}>
+                                        <ProductSkeletonCard />
+                                    </SwiperSlide>
+                                ))
+                            )
+                        :
+                        products.map((product) => (
+                            <SwiperSlide key={product.documentId}>
+                                <ProductCard product={product} />
+                            </SwiperSlide>
+                        ))
+                        
+                        }
+                    </Swiper>
+                </div>
             </div>
         </section>
     );

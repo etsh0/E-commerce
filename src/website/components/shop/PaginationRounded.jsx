@@ -5,7 +5,7 @@ import { useFilterStore } from '../../../store';
 export default function PaginationRounded({pageCount}) {
   const handleChange = (e,value) => {
     setPage(value)
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   }
 
   const {page, setPage} = useFilterStore()

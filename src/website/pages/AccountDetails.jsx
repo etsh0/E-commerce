@@ -36,7 +36,7 @@ export const AccountDetails = () => {
 
   return (
     <>
-        <div className="">
+        <div >
             <AccountHeader title={"Account Details"} />
             <Formik initialValues={initialValues} onSubmit={handleUpdateUserData} enableReinitialize={true}>
                 <Form className='flex flex-col gap-6 max-w-100 mb-10'>

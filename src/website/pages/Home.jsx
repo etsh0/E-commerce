@@ -61,16 +61,22 @@ export const Home = () => {
             <Hero />
         </div>
         <div className="cards container mt-22 mb-18 flex flex-col md:flex-row items-center justify-between gap-13.5">
-            <HeroCard icon={Delivery} title={"Free Shipping"} p={"Upgrade your style today and get FREE shipping on all orders! Don't miss out."}/>
-            <HeroCard icon={StarPage} title={"Satisfaction Guarantee"} p={"Shop confidently with our Satisfaction Guarantee: Love it or get a refund."}/>
-            <HeroCard icon={ShieldCheck} title={"Secure Payment"} p={"Your security is our priority. Your payments are secure with us."}/>
+            <div data-aos="fade-up" data-aos-delay="0">
+                <HeroCard icon={Delivery} title={"Free Shipping"} p={"Upgrade your style today and get FREE shipping on all orders! Don't miss out."}/>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="150">
+                <HeroCard icon={StarPage} title={"Satisfaction Guarantee"} p={"Shop confidently with our Satisfaction Guarantee: Love it or get a refund."}/>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="300">
+                <HeroCard icon={ShieldCheck} title={"Secure Payment"} p={"Your security is our priority. Your payments are secure with us."}/>
+            </div>
         </div>
         <div className="bestSelling py-18">
-            <div className="title text-center">
+            <div data-aos="fade-right" data-aos-duration="600" className="title text-center">
                 <p className='text-text text-p uppercase'>Shop Now</p>
                 <h3 className='text-h3 text-primary font-bold'>Best Selling Products</h3>
             </div>
-            <div className="bestSelling container mt-20">
+            <div data-aos="fade-up" data-aos-duration="800" className="bestSelling container mt-20">
                 <Swiper
                     slidesPerView={1.5}       
                     spaceBetween={15}        
@@ -107,14 +113,14 @@ export const Home = () => {
         </div>
         <div className="newSession bg-secondary">
             <div className="container flex items-center justify-between">
-                <div className="content relative">
+                <div data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-in-sine" className="content relative">
                     <h3 className='text-[12px] md:text-h3 uppercase text-text mb-1'>New Season New Style</h3>
                     <h1 className='md:text-h1 font-medium'>30-70% Off On Men's Apparel</h1>
                     <Link to={"/shop"} className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary mb-8 py-3 px-8 tracking-wider text-[15px] font-normal uppercase w-fit">
                         <span>Shop Now</span>
                     </Link>
                 </div>
-                <div className="image w-100">
+                <div data-aos="fade-left" data-aos-offset="300" data-aos-easing="ease-in-sine"  className="image w-100">
                     <img className='w-full' src={Person} alt="" />
                 </div>
             </div>

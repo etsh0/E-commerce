@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom"
 import { AccountHeader } from "../components/AccountHeader"
-import { useAuthStore, useOrderStore, useUiStore } from "../../store"
+import { useAuthStore, useOrderStore } from "../../store"
 import { useEffect } from "react"
 import { domain } from './../../store/index';
 import noImg from "../../assets/noImg.png"
@@ -11,7 +11,7 @@ export const AccountOrders = () => {
 
     const {fetchUserOrders, userOrders, isOrdersLoading} = useOrderStore()
     const {user, token} = useAuthStore()
-    const {setLoading} = useUiStore()
+    // const {setLoading} = useUiStore()
 
   
     
@@ -50,8 +50,8 @@ export const AccountOrders = () => {
                         </Link>
                     </div>
                     ) : (
-                        userOrders.map((order) => (
-                            <div key={order.documentId} className="order-wrapper border-b-2 border-border pb-6 mb-6">
+                        userOrders.map((order,idx) => (
+                            <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay={idx * 100} key={order.documentId} className="order-wrapper border-b-2 border-border pb-6 mb-6">
             
                                 <div className="flex justify-between items-center mb-4 bg-secondary/30 p-2 rounded">
                                     <div className="flex flex-col gap-1">
@@ -90,7 +90,7 @@ export const AccountOrders = () => {
                                             </div>
 
                                             <NavLink to={`/shop/product-details/${item.documentId}`}>
-                                                <button onClick={() => setLoading("isAppLoading", true)} className="text-[10px] sm:text-xs py-2 px-3 font-semibold whitespace-nowrap btn-animate bg-white text-primary md:before:bg-primary md:hover:text-white">
+                                                <button className="text-[10px] sm:text-xs py-2 px-3 font-semibold whitespace-nowrap btn-animate bg-white text-primary md:before:bg-primary md:hover:text-white">
                                                     <span>View Product</span>
                                                 </button>
                                             </NavLink>

@@ -15,7 +15,7 @@ export const Dashboard = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-6 p-10">
+      <div className="flex flex-col gap-6 p-10 h-screen">
           <div className="grid grid-cols-3 gap-6">
             <div className="box-total-sales shadow border border-border rounded-lg bg-white p-6">
                 <div className="flex items-center justify-between">

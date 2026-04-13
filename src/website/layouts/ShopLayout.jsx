@@ -6,10 +6,12 @@ import { SideCart } from '../components/SideCart'
 import { ProductModal } from '../components/shop/ProductModal'
 import { useDrawerStore } from '../../store'
 import { useEffect } from 'react'
+import { useScrollTop } from '../../hooks/useScrollTop'
 
 export const ShopLayout = () => {
   const location = useLocation();
     const {isProductModalOpen, closeProductModal} = useDrawerStore()
+    useScrollTop() 
     useEffect(() => {
       closeProductModal();
   }, [location.pathname, closeProductModal]);

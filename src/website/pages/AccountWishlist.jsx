@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom"
 import { AccountHeader } from "../components/AccountHeader"
-import { domain, useUiStore, useWishlistStore } from "../../store"
+import { domain, useWishlistStore } from "../../store"
 import noImg from "../../assets/noImg.png"
 
 export const AccountWishlist = () => {
     const {wishList, removeWishListItem} = useWishlistStore()
-    const {setLoading} = useUiStore()
+    // const {setLoading} = useUiStore()
   return (
     <>
         <div className="">
@@ -25,8 +25,8 @@ export const AccountWishlist = () => {
                     ) 
                         : 
                     (
-                        wishList?.map( (product) => (
-                            <div key={product.documentId} className="order-item flex flex-col sm:flex-row gap-4 justify-between border-b-2 border-border pb-4">
+                        wishList?.map( (product,idx) => (
+                            <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay={idx * 100} key={product.documentId} className="order-item flex flex-col sm:flex-row gap-4 justify-between border-b-2 border-border pb-4">
                                 <div className="flex items-center gap-4">
                                     <div className="image bg-secondary">
                                         <img className="aspect-square w-17 md:w-20 object-contain" src={product?.images?.length > 0 ? domain + product.images[0].url : noImg} alt="" />
@@ -39,7 +39,7 @@ export const AccountWishlist = () => {
                                 <div className="flex items-center justify-center gap-6">
                                     <span className="font-medium">${product.price}</span>
                                     <Link to={`/shop/product-details/${product.documentId}`}>
-                                        <button onClick={() => setLoading("isAppLoading", true)} className="text-[10px] sm:text-xs py-2 px-3 font-semibold whitespace-nowrap btn-animate bg-white text-primary md:before:bg-primary md:hover:text-white">
+                                        <button className="text-[10px] sm:text-xs py-2 px-3 font-semibold whitespace-nowrap btn-animate bg-white text-primary md:before:bg-primary md:hover:text-white">
                                             <span>View Product</span>
                                         </button>
                                     </Link>

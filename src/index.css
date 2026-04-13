@@ -6,20 +6,11 @@
 
 @import "tailwindcss";
 
-/* 
-* {
-    font-family: "Inter", sans-serif;
-} */
-
-
-/* 
-* {
-    font-family: "Instrument Sans", sans-serif;
-} */
 
 * {
     font-family: "Raleway", sans-serif;
 }
+
 
 @theme {
     --color-primary: #0E1422;

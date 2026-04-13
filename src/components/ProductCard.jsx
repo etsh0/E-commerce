@@ -1,5 +1,5 @@
 import { Badge } from "./Badge";
-import { domain, useDrawerStore, useUiStore } from "../store";
+import { domain, useDrawerStore } from "../store";
 import { useNavigate } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 import noImg from "../assets/noImg.png"
@@ -13,10 +13,10 @@ export const ProductCard = ({product}) => {
 
     const navigate = useNavigate()
     const {openProductModal} = useDrawerStore()
-    const {setLoading} = useUiStore()
+    // const {setLoading} = useUiStore()
 
     const handleCardClick = () => {
-        setLoading("isAppLoading", true)
+        // setLoading("isAppLoading", true)
         navigate(`/shop/product-details/${product.documentId}`);
     }
 

@@ -9,7 +9,7 @@ import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io"
 import { NavLink, Outlet, useParams } from "react-router-dom"
 import { NewsLetter } from "../../components/NewsLetter"
 import { ImgSwiper } from "../../components/ImgSwiper"
-import { domain, useCartStore, useDrawerStore, useFilterStore, useReviewsCounter, useUiStore, useWishlistStore } from "../../store"
+import { domain, useCartStore, useDrawerStore, useFilterStore, useReviewsCounter, useWishlistStore } from "../../store"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { ProductCard } from "../../components/ProductCard"
@@ -27,14 +27,13 @@ export const ProductDetails = () => {
     const {wishList, setAddToWishList} = useWishlistStore()
     const {reviewsCount, setReviewsCount} = useReviewsCounter()
     const [similarProducts, setSimilarProducts] = useState()
-    const {setLoading} = useUiStore()
+    // const {setLoading} = useUiStore()
     const [isAdding, setIsAdding] = useState(false);
     const [isWishloading, setIsWishLoading] = useState(false);
 
     const isInwishList = wishList.some( (item) => item.id === product.id)
 
     useEffect(() => {
-        window.scrollTo(0, 0);
         let productId = params.productId
         let endPoint = '/api/products/' + productId
         let url = domain + endPoint
@@ -56,8 +55,6 @@ export const ProductDetails = () => {
             }
             catch(error) {
                 console.log(error);
-            }finally {
-                setLoading("isAppLoading", false)
             }
         }
 
@@ -129,7 +126,7 @@ export const ProductDetails = () => {
   return (
     <>
         <div className="container mt-6">
-            <div className="flex flex-col lg:flex-row gap-15">
+            <div data-aos="fade-down" data-aos-duration="1000" className="flex flex-col lg:flex-row gap-15">
                 <div className="product-images relative bg-secondary w-full lg:w-130 flex items-center justify-center">
                     <ImgSwiper product_images={product.images} />
                     {
@@ -200,11 +197,11 @@ export const ProductDetails = () => {
             </div>
             <div className="py-30 flex flex-col md:flex-row gap-10">
                 <div className="side flex md:flex-col gap-4 w-55">
-                    <NavLink to={""} end className={({isActive}) => `flex items-center gap-2 md:gap-4 md:px-4 px-2 py-1 rounded ${isActive ? "bg-secondary" : ""}`}>
+                    <NavLink to={""} end className={({isActive}) => `hover:bg-secondary transition-colors duration-200 flex items-center gap-2 md:gap-4 md:px-4 px-2 py-1 rounded ${isActive ? "bg-secondary" : ""}`}>
                         <img src={More} alt="" />
                         <span className="text-xs sm:text-sm font-medium">Details</span>
                     </NavLink>
-                    <NavLink to={"reviews"} className={({isActive}) => `flex items-center gap-2 md:gap-4 md:px-4 px-2 py-1 rounded ${isActive ? "bg-secondary" : ""}`}>
+                    <NavLink to={"reviews"} className={({isActive}) => `hover:bg-secondary transition-colors duration-200 flex items-center gap-2 md:gap-4 md:px-4 px-2 py-1 rounded ${isActive ? "bg-secondary" : ""}`}>
                         <img src={EmptyStar} alt="" />
                         <span className="text-xs sm:text-sm font-medium">Reviews</span>
                     </NavLink>

@@ -1,6 +1,6 @@
 export const Contact = () => {
   return (
-    <div className="contact-page pt-20 pb-20 bg-gray-50">
+    <div data-aos="fade-right" data-aos-duration="600" className="contact-page pt-20 pb-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden flex flex-col md:flex-row">
           

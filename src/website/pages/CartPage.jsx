@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import { OrderItem } from "../components/OrderItem"
-import { useCartStore, useUiStore } from "../../store"
-import { useEffect, useState } from "react"
+import { useCartStore } from "../../store"
+import { useState } from "react"
 import { Spinner } from "../../components/Spinner"
 
 
@@ -11,18 +11,7 @@ export const CartPage = () => {
     const {cart, getSubTotal, shippingPrice} = useCartStore()
     const subTotal = getSubTotal()
     const navigate = useNavigate()
-    const { setLoading } = useUiStore();
     const [isCheckingOut, setIsCheckingOut] = useState(false);
-
-
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading("isAppLoading", false);
-        }, 800); 
-        return () => clearTimeout(timer);
-    }, []);
-
 
 
     const handleCheckout = () => {
@@ -40,9 +29,11 @@ export const CartPage = () => {
                 <div className='flex flex-col gap-6 py-12 border-y-2 border-border w-full overflow-y-auto'>
                     {
                         cart.length === 0 ? (<div className="text-center text-text uppercase my-auto">Your cart is empty</div>) : (
-                            cart.map( (order) => (
-                                <OrderItem key={order.documentId} order={order}/>
-                            ))
+                            cart.map( (order,idx) => (
+                                <div key={order.documentId} data-aos="fade-right" data-aos-duration="1000" data-aos-delay={idx * 100}>
+                                    <OrderItem  order={order}/>
+                                </div>
+                            ))  
                         )
                     }
                 </div>

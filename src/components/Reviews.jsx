@@ -93,7 +93,7 @@ export const Reviews = () => {
 
   return (
     <>
-        <div className=''>
+        <div data-aos="fade-up" data-aos-duration="1000" className=''>
             <h4 className='text-xl font-semibold'>Reviews</h4>
             <div className={`mt-4 ${allReviews?.length === 0 && "hidden"}`}>
                <div className='text-text text-sm'><span className='text-2xl font-bold text-primary'>{rate}</span> — {reviewsCount} Reviews</div> 

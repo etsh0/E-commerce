@@ -11,9 +11,3 @@ export const GlobalLoader = () => {
   )
 }
 
-// - when we start the app  (opactiy = 100%)
-// - when we click on product details page (opactiy = 100%)
-
-// - when we click on login or register page
-// - when we click on account details, orders, wishlist or password page
-// - when we click on checkout page

@@ -5,8 +5,11 @@ import { useAuthAdmin } from "../../store"
 
 export const AdminLayout = () => {
 
+
   const {adminToken} = useAuthAdmin()
   const navigate = useNavigate()
+
+
 
   useEffect( () => {
     if(!adminToken) {
@@ -20,7 +23,7 @@ export const AdminLayout = () => {
         <div className="w-65 shrink-0 self-stretch h-auto bg-white shadow-2xl">
             <SideBar />
         </div>
-        <div className="grow flex flex-col min-w-0 bg-secondary h-full overflow-hidden">
+        <div data-lenis-prevent className="grow flex flex-col min-w-0 bg-secondary h-screen overflow-y-auto">
           <Outlet />
         </div>
       </div>

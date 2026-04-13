@@ -4,7 +4,7 @@ import Cart from '../../../assets/Cart.svg'
 import User from '../../../assets/User.svg'
 import Menu from '../../../assets/Menu.svg'
 import { MenuBar } from './MenuBar';
-import { useAuthStore, useCartStore, useDrawerStore, useUiStore } from '../../../store'
+import { useAuthStore, useCartStore, useDrawerStore } from '../../../store'
 import { SearchBar } from './SearchBar'
 
 
@@ -14,7 +14,7 @@ export const NavBar = () => {
     const openMenu = useDrawerStore((state) => state.openMenu)
     const navigate = useNavigate()
     const location = useLocation()
-    const {setLoading} = useUiStore()
+    // const {setLoading} = useUiStore()
     const {cart} = useCartStore()
     const {token} = useAuthStore()
 
@@ -35,7 +35,7 @@ export const NavBar = () => {
             return;
         }
         
-        setLoading("isAppLoading", true); 
+        // setLoading("isAppLoading", true); 
         navigate('/account');
     };
 

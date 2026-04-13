@@ -1,9 +1,9 @@
 export const About = () => {
   return (
-    <div className="about-page pt-20 pb-10">
+    <div data-aos="fade-up" data-aos-duration="600" className="about-page pt-20 pb-10">
       <div className="container mx-auto px-4">
         {/* Section 1: Header */}
-        <div className="text-center mb-16">
+        <div data-aos="fade-up" className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Our Story</h1>
           <p className="text-gray-500 max-w-2xl mx-auto italic">"Building the future of e-commerce, one product at a time."</p>
         </div>

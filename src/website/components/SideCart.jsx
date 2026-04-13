@@ -1,5 +1,5 @@
 import { MdClose } from "react-icons/md"
-import { useCartStore, useDrawerStore, useUiStore } from "../../store"
+import { useCartStore, useDrawerStore } from "../../store"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { SideCartItem } from "./SideCartItem"
@@ -10,7 +10,7 @@ export const SideCart = () => {
     const {cart, getSubTotal} = useCartStore()
     const navigate = useNavigate()
     const location = useLocation();
-    const{setLoading} = useUiStore()
+    // const{setLoading} = useUiStore()
 
     const subTotal = getSubTotal()
     
@@ -33,14 +33,14 @@ export const SideCart = () => {
             return; 
         }
         
-        setLoading("isAppLoading", true)
+        // setLoading("isAppLoading", true)
         CloseSideCart()
         navigate("/cart")
     }
   return (
     <>
         <div className={`overlay fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${isSideCartOpen ? "opacity-100 visible backdrop-blur-xs" : "opacity-0 invisible"}`} onClick={CloseSideCart}></div>
-        <div className={`sidecrat flex flex-col w-80 sm:w-100 h-screen bg-white shadow-lg fixed top-0 right-0 z-1000 transform transition-transform duration-300 ease-in-out ${isSideCartOpen ? "translate-x-0" : "translate-x-300"}`}>
+        <div data-lenis-prevent className={`sidecrat flex flex-col w-80 sm:w-100 h-screen bg-white shadow-lg fixed top-0 right-0 z-1000 transform transition-transform duration-300 ease-in-out ${isSideCartOpen ? "translate-x-0" : "translate-x-300"}`}>
             <div className="bg-secondary/50 p-8 w-full flex items-center justify-between">
                 <h3 className="font-semibold">Shopping Cart</h3>
                 <MdClose onClick={CloseSideCart} size={"24px"} className="cursor-pointer" />
