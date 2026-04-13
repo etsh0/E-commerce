@@ -3,6 +3,7 @@ import { SearchBar } from "../../components/SearchBar"
 import { ProductRow } from "../components/ProductRow"
 import { useProductStore } from "../../store"
 import { ProductsLoader } from "../../components/ProductsLoader"
+import PaginationRounded from "../../website/components/shop/PaginationRounded"
 
 export const Products = () => {
   const {fetchAllProducts, products, setSelectedProduct,resetSelectedProduct} = useProductStore()
@@ -62,6 +63,9 @@ export const Products = () => {
                 </tbody>
               </table>
           </div>
+          {/* <div className="pagination w-full flex items-center justify-center mt-16">
+              <PaginationRounded pageCount={3} page={1} />
+          </div> */}
         </div>
       </div>
     </>

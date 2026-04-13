@@ -134,7 +134,7 @@ const handleSubmitProduct = async (values, { resetForm }) => {
   } catch (error) {
     console.error("Error:", error);
   } finally {
-    setUploading(false); // ✅ دلوقتي بتشتغل بعد ما الـ request يخلص فعلاً
+    setUploading(false); 
   }
 };
   
@@ -166,6 +166,8 @@ const handleSubmitProduct = async (values, { resetForm }) => {
       setNewColorData({ name: '', hex_code: '', slug: '' });
     } catch (error) {
       console.log(error);
+      setUploadColor(false)
+      toast.error("Failed to add color. Please try again.")
     }
   }
 
@@ -196,6 +198,8 @@ const handleSubmitProduct = async (values, { resetForm }) => {
       toast.success("Size added to system!")
       setNewSizeData({size_value: '', slug: ''})
     } catch (error) {
+      toast.error("Failed to add size. Please try again.")
+      setUploadSize(false)
       console.log(error);
     }
   }
@@ -370,7 +374,7 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                           </div>
                           <input onChange={ (e) => setNewColorData({...newColorData, slug:e.target.value})} name="slug" type="text" value={newColorData.slug}  className="input h-9 text-[10px]" placeholder="Slug (red)" />
                           
-                          <button onClick={() => addNewColorToSystem()} type="button" className="py-2 btn-animate bg-primary text-white before:bg-white hover:text-primary w-full text-xs font-bold">
+                          <button disabled={!newColorData.name || !newColorData.hex_code || !newColorData.slug} onClick={() => addNewColorToSystem()} type="button" className="disabled:opacity-80 disabled:cursor-not-allowed py-2 btn-animate bg-primary text-white before:bg-white hover:text-primary w-full text-xs font-bold">
                             {
                               uploadColor ? <Spinner /> : <span>+ Add Color to System</span>
                             }
@@ -402,7 +406,7 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                                   <input onChange={ (e) => setNewSizeData({...newSizeData, size_value:e.target.value})} name="size_value" value={newSizeData.size_value} type="text" className="input h-9 text-[11px]" placeholder="Value (e.g. XL)" />
                                   <input onChange={ (e) => setNewSizeData({...newSizeData, slug:e.target.value})} name="slug" value={newSizeData.slug} type="text" className="input h-9 text-[11px]" placeholder="Slug(xl)" />
                               </div>
-                              <button onClick={() => addNewSizeToSystem()} type="button" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full py-2 text-xs font-bold">
+                              <button disabled={!newSizeData.size_value || !newSizeData.slug} onClick={() => addNewSizeToSystem()} type="button" className="disabled:opacity-80 disabled:cursor-not-allowed btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full py-2 text-xs font-bold">
                                   {
                                     uploadSize ? <Spinner /> : <span>+ Add Size to System</span>
                                   }

@@ -37,7 +37,7 @@ export const AccountWishlist = () => {
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-center gap-6">
-                                    <span className="font-medium">${product.price}</span>
+                                    <span className="font-medium">{product.price} EGP</span>
                                     <Link to={`/shop/product-details/${product.documentId}`}>
                                         <button className="text-[10px] sm:text-xs py-2 px-3 font-semibold whitespace-nowrap btn-animate bg-white text-primary md:before:bg-primary md:hover:text-white">
                                             <span>View Product</span>

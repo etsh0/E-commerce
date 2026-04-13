@@ -1,11 +1,15 @@
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useFilterStore } from '../../../store';
+import { useLenis } from '../../../providers/LenisProvider';
 
 export default function PaginationRounded({pageCount}) {
+
+  const lenisRef = useLenis()
+
   const handleChange = (e,value) => {
     setPage(value)
-    // window.scrollTo(0, 0);
+    lenisRef.current?.scrollTo(0, { immediate: false })
   }
 
   const {page, setPage} = useFilterStore()
@@ -27,7 +31,6 @@ export default function PaginationRounded({pageCount}) {
         }
       }}  
       />
-    
     </Stack>
   );
 }

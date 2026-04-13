@@ -31,7 +31,7 @@ export const Products = () => {
 
                     pagination : {
                     page : `${page}` ,
-                    pageSize : 20,
+                    pageSize : 21,
                   },
                     filters : {
                       category : {
@@ -144,8 +144,10 @@ export const Products = () => {
             <div className="products-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4">
               {
                 products.length >  0 ? (
-                  products.map( (product) => (
-                    <ProductCard key={product.documentId} product={product}/>
+                  products.map( (product,idx) => (
+                    <div key={product.documentId} data-aos="fade-up" data-aos-duration="1000" data-aos-delay={idx * 50}>
+                      <ProductCard product={product}/>
+                    </div>
                   ))
                 ) : (
                     <div className="col-span-full flex flex-col items-center justify-center py-20 px-4 text-center mt-10">

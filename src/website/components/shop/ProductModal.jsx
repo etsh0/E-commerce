@@ -130,7 +130,7 @@ export const ProductModal = () => {
                     <Quantity qty={qty} Increment={() => setQty( q => q + 1)} Decrement={() => setQty(Math.max(1, qty - 1))}/> 
                 </div>
                 <div className="add-to-cart mt-8 flex items-center gap-4">
-                        <button onClick={() => {handleAddToCart()}}  className={`${isAdding ? "bg-primary/80" : "bg-primary"} flex items-center justify-center btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary px-15 sm:px-30 lg:px-40 py-2 cursor-pointer whitespace-nowrap`}>
+                        <button onClick={() => {handleAddToCart()}}  className={`flex items-center justify-center btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary px-15 sm:px-30 lg:px-40 py-2 cursor-pointer whitespace-nowrap`}>
                             {
                                 isAdding ? 
                                 <>

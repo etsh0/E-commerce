@@ -38,6 +38,10 @@ export const useProductStore = create( (set) => ({
         const res = await axios.get(url , {
             params: {
             populate: '*',
+            pagination : {
+                page : 1 ,
+                pageSize : 1000,
+            },
             filters: {
                 title: {
                     $containsi : value
