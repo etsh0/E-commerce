@@ -31,7 +31,7 @@ export const SideCartItem = ({item}) => {
                             {finalPrice} EGP
                         </span>
                         {
-                            item?.discount  && (
+                            item?.discount > 0 && (
                             <span className="text-xs line-through opacity-50">{item?.price} EGP</span>
                         )}
                     </div>

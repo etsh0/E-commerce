@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { IoIosClose } from "react-icons/io";
 import * as Yup from "yup";
 import { Spinner } from "../../components/Spinner";
+import { toast } from "sonner";
 
 
 export const AddProduct = () => {
@@ -17,6 +18,9 @@ export const AddProduct = () => {
   const [sizes , setSizes] = useState([])
   const [newColorData, setNewColorData] = useState({ name: '', hex_code: '', slug: '' });
   const [newSizeData, setNewSizeData] = useState({ size_value: '', slug: '' });
+  const [uploading, setUploading] = useState(false);
+  const [uploadSize, setUploadSize] = useState(false);
+  const [uploadColor, setUploadColor] = useState(false);
   let url_color = domain + "/api/colors"
   let url_size = domain + "/api/sizes"
 
@@ -52,7 +56,6 @@ export const AddProduct = () => {
   // to upload images to strapi
   const [selectedFiles, setSelectedFiles] = useState([]); // state to hold selected files (user)
   const [previewUrls, setPreviewUrls] = useState([]); // state to hold preview URLs for selected images (for user to see before uploading)
-  const [uploading, setUploading] = useState(false);
 
   // Handle file selection
   const handleFileChange = (e) => {
@@ -150,6 +153,7 @@ const handleSubmitProduct = async (values, { resetForm }) => {
   }
 
   const addNewColorToSystem = async () => {
+    setUploadColor(true)
     try {
       const res = await axios.post(url_color, {data:newColorData}, {
         headers: {
@@ -157,6 +161,8 @@ const handleSubmitProduct = async (values, { resetForm }) => {
         }
       })
       setColors([...colors, res.data.data])
+      setUploadColor(false)
+      toast.success("Color added to system!")
       setNewColorData({ name: '', hex_code: '', slug: '' });
     } catch (error) {
       console.log(error);
@@ -178,6 +184,7 @@ const handleSubmitProduct = async (values, { resetForm }) => {
   }
 
   const addNewSizeToSystem = async () => {
+    setUploadSize(true)
     try {
       const res = await axios.post(url_size, {data: newSizeData}, {
         headers: {
@@ -185,6 +192,8 @@ const handleSubmitProduct = async (values, { resetForm }) => {
         }
       })
       setSizes([...sizes, res.data.data])
+      setUploadSize(false)
+      toast.success("Size added to system!")
       setNewSizeData({size_value: '', slug: ''})
     } catch (error) {
       console.log(error);
@@ -362,7 +371,9 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                           <input onChange={ (e) => setNewColorData({...newColorData, slug:e.target.value})} name="slug" type="text" value={newColorData.slug}  className="input h-9 text-[10px]" placeholder="Slug (red)" />
                           
                           <button onClick={() => addNewColorToSystem()} type="button" className="py-2 btn-animate bg-primary text-white before:bg-white hover:text-primary w-full text-xs font-bold">
-                            <span>+ Add Color to System</span>
+                            {
+                              uploadColor ? <Spinner /> : <span>+ Add Color to System</span>
+                            }
                           </button>
                         <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
                           {
@@ -392,7 +403,9 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                                   <input onChange={ (e) => setNewSizeData({...newSizeData, slug:e.target.value})} name="slug" value={newSizeData.slug} type="text" className="input h-9 text-[11px]" placeholder="Slug(xl)" />
                               </div>
                               <button onClick={() => addNewSizeToSystem()} type="button" className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary w-full py-2 text-xs font-bold">
-                                  <span>+ Add Size to System</span>
+                                  {
+                                    uploadSize ? <Spinner /> : <span>+ Add Size to System</span>
+                                  }
                               </button>
                           </div>
                         <div className="flex flex-wrap gap-2">

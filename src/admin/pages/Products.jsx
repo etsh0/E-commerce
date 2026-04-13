@@ -42,6 +42,7 @@ export const Products = () => {
                     <th className="px-6 py-4 font-medium">price</th>
                     <th className="px-6 py-4 font-medium">Stock</th>
                     <th className="px-6 py-4 font-medium">Quantity</th>
+                    <th className="px-6 py-4 font-medium">Discount</th>
                     <th className="px-6 py-4 font-medium">Category</th>
                     <th className="px-6 py-4 font-medium">Featured</th>
                     <th className="px-6 py-4 font-medium">BestSelling</th>

@@ -46,7 +46,7 @@ export const NavBar = () => {
             <div className="links items-center gap-8 text-sm uppercase tracking-wide text-text font-medium hidden lg:flex">
                 {
                     navLinks.map( (link,idx) => (
-                        <NavLink to={link.path} key={idx} className={({ isActive }) => `relative group py-1 ${isActive ? "text-primary" : "text-text"}`}>
+                        <NavLink to={link.path} key={idx} className={({ isActive }) => `relative group py-1 ${isActive ? "text-primary font-semibold" : "text-text"}`}>
                             {link.name}
                             <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
                         </NavLink>

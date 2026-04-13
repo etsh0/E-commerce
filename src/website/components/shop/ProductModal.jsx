@@ -73,7 +73,7 @@ export const ProductModal = () => {
 
   return (
     <>
-        <div className="flex flex-col lg:flex-row gap-6 ">
+        <div data-lenis-prevent className="flex flex-col lg:flex-row gap-6 ">
             <button onClick={() => {
                 closeProductModal()
                 resetProductSelection()

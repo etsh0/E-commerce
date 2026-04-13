@@ -206,14 +206,13 @@ export const CheckoutPage = () => {
                                             <div className="text-xs text-text font-medium flex items-center gap-2"><div style={{ backgroundColor: order?.selectedColor }} className="select-color w-3 h-3 rounded-full"></div>{order?.selectedSize && "—"}<span className="select-size uppercase">{order?.selectedSize}</span></div>
                                         </div>
                                     </div>
-                                    {/* <span>{order.qty * order.price} EGP</span> */}
                                     <div className="flex flex-col gap-2">
                                         <span className={`text-sm ${order?.discount ? "text-red-500" : ""}`}>
-                                            {(getFinalPrice(order.price, order.discount) * order.qty).toFixed(2)} EGP
+                                            {(getFinalPrice(order.price, order.discount) * order.qty)} EGP
                                         </span>
                                         {order?.discount > 0 && (
                                             <span className="text-xs line-through opacity-50">
-                                                {(order.price * order.qty).toFixed(2)} EGP
+                                                {(order.price * order.qty)} EGP
                                             </span>
                                         )}
                                     </div>

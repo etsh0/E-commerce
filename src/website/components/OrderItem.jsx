@@ -27,7 +27,7 @@ export const OrderItem = ({order}) => {
                         {finalPrice} EGP
                     </span>
                     {
-                        order?.discount  && (
+                        order?.discount > 0 && (
                         <span className="text-xs md:text-sm line-through opacity-50">{order?.price} EGP</span>
                     )}
                 </div>

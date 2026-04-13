@@ -18,6 +18,7 @@ export const ProductRow = ({product, onEdit}) => {
             <td className="px-6 py-4">{product?.price}</td>
             <td className="px-6 py-4">{product?.stock_status}</td>
             <td className="px-6 py-4">{product?.available_qty}</td>
+            <td className="px-6 py-4">{product?.discount || 0}%</td>
             <td className="px-6 py-4">{product?.category?.name}</td>
             <td className="px-6 py-4">
                 {
