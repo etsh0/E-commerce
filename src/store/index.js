@@ -4,11 +4,11 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { getFinalPrice } from '../utils/PriceUtils';
 
-export const domain = "http://localhost:1337"
+// export const domain = "http://localhost:1337"
+export const domain = "https://victorious-success-6363a9b478.strapiapp.com"
 
 
 // https://victorious-success-6363a9b478.strapiapp.com/admin
-
 
 
 // user blocked status
