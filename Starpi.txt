@@ -1,6 +1,10 @@
 strapi account << email : ahmedhesham@gmail.com 
 pw : Admin123@
 
+----------------------------
+
+strapi cloud >> h@gmail.com << Ahmed2030@
+
 --------------------------------
 
 dashboard << email : admin@gmail.com

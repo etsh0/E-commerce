@@ -6,6 +6,11 @@ import { getFinalPrice } from '../utils/PriceUtils';
 
 export const domain = "http://localhost:1337"
 
+
+// https://victorious-success-6363a9b478.strapiapp.com/admin
+
+
+
 // user blocked status
 axios.interceptors.response.use(
   (response) => response,
