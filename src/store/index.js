@@ -5,7 +5,7 @@ import { persist } from 'zustand/middleware'
 import { getFinalPrice } from '../utils/PriceUtils';
 
 // export const domain = "http://localhost:1337"
-export const domain = "https://victorious-success-6363a9b478.strapiapp.com"
+export const domain = "http://localhost:1337"
 
 
 // https://victorious-success-6363a9b478.strapiapp.com/admin
