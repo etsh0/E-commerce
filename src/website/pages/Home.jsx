@@ -72,7 +72,7 @@ export const Home = () => {
             </div>
         </div>
         <div className="bestSelling py-18">
-            <div data-aos="fade-right" data-aos-duration="600" className="title text-center">
+            <div  className="title text-center">
                 <p className='text-text text-p uppercase'>Shop Now</p>
                 <h3 className='text-h3 text-primary font-bold'>Best Selling Products</h3>
             </div>
@@ -113,14 +113,14 @@ export const Home = () => {
         </div>
         <div className="newSession bg-secondary">
             <div className="container flex items-center justify-between">
-                <div data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-in-sine" className="content relative">
+                <div  className="content relative">
                     <h3 className='text-[12px] md:text-h3 uppercase text-text mb-1'>New Season New Style</h3>
                     <h1 className='md:text-h1 font-medium'>30-70% Off On Men's Apparel</h1>
                     <Link to={"/shop"} className="btn-animate bg-primary text-white md:before:bg-white md:hover:text-primary mb-8 py-3 px-8 tracking-wider text-[15px] font-normal uppercase w-fit">
                         <span>Shop Now</span>
                     </Link>
                 </div>
-                <div data-aos="fade-left" data-aos-offset="300" data-aos-easing="ease-in-sine"  className="image w-100">
+                <div   className="image w-100">
                     <img className='w-full' src={Person} alt="" />
                 </div>
             </div>

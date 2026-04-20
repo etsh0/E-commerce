@@ -50,7 +50,7 @@ export const FeaturedLatest = () => {
         <section className="py-20 bg-gray-50">
             <div className="container mx-auto px-4">
 
-                <div data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-in-sine" className="flex flex-col md:flex-row justify-between items-center mb-12">
+                <div data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-in-sine" className="flex flex-col md:flex-row justify-between items-center mb-12 overflow-x-hidden">
                     <h2 className="text-2xl font-bold uppercase tracking-tight">
                         {activeTab === "latest" ? "New Arrivals" : "Featured Items"}
                     </h2>

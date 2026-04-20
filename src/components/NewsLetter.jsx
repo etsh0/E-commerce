@@ -2,7 +2,7 @@
 export const NewsLetter = () => {
   return (
     <>
-        <div className='bg-secondary'>
+        <div className='bg-secondary mt-4'>
             <div className="container flex flex-col md:flex-row items-center justify-between gap-6 py-14.75 ">
                 <div className="text text-center md:text-left">
                     <h3 className='text-primary text-2xl font-bold'>Subscribe to our Newsletter</h3>
