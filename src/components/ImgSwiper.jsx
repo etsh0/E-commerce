@@ -20,7 +20,7 @@ export const ImgSwiper = ({product_images}) => {
             product_images.map((img, idx) => (
               <SwiperSlide key={idx}>
                 <img 
-                  src={domain + img.url} 
+                  src={img.url.startsWith('http') ? img.url : domain + img.url} 
                   alt={`product-image-${idx}`} 
                   className="w-full h-full object-cover"
                 />
