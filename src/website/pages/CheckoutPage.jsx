@@ -198,7 +198,7 @@ export const CheckoutPage = () => {
                                 <div key={order.documentId} className="order-item flex items-center justify-between">
                                     <div className="flex gap-4">
                                         <div className="image shadow bg-gray-300 relative">
-                                            <img className="w-17 sm:w-20 aspect-square object-contain" src={order?.images?.length > 0 ? domain + order.images[0].url : noImg} alt="" />
+                                            <img className="w-17 sm:w-20 aspect-square object-contain" src={order?.images?.length > 0 ? order.images[0].url : noImg} alt="" />
                                             <span className="qty absolute -top-2 -right-2 bg-black text-white w-5 h-5 rounded-full flex items-center justify-center">{order.qty}</span>
                                         </div>
                                         <div className="flex items-center gap-2">

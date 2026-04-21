@@ -29,7 +29,7 @@ export const AccountWishlist = () => {
                             <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay={idx * 100} key={product.documentId} className="order-item flex flex-col sm:flex-row gap-4 justify-between border-b-2 border-border pb-4">
                                 <div className="flex items-center gap-4">
                                     <div className="image bg-secondary">
-                                        <img className="aspect-square w-17 md:w-20 object-contain" src={product?.images?.length > 0 ? domain + product.images[0].url : noImg} alt="" />
+                                        <img className="aspect-square w-17 md:w-20 object-contain" src={product?.images?.length > 0 ? product.images[0].url : noImg} alt="" />
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <h3 className="text-xs md:text-sm font-medium text-primary line-clamp-1">{product.title}</h3>

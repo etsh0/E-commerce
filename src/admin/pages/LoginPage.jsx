@@ -4,8 +4,9 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { domain, useAuthAdmin } from "../../store";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Spinner } from "../../components/Spinner";
 
 
 
@@ -13,6 +14,7 @@ import { toast } from "sonner";
 export const LoginPage = () => {
 
     const {adminLogin, adminToken} = useAuthAdmin()
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate()
 
     const initialValues = {
@@ -27,6 +29,7 @@ export const LoginPage = () => {
 
     const handleLoginAdmin = async (values) => {
         let url = domain + "/api/auth/local"
+        setIsLoading(true)
         try {
             const res = await axios.post(url,values)
             if(res.data.user.isAdmin) {
@@ -40,6 +43,9 @@ export const LoginPage = () => {
         catch (error) {
             toast.error("Invalid email or password.");
             console.log(error); 
+        }
+        finally {
+            setIsLoading(false)
         }
     }
 
@@ -68,7 +74,11 @@ export const LoginPage = () => {
                             <Field name="password" className="input" type="password" />
                             <ErrorMessage component={"p"} className="text-red-500" name="password" /> 
                         </label>
-                        <button type="submit" className="bg-primary text-white py-3 rounded text-sm font-medium cursor-pointer">Login</button>
+                        <button type="submit" className="bg-primary text-white py-3 rounded text-sm font-medium cursor-pointer flex items-center justify-center">
+                            {
+                                isLoading ? <Spinner /> : <span>Login</span> 
+                            }
+                        </button>
                     </Form>
                 </Formik>
             </div>

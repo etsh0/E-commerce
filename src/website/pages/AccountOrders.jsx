@@ -78,7 +78,7 @@ export const AccountOrders = () => {
                                         
                                             <div className="flex items-center gap-4">
                                                 <div className="image bg-secondary rounded overflow-hidden">
-                                                    <img className="aspect-square w-16 md:w-20 object-contain" src={item?.images?.length > 0 ? domain + item.images[0].url : noImg} alt={item.title} />
+                                                    <img className="aspect-square w-16 md:w-20 object-contain" src={item?.images?.length > 0 ? item.images[0].url : noImg} alt={item.title} />
                                                 </div>
                                                 <div className="flex flex-col gap-1">
                                                     <h3 className="text-xs md:text-sm font-medium text-primary line-clamp-1">

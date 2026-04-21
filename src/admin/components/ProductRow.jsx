@@ -12,7 +12,7 @@ export const ProductRow = ({product, onEdit}) => {
         <>
         <tr className="text-gray-600 text-sm hover:bg-gray-50 transition">
             <td className="px-6 py-4 font-medium text-gray-800 line-clamp-1 flex items-center gap-2">
-                <img className="w-10 object-contain" src={product?.images?.[0]?.url ? domain + product.images[0].url : noImg} alt="" />
+                <img className="w-10 object-contain" src={product?.images?.[0]?.url ? product.images[0].url : noImg} alt="" />
                 <span>{product?.title}</span>
             </td>
             <td className="px-6 py-4">{product?.price}</td>

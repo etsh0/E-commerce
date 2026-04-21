@@ -302,7 +302,7 @@ const handleSubmitProduct = async (values, { resetForm }) => {
                       <div className="flex flex-wrap gap-3">
                         {existingImages.map((img) => (
                           <div key={img.id} className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
-                            <img src={domain + img.url} alt={img.name} className="w-full h-full object-cover" />
+                            <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
                             <button
                               type="button"
                               onClick={() => removeExistingImage(img.id)}

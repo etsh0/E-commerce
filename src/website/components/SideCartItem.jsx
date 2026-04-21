@@ -14,7 +14,7 @@ export const SideCartItem = ({item}) => {
     <>
         <div className="flex items-center gap-6">
             <div className="image bg-secondary relative">
-                <img className="w-17 sm:w-20 aspect-square object-contain" src={item?.images?.length > 0 ? domain + item?.images[0].url : noImg} alt={item?.title || "product"} />
+                <img className="w-17 sm:w-20 aspect-square object-contain" src={item?.images?.length > 0 ? item?.images[0].url : noImg} alt={item?.title || "product"} />
                 <MdClose onClick={() => removeCartItem(item.id ,item.selectedSize, item.selectedColor )} size={"20px"} className="absolute top-0 right-0 text-text cursor-pointer" />
             </div>
             <div className="flex flex-col gap-4">

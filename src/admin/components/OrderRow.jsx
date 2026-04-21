@@ -30,7 +30,7 @@ export const OrderRow = ({order}) => {
                     <div className="flex items-center gap-2">
                         <img 
                         className="w-10 h-10 rounded object-contain shrink-0" 
-                        src={domain + item.images[0]?.url} 
+                        src={item.images[0]?.url} 
                         alt="" 
                         />
                         <span className="text-xs md:text-sm font-medium text-primary truncate">

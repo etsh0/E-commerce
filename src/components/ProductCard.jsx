@@ -37,10 +37,10 @@ export const ProductCard = ({product}) => {
                     )
                 }
 
-                <img src={ product?.images?.length > 0  ? domain + product.images[0].url : noImg} alt="product" className={`w-full h-full object-cover ${product?.images?.length > 1 && "group-hover/card:opacity-0"} duration-300 transition-opacity`} />
+                <img src={ product?.images?.length > 0  ? product.images[0].url : noImg} alt="product" className={`w-full h-full object-cover ${product?.images?.length > 1 && "group-hover/card:opacity-0"} duration-300 transition-opacity`} />
                 {
                     product?.images?.length > 1 && (
-                        <img src={ domain + product.images[1].url } alt="" className={"absolute w-full h-full object-cover opacity-0 group-hover/card:opacity-100 duration-300 transition-opacity"} />
+                        <img src={product.images[1].url } alt="" className={"absolute w-full h-full object-cover opacity-0 group-hover/card:opacity-100 duration-300 transition-opacity"} />
                     )
                 }                
                 <div onClick={(e) => handleAddtoCart(e,product)} className="add-to-cart group absolute bg-white w-8 h-8 lg:w-10 lg:h-10 bottom-2 right-2 opacity-100 lg:-bottom-15 lg:group-hover/card:bottom-2 transition-all duration-300 text-black flex items-center justify-center font-medium">

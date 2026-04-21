@@ -7,7 +7,6 @@ import { getFinalPrice } from '../utils/PriceUtils';
 // export const domain = "http://localhost:1337"
 
 export const domain = "https://e-commerce-backend-ufvk.onrender.com"
-// export const domain = "http://localhost:1337"
 
 
 
