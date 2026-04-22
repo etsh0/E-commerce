@@ -57,13 +57,16 @@ export const Products = () => {
                     sort : sortBy
                 }
             })          
-            setLoading("isProductsLoading", false)          
+                      
             setProducts(res.data.data)    
             setPageCount(res.data.meta.pagination.pageCount)
             
         }
         catch (error) {
             console.log(error);
+        }
+        finally {
+          setLoading("isProductsLoading", false)
         }
     }
     fetchProducts()
@@ -73,13 +76,13 @@ export const Products = () => {
   return (
     <>
         <div className='grow px-4 py-6 border border-border rounded shadow mb-32 relative'>
-          {
+          {/* {
             isProductsLoading && (
               <div className="absolute inset-0 z-50 flex justify-center pt-50 bg-white transition-all">
                 <ProductsLoader />
               </div>
             )
-          }
+          } */}
           {
             (selectedCategories.length > 0 || selectedColors.length > 0 || selectedSizes.length > 0)  && (
               <div className="apply-filter mb-6">
@@ -141,23 +144,27 @@ export const Products = () => {
                   </div>
                 </div>
             </div>
-            <div className="products-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4">
+            <div className="products-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4 relative min-h-[400px]">
               {
-                products.length >  0 ? (
-                  products.map( (product,idx) => (
+                isProductsLoading ? (
+                  <div className="col-span-full flex justify-center pt-20 bg-white transition-all">
+                    <ProductsLoader />
+                  </div>
+                ) : products.length > 0 ? (
+                  products.map((product, idx) => (
                     <div key={product.documentId} data-aos="fade-up" data-aos-duration="1000" data-aos-delay={idx * 50}>
-                      <ProductCard product={product}/>
+                      <ProductCard product={product} />
                     </div>
                   ))
                 ) : (
-                    <div className="col-span-full flex flex-col items-center justify-center py-20 px-4 text-center mt-10">
-                        <h3 className="text-sm md:text-xl font-bold text-gray-800 mb-2">
-                          No Products Founds
-                        </h3>
-                        <p className="text-xs md:text-sm text-text mx-auto mb-8">
-                          We couldn't find any products matching your current filters.
-                        </p>
-                    </div>
+                  <div className="col-span-full flex flex-col items-center justify-center py-20 px-4 text-center mt-10">
+                    <h3 className="text-sm md:text-xl font-bold text-gray-800 mb-2">
+                      No Products Found
+                    </h3>
+                    <p className="text-xs md:text-sm text-text mx-auto mb-8">
+                      We couldn't find any products matching your current filters.
+                    </p>
+                  </div>
                 )
               }
             </div>
