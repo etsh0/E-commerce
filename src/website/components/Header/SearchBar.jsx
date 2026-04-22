@@ -73,7 +73,7 @@ export const SearchBar = () => {
                                 results?.map( (product) => (
                                     <div key={product?.documentId} onClick={() => handleProductClick(product)} className="flex items-center gap-3 p-3 cursor-pointer transition-colors border-b border-border last:border-0 hover:bg-gray-100">
                                         <div className="w-12 h-12 bg-gray-100 rounded-md overflow-hidden shrink-0">
-                                            <img src={product?.images?.length > 0 ? domain + product.images[0].url : noImg} alt="" className="w-full h-full object-cover" />
+                                            <img src={product?.images?.length > 0 ? product.images[0].url : noImg} alt="" className="w-full h-full object-cover" />
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="text-sm font-medium text-gray-800">{product?.title}</span>
